@@ -10,13 +10,19 @@ class Movies extends Component {
       movies: "",
       moviesData: [],
       loading: false,
+      showModal: false,
     };
     this.handleInput = this.handleInput.bind(this);
     this.showData = this.showData.bind(this);
+    this.seeDetails = this.seeDetails.bind(this);
   }
 
   handleInput(e) {
     this.setState({ movies: e.target.value });
+  }
+
+  seeDetails() {
+    this.setState({ showModal: true });
   }
 
   showData() {
@@ -96,14 +102,12 @@ class Movies extends Component {
                         <p className="card-text">
                           Title: {this.state.moviesData?.movieTitle}
                         </p>
-                        <p className="card-text">
-                          Genres:{" "}
-                          <ul>
-                            {this.state.moviesData?.movieGenres.map((item) => (
-                              <li>{item}</li>
-                            ))}
-                          </ul>
-                        </p>
+                        <p className="card-text">Genres: </p>
+                        <ul>
+                          {this.state.moviesData?.movieGenres.map((item) => (
+                            <li key={item}>{item}</li>
+                          ))}
+                        </ul>
                       </div>
                     </div>
                   </div>

@@ -1,5 +1,5 @@
 // core
-import { Component } from "react";
+import React from "react";
 // icons
 import { FaHome } from "react-icons/fa";
 import { GoPerson } from "react-icons/go";
@@ -16,14 +16,15 @@ import {
   Redirect,
 } from "react-router-dom";
 // components
-import Home from "./../Home/Home";
-import Actors from "./../Actors/Actors";
-import Movies from "./../Movies/Movies";
-import Series from "./../Series/Series";
 import NoMatch from "./../Nomatch/NoMatch";
 import SeriesDetails from "./../Series/SeriesDetails";
 
-class Content extends Component {
+const asyncHome = React.lazy(() => import("./../Home/Home"));
+const asyncActors = React.lazy(() => import("./../Actors/Actors"));
+const asyncMovies = React.lazy(() => import("./../Movies/Movies"));
+const asyncSeries = React.lazy(() => import("./../Series/Series"));
+
+class Content extends React.Component {
   render() {
     return (
       <div className="row Content">
@@ -50,7 +51,7 @@ class Content extends Component {
               </li>
               <li className="nav-item">
                 <NavLink className="nav-link" to="/IMDB/Movies">
-                  <BiCameraMovie/>
+                  <BiCameraMovie />
                   <span>Movies</span>
                 </NavLink>
               </li>
@@ -63,28 +64,19 @@ class Content extends Component {
                 role="tabpanel"
                 aria-labelledby="v-pills-settings-tab"
               >
-                <Switch>
-                  <Route path="/IMDB/Home" exact>
-                    <Home />
-                  </Route>
-                  <Route path="/IMDB/Actors">
-                    <Actors />
-                  </Route>
-                  <Route path="/IMDB/Series" exact>
-                    <Series />
-                  </Route>
-                  <Route
-                    path="/IMDB/Series/Details/:SeriesId"
-                    component={SeriesDetails}
-                  />
-                  <Route path="/IMDB/Movies">
-                    <Movies />
-                  </Route>
-                  <Redirect from="/" to="/IMDB/Home" exact></Redirect>
-                  <Route path="*">
-                    <NoMatch />
-                  </Route>
-                </Switch>
+                <React.Suspense fallback={<h4>Loading...Please wait..</h4>}>
+                  <Switch>
+                    <Route path="/IMDB/Home" exact component={asyncHome}/>
+                    <Route path="/IMDB/Actors" component={asyncActors}/>
+                    <Route path="/IMDB/Series" exact component={asyncSeries}/>
+                    <Route path="/IMDB/Series/Details/:SeriesId" component={SeriesDetails}/>
+                    <Route path="/IMDB/Movies" component={asyncMovies}/>
+                    <Redirect from="/" to="/IMDB/Home" exact/>
+                    <Route path="*">
+                      <NoMatch />
+                    </Route>
+                  </Switch>
+                </React.Suspense>
               </div>
             </div>
           </div>

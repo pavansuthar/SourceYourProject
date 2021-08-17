@@ -1,0 +1,11 @@
+.status {
+  margin-bottom: 10px;
+}
+.board-row {
+  display: flex;
+  &:after {
+    clear: both;
+    content: "";
+    display: table;
+  }
+}
