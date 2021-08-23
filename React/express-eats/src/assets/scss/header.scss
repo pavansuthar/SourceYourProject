@@ -1,0 +1,16 @@
+.navbar {
+  .nav-item {
+    .nav-link {
+      &:hover {
+        color: #ffffff;
+        text-decoration: underline;
+      }
+      &:focus {
+        color: #ffffff;
+      }
+    }
+  }
+  a {
+    color: #ffffff;
+  }
+}
