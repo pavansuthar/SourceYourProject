@@ -1,12 +1,16 @@
-// core, hooks
+// core
 import React, { useCallback, useState, useEffect } from "react";
+// firebase
+import { db } from "./../firebase/firebase";
 
 let logOutTimer;
 
-// creates context object
+// create context object
 const AuthContext = React.createContext({
   tokenID: "",
+  userEmailId: "",
   isUserLoggedIn: false,
+  isUserAdmin: false,
   LoggedIn: (token) => {},
   LoggedOut: () => {},
 });
@@ -57,6 +61,8 @@ export const AuthContextProvider = (props) => {
     initialTokenID = tokenData.token;
   }
   const [tokenId, setTokenId] = useState(initialTokenID);
+  const [userEmail, setUserEmail] = useState("");
+  const [isAdmin, setIsAdmin] = useState(false);
   const isUserLogged = !!tokenId;
 
   /**
@@ -83,18 +89,36 @@ export const AuthContextProvider = (props) => {
    * @param {*} token
    * @param {*} expTime
    */
-  const OnLoggedInHandler = (token, expTime) => {
+  const OnLoggedInHandler = (token, expTime, emailId) => {
     setTokenId(token);
-    localStorage.setItem("tokenID", token);
-    localStorage.setItem("expiryTime", expTime);
-    let remainingTime = calculateRemainingTime(expTime);
-    // auto logout callback
-    logOutTimer = setTimeout(OnLoggedOutHandler, remainingTime);
+    setUserEmail(emailId);
+    let getUsersData = [];
+    db.collection("users")
+      .get()
+      .then((snapshot) => {
+        let getUsers = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        console.log(getUsers);
+        getUsersData.push(...getUsers);
+        console.log(getUsersData);
+        const getAdminUser = getUsersData.filter(
+          (user) => user.emailId === emailId
+        );
+        setIsAdmin(getAdminUser[0]?.isAdmin);
+        localStorage.setItem("tokenID", token);
+        localStorage.setItem("expiryTime", expTime);
+        let remainingTime = calculateRemainingTime(expTime);
+        logOutTimer = setTimeout(OnLoggedOutHandler, remainingTime);
+      });
   };
 
   const contextValue = {
     tokenID: tokenId,
+    userEmailId: userEmail,
     isUserLoggedIn: isUserLogged,
+    isUserAdmin: isAdmin,
     LoggedIn: OnLoggedInHandler,
     LoggedOut: OnLoggedOutHandler,
   };

@@ -19,6 +19,8 @@ const Header = () => {
     authCtx.LoggedOut();
   };
 
+  const showProductPage = !authCtx.isUserAdmin && isLoggedIn;
+
   return (
     <div>
       <nav className="navbar navbar-expand-lg navbar-primary bg-primary">
@@ -33,10 +35,32 @@ const Header = () => {
                   Home
                 </Link>
               </li>
-              {isLoggedIn && (
+              {showProductPage  && (
                 <li className="nav-item">
                   <Link to="/Product" className="nav-link" aria-current="page">
                     Product
+                  </Link>
+                </li>
+              )}
+              {authCtx.isUserAdmin && (
+                <li className="nav-item">
+                  <Link
+                    to="/AddProduct"
+                    className="nav-link"
+                    aria-current="page"
+                  >
+                    Add Product
+                  </Link>
+                </li>
+              )}
+              {authCtx.isUserAdmin && (
+                <li className="nav-item">
+                  <Link
+                    to="/ProductData"
+                    className="nav-link"
+                    aria-current="page"
+                  >
+                    Product Data
                   </Link>
                 </li>
               )}
@@ -50,6 +74,11 @@ const Header = () => {
                   >
                     Logout
                   </Link>
+                </li>
+              )}
+              {isLoggedIn && (
+                <li className="nav-item">
+                  <div className="emailInfo">({authCtx.userEmailId})</div>
                 </li>
               )}
             </ul>

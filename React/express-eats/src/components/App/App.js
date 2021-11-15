@@ -10,6 +10,8 @@ import Home from "./../Home/Home";
 import Auth from "./../Pages/auth";
 import NotFound from "./../NotFound/notFound";
 import Product from "../Pages/Product";
+import AddProduct from "../Product/AddProduct";
+import ProductData from "../Product/ProductData";
 import ProductInfo from "./../ProductInfo/ProductInfo";
 // redux
 import { Provider } from "react-redux";
@@ -28,13 +30,20 @@ let App = () => {
         <Header />
         <Content>
           <Switch>
+            <Route exact path="/">
+              <Redirect exact to="/Home" />
+            </Route>
             <Route exact path="/Home" component={Home} />
             <Route path="/Login" component={Auth} />
-            <Route exact path="/Product/:id" component={ProductInfo}/>
-            <Route path="/Product">
+            <Route exact path="/Product">
               {authCxt.isUserLoggedIn && <Product />}
               {!authCxt.isUserLoggedIn && <Redirect exact to="/Home" />}
             </Route>
+            <Route path="/AddProduct">
+              <AddProduct store={store} />
+            </Route>
+            <Route path="/ProductData" component={ProductData} />
+            <Route exact path="/Product/:id" component={ProductInfo} />
             <Route exact path="*" component={NotFound} />
           </Switch>
         </Content>
