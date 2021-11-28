@@ -1,7 +1,11 @@
-.home {
+.Home {
+  flex: 1;
+  flex-direction: column;
+  // height: auto;
+  align-content: center;
   .card {
     img {
-      height: 350px;
+      height: auto;
     }
   }
 }

@@ -7,5 +7,17 @@ $theme-colors: (
   "light": #f8f9fa,
   "dark": #212529,
 );
+.active {
+  border: 1px solid #ffffff;
+  border-radius: 20px;
+  font-weight: bold;
+  color: #0074d9 !important;
+  background-color: #ffffff;
+}
+hr {
+  border: 1px solid #ffffff !important;
+  height: 3px !important;
+  background-color: #ffffff !important;
+}
 
 @import "~bootstrap/scss/bootstrap.scss";

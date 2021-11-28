@@ -3,7 +3,7 @@ import "./../../assets/scss/header.scss";
 // icons
 import { IoFastFood } from "react-icons/io5";
 // routes, hooks
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { useContext } from "react";
 // context
 import AuthContext from "../../store/auth-context";
@@ -11,6 +11,8 @@ import AuthContext from "../../store/auth-context";
 const Header = () => {
   const authCtx = useContext(AuthContext);
   const isLoggedIn = authCtx.isUserLoggedIn;
+  const isAdminLoggedIn = authCtx.isUserAdmin;
+  const showProductPage = !authCtx.isUserAdmin && isLoggedIn;
 
   /**
    * Handler when user log out
@@ -19,61 +21,72 @@ const Header = () => {
     authCtx.LoggedOut();
   };
 
-  const showProductPage = !authCtx.isUserAdmin && isLoggedIn;
-
   return (
-    <div>
+    <div className="sticky-top">
       <nav className="navbar navbar-expand-lg navbar-primary bg-primary">
         <div className="container-fluid">
-          <Link to="/Home" className="navbar-brand">
+          <div className="logo">
             Express <IoFastFood /> Eats
-          </Link>
+          </div>
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
               <li className="nav-item">
-                <Link to="/Home" className="nav-link" aria-current="page">
+                <NavLink
+                  to="/Home"
+                  className="nav-link"
+                  aria-current="page"
+                  activeClassName="active"
+                >
                   Home
-                </Link>
+                </NavLink>
               </li>
-              {showProductPage  && (
+              {showProductPage && (
                 <li className="nav-item">
-                  <Link to="/Product" className="nav-link" aria-current="page">
+                  <NavLink
+                    to="/Product"
+                    className="nav-link"
+                    aria-current="page"
+                    activeClassName="active"
+                  >
                     Product
-                  </Link>
+                  </NavLink>
                 </li>
               )}
-              {authCtx.isUserAdmin && (
+              {isAdminLoggedIn && (
                 <li className="nav-item">
-                  <Link
+                  <NavLink
                     to="/AddProduct"
                     className="nav-link"
                     aria-current="page"
+                    activeClassName="active"
                   >
                     Add Product
-                  </Link>
+                  </NavLink>
                 </li>
               )}
-              {authCtx.isUserAdmin && (
+              {isAdminLoggedIn && (
                 <li className="nav-item">
-                  <Link
-                    to="/ProductData"
+                  <NavLink
+                    to="/ViewProduct"
                     className="nav-link"
                     aria-current="page"
+                    activeClassName="active"
                   >
-                    Product Data
-                  </Link>
+                    View Products
+                  </NavLink>
                 </li>
               )}
               {isLoggedIn && (
                 <li className="nav-item">
-                  <Link
-                    to="/Home"
+                  <NavLink
+                    to="/Login"
                     className="nav-link"
                     aria-current="page"
+                    activeClassName="active"
                     onClick={logOutHandler}
                   >
                     Logout
-                  </Link>
+                  </NavLink>
                 </li>
               )}
               {isLoggedIn && (

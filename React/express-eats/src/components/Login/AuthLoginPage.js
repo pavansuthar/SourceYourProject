@@ -7,12 +7,13 @@ import AuthContext from "./../../store/auth-context";
 import Spinner from "./../Loading/Loading";
 // css
 import "./../../assets/scss/custom.scss";
+import "./../../assets/scss/AuthLoginPage.scss";
 // firebase
 import firebase from "firebase";
 import { db } from "./../../firebase/firebase";
 
 const AuthLoginPage = () => {
-  const [isLogin, setIsLogIn] = useState(false);
+  const [isLogin, setIsLogIn] = useState(true);
   const [onLoading, setOnLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const emailField = useRef();
@@ -54,7 +55,6 @@ const AuthLoginPage = () => {
       .then((res) => {
         if (res.ok) {
           setErrorMsg(null);
-          console.log(res);
           return res.json();
         } else {
           return res.json().then((data) => {
@@ -74,13 +74,8 @@ const AuthLoginPage = () => {
             timestamp: firebase.firestore.FieldValue.serverTimestamp(),
           });
         }
-        authCtx.LoggedIn(
-          data.idToken,
-          expTokenTime.toISOString(),
-          getEmailID,
-        );
-        console.log(data);
-        history.replace("/Product");
+        authCtx.LoggedIn(data.idToken, expTokenTime.toISOString(), getEmailID);
+        history.replace("/Home");
       })
       .catch((err) => {
         setOnLoading(false);
@@ -90,20 +85,18 @@ const AuthLoginPage = () => {
 
   return (
     <React.Fragment>
-      <div className="row">
-        <div className="col-md-12">
+      <div className="row logInSection">
+        <div className="col-md-12 subMain">
           <h3>
             Express <span className="text-primary">Eats</span>
           </h3>
           <div className="row mt-4">
             <div className="col-md-12">
-              <div className="row">
-                <div className="col-md-3">
-                  <form onSubmit={onLogInHandler}>
-                    <div className="form-group mb-2">
-                      <label htmlFor="exampleFormControlInput1">
-                        Email address
-                      </label>
+              <h5>Let's get started</h5>
+              <div className="col-md-12">
+                <form onSubmit={onLogInHandler}>
+                  <div className="form-group mb-2">
+                    <div className="form-floating mb-3">
                       <input
                         type="email"
                         className="form-control form-control-lg"
@@ -112,9 +105,13 @@ const AuthLoginPage = () => {
                         autoComplete="true"
                         ref={emailField}
                       />
+                      <label htmlFor="exampleFormControlInput1">
+                        Email address
+                      </label>
                     </div>
-                    <div className="form-group mb-2">
-                      <label htmlFor="exampleFormControlInput1">Password</label>
+                  </div>
+                  <div className="form-group mb-2">
+                    <div className="form-floating mb-3">
                       <input
                         type="password"
                         className="form-control form-control-lg"
@@ -123,27 +120,31 @@ const AuthLoginPage = () => {
                         autoComplete="true"
                         ref={pwdField}
                       />
+                      <label htmlFor="exampleFormControlInput1">Password</label>
                     </div>
-                    <div className="d-grid gap-2">
-                      <button type="submit" className="btn btn-primary mt-2">
-                        {!isLogin ? "Signup" : "LogIn"}
-                      </button>
-                    </div>
+                  </div>
+                  <div className="d-grid gap-2">
+                    <button
+                      type="submit"
+                      className="btn btn-primary rounded-pill mt-2"
+                    >
+                      {!isLogin ? "Sign up" : "Log in"}
+                    </button>
                     <button
                       type="button"
-                      className="btn btn-secondary btn-lg mt-2"
+                      className="btn btn-light mt-2 rounded-pill"
                       onClick={ToggleView}
                     >
-                      Switch to {isLogin ? "Signup" : "LogIn"}
+                      {isLogin ? "New here? Signup" : "Already user? Sign in"}
                     </button>
-                    <div className="col-md-2 mt-2">
-                      {onLoading && <Spinner />}
-                    </div>
-                    <div className="col-md-12 mt-2 text-danger">
-                      <b>{errorMsg}</b>
-                    </div>
-                  </form>
-                </div>
+                  </div>
+                  <div className="col-md-12 mt-2">
+                    {onLoading && <Spinner />}
+                  </div>
+                  <div className="col-md-12 mt-2 text-danger">
+                    <b>{errorMsg}</b>
+                  </div>
+                </form>
               </div>
             </div>
           </div>
@@ -152,4 +153,5 @@ const AuthLoginPage = () => {
     </React.Fragment>
   );
 };
+
 export default AuthLoginPage;

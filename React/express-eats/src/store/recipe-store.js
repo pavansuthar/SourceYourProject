@@ -1,18 +1,16 @@
 // redux
 import { createStore } from "redux";
 // recipe json data
-import recipesDataInfo from "./../data/recipesDetails.json";
+// import recipesDataInfo from "./../data/recipesDetails.json";
 // firebase
 import firebase from "firebase";
 import { db } from "./../firebase/firebase";
 
+// Setting initial state from firebase db
 const initialState = {
   recipes: [],
   totalAmount: 0,
-  onAddRecipe: (item) => {},
-  onRemoveRecipe: (id) => {},
 };
-
 db.collection("recipes")
   .get()
   .then((snapshot) => {
@@ -20,31 +18,34 @@ db.collection("recipes")
       id: doc.id,
       ...doc.data(),
     }));
-    initialState.recipes = getRecipes;
+    initialState.recipes.push(getRecipes);
   });
 
 const RecipeStore = (state = initialState, action) => {
-  if (action.type === "productItem") {
-    const getRecipes = [...recipesDataInfo.recipesDetails];
-    return {
-      recipes: getRecipes,
-    };
-  }
+  // if (action.type === "productItem") {
+  //   const getRecipes = [...recipesDataInfo.recipesDetails];
+  //   return {
+  //     recipes: getRecipes,
+  //   };
+  // }
 
-  if (action.type === "add") {
+  if (action.type === "ADD") {
     let getFormData = {
       ...action.payload,
       timestamp: firebase.firestore.FieldValue.serverTimestamp(),
     };
     db.collection("recipes").add(getFormData);
+    return {
+      recipes: getFormData,
+    };
   }
 
-  if (action.type === "remove") {
+  if (action.type === "GET") {
+    return state;
   }
 
   return state;
 };
 
 const store = createStore(RecipeStore);
-
 export default store;

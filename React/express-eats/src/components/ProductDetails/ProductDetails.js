@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
 import { fadeInDownBig } from "react-animations";
 
+
 const BouncyDiv = styled.div`
   animation: 2s ${keyframes`${fadeInDownBig}`};
 `;
@@ -19,11 +20,11 @@ const ProductDetails = (props) => {
       <div className="col-md-12">
         <div className="row">
           {recipes?.map((item) => (
-            <div className="col-md-3 items" key={item.id}>
+            <div className="col-md-3 items" key={item.recipeID}>
               <BouncyDiv>
                 <ProductItem items={item} />
               </BouncyDiv>
-              <Link to={`/Product/${item.id}`}>View info</Link>
+              <Link to={`/Product/${item.recipeID}`}>View info</Link>
             </div>
           ))}
         </div>

@@ -29,7 +29,6 @@ const calculateRemainingTime = (expTime) => {
   const currentTime = new Date().getTime();
   adjustedTime = new Date(expTime).getTime();
   remainingTime = adjustedTime - currentTime;
-  console.log("Cal remaining time:", remainingTime);
   return remainingTime;
 };
 
@@ -41,7 +40,6 @@ const retrieveTokenData = () => {
   const TokenId = localStorage.getItem("tokenID");
   const Expiration = localStorage.getItem("expiryTime");
   const remainingTime = calculateRemainingTime(Expiration);
-  console.log("Retrive remaining time:", remainingTime);
   if (remainingTime <= 60000) {
     localStorage.removeItem("token");
     localStorage.removeItem("expTime");
@@ -79,7 +77,6 @@ export const AuthContextProvider = (props) => {
 
   useEffect(() => {
     if (tokenData) {
-      console.log("tokenData:", tokenData);
       logOutTimer = setTimeout(OnLoggedOutHandler, tokenData.duration);
     }
   }, [tokenData, OnLoggedOutHandler]);
@@ -100,9 +97,7 @@ export const AuthContextProvider = (props) => {
           id: doc.id,
           ...doc.data(),
         }));
-        console.log(getUsers);
         getUsersData.push(...getUsers);
-        console.log(getUsersData);
         const getAdminUser = getUsersData.filter(
           (user) => user.emailId === emailId
         );

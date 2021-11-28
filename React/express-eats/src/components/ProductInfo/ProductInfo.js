@@ -13,8 +13,6 @@ const ProductInfo = () => {
   let filterData = data.filter(
     (recipeDetails) => recipeDetails.id === +param.id
   );
-  console.log(filterData);
-
   const dispatch = useDispatch();
 
   useEffect(() => {

@@ -1,5 +1,23 @@
-.items {
-  .badge {
-      color: var(--bs-gray-dark);
+.ProductItems {
+  // .items {
+  //   // .badge {
+  //   //   color: var(--bs-gray-dark);
+  //   // }
+  // }
+  .likeSection {
+    font-size: 30px;
+  }
+  .likeSection > div {
+    flex: 1;
+    padding: 10px;
+  }
+  .likeSection .likes {
+    color: #0074d9;
+  }
+  .likeSection .fav {
+    color: #e91e63;
+  }
+  .likeSection .pop {
+    color: #ffc107;
   }
 }

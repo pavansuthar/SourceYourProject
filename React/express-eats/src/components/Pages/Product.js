@@ -1,22 +1,25 @@
+// core
+import { useContext } from "react";
 // components
-import { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
 import ProductDetails from "./../ProductDetails/ProductDetails";
+// context
+import RecipeContext from "./../../store/recipe-context";
+// css
+import "./../../assets/scss/Product.scss";
 
 const Product = () => {
-  const getRecipes = useSelector((state) => state.recipes);
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch({ type: "productItem" });
-  }, [dispatch]);
-
+  const recipeContext = useContext(RecipeContext);
   return (
-    <div className="row">
+    <div className="row Products">
+      <h2>Products</h2>
+      <hr />
       <div className="col-md-12">
-        <h3>Products</h3>
-        <p>Take a look at our products</p>
-        <ProductDetails data={getRecipes} />
+        <div className="row sub-main">
+          <div className="col-md-12">
+            <p>Take a look at our products</p>
+            <ProductDetails data={recipeContext.recipes[0]} />
+          </div>
+        </div>
       </div>
     </div>
   );

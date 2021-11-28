@@ -1,0 +1,18 @@
+.logInSection {
+//   flex: 1;
+margin-top:10px;
+  width: auto;
+//   height: 93vh;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
+  .subMain {
+    width: 50vh;
+    border: 1px solid gray;
+    border-radius: 10px;
+    padding: 40px;
+    box-shadow: 1px 1px 6px 2px #424141;
+    background-color: #ffffff;
+  }
+}

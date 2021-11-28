@@ -1,13 +1,19 @@
 // scss
+import React from "react";
 import "./../../assets/scss/content.scss";
+// components
+// const Footer = React.lazy(() => import("../Footer/Footer"));
 
 const Content = (props) => {
   return (
-    <div className="container">
-      <div className="row mt-3">
-        <div className="col-md-12">{props.children}</div>
+    <React.Fragment>
+      <div className="container-fluid">
+        <div className="row">
+          <div className="col-md-12">{props.children}</div>
+        </div>
       </div>
-    </div>
+      {/* <Footer /> */}
+    </React.Fragment>
   );
 };
 export default Content;
