@@ -3,6 +3,7 @@ import { useState, useContext } from "react";
 import { useHistory } from "react-router";
 // css
 import "./../../assets/scss/ProductData.scss";
+import InfoCircle from "./../../assets/images/info-circle.svg";
 // context
 import RecipeContext from "./../../store/recipe-context";
 
@@ -41,6 +42,8 @@ const ProductData = () => {
   const onEditRecipes = (id) => {
     history.push(`/EditProduct/${id}`);
   };
+
+  const goToAddProduct = () => history.push("/AddProduct");
 
   return (
     <div className="row ViewProduct">
@@ -118,7 +121,11 @@ const ProductData = () => {
                 </tbody>
               </table>
             ) : (
-              <h4>No recipes available ...</h4>
+              <div className="alert alert-primary m-3 p-3 w-100" role="alert">
+                <img src={InfoCircle} alt="info" />
+                No products are available.{" "}
+                <p onClick={goToAddProduct}>Click here</p> to add new one ...
+              </div>
             )}
           </div>
         </div>

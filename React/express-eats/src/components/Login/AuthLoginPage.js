@@ -1,5 +1,5 @@
 // core
-import React, { useContext, useRef, useState } from "react";
+import React, { useContext, useRef, useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 // context
 import AuthContext from "./../../store/auth-context";
@@ -21,7 +21,24 @@ const AuthLoginPage = () => {
   const authCtx = useContext(AuthContext);
   const history = useHistory();
 
+  useEffect(() => {
+    return () => {
+      setErrorMsg(null);
+      setOnLoading(false);
+    };
+  }, []);
+
   const ToggleView = () => setIsLogIn((prevState) => !prevState);
+
+  let error = null;
+  if (errorMsg) {
+    error = (
+      <div className="col-md-12 cards text-danger">
+        <i className="bi bi-info-circle"></i>
+        <b>{errorMsg}</b>
+      </div>
+    );
+  }
 
   const onLogInHandler = (e) => {
     e.preventDefault();
@@ -84,73 +101,71 @@ const AuthLoginPage = () => {
   };
 
   return (
-    <React.Fragment>
-      <div className="row logInSection">
-        <div className="col-md-12 subMain">
-          <h3>
-            Express <span className="text-primary">Eats</span>
-          </h3>
-          <div className="row mt-4">
+    <div className="row logInSection">
+      {error}
+      <div className="col-md-12 cards">
+        <h3>
+          Express <span className="text-primary">Eats</span>
+        </h3>
+        <div className="row mt-4">
+          <div className="col-md-12">
+            <h5>Let's get started</h5>
             <div className="col-md-12">
-              <h5>Let's get started</h5>
-              <div className="col-md-12">
-                <form onSubmit={onLogInHandler}>
-                  <div className="form-group mb-2">
-                    <div className="form-floating mb-3">
-                      <input
-                        type="email"
-                        className="form-control form-control-lg"
-                        id="emailId"
-                        placeholder="name@example.com"
-                        autoComplete="true"
-                        ref={emailField}
-                      />
-                      <label htmlFor="exampleFormControlInput1">
-                        Email address
-                      </label>
-                    </div>
+              <form onSubmit={onLogInHandler}>
+                <div className="form-group mb-2">
+                  <div className="form-floating mb-3">
+                    <input
+                      type="email"
+                      className="form-control form-control-lg"
+                      id="emailId"
+                      placeholder="name@example.com"
+                      autoComplete="true"
+                      ref={emailField}
+                    />
+                    <label htmlFor="exampleFormControlInput1">
+                      Email address
+                    </label>
                   </div>
-                  <div className="form-group mb-2">
-                    <div className="form-floating mb-3">
-                      <input
-                        type="password"
-                        className="form-control form-control-lg"
-                        id="password"
-                        placeholder="ABC*****"
-                        autoComplete="true"
-                        ref={pwdField}
-                      />
-                      <label htmlFor="exampleFormControlInput1">Password</label>
-                    </div>
+                </div>
+                <div className="form-group mb-2">
+                  <div className="form-floating mb-3">
+                    <input
+                      type="password"
+                      className="form-control form-control-lg"
+                      id="password"
+                      placeholder="ABC*****"
+                      autoComplete="true"
+                      ref={pwdField}
+                    />
+                    <label htmlFor="exampleFormControlInput1">Password</label>
                   </div>
-                  <div className="d-grid gap-2">
-                    <button
-                      type="submit"
-                      className="btn btn-primary rounded-pill mt-2"
-                    >
-                      {!isLogin ? "Sign up" : "Log in"}
-                    </button>
-                    <button
-                      type="button"
-                      className="btn btn-light mt-2 rounded-pill"
-                      onClick={ToggleView}
-                    >
-                      {isLogin ? "New here? Signup" : "Already user? Sign in"}
-                    </button>
-                  </div>
-                  <div className="col-md-12 mt-2">
-                    {onLoading && <Spinner />}
-                  </div>
-                  <div className="col-md-12 mt-2 text-danger">
-                    <b>{errorMsg}</b>
-                  </div>
-                </form>
-              </div>
+                </div>
+                <div className="d-grid gap-2">
+                  <button
+                    type="submit"
+                    className="btn btn-primary rounded-pill mt-2"
+                  >
+                    {!isLogin ? "Sign up" : "Log in"}
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-light mt-2 rounded-pill"
+                    onClick={ToggleView}
+                  >
+                    {isLogin ? "New here? Sign up" : "Already user? Sign in"}
+                  </button>
+                </div>
+                <div className="col-md-12 mt-2">
+                  {onLoading && (
+                    <Spinner color="text-dark" text="Signning you in" />
+                  )}
+                </div>
+              </form>
             </div>
           </div>
         </div>
       </div>
-    </React.Fragment>
+    </div>
   );
 };
 

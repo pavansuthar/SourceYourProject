@@ -5,7 +5,6 @@ import { db } from "./../firebase/firebase";
 
 let logOutTimer;
 
-// create context object
 const AuthContext = React.createContext({
   tokenID: "",
   userEmailId: "",
@@ -15,11 +14,6 @@ const AuthContext = React.createContext({
   LoggedOut: () => {},
 });
 
-/**
- * checks & calculates remaining tokenID expiry time
- * @param {*} expiry time
- * @returns remaining time left
- */
 const calculateRemainingTime = (expTime) => {
   let adjustedTime, remainingTime;
   if (!expTime) {
@@ -32,10 +26,6 @@ const calculateRemainingTime = (expTime) => {
   return remainingTime;
 };
 
-/**
- * Retrives token details
- * @returns {object} tokenID, expiry duration
- */
 const retrieveTokenData = () => {
   const TokenId = localStorage.getItem("tokenID");
   const Expiration = localStorage.getItem("expiryTime");
@@ -52,7 +42,6 @@ const retrieveTokenData = () => {
 };
 
 export const AuthContextProvider = (props) => {
-  // getting token details
   const tokenData = retrieveTokenData();
   let initialTokenID;
   if (tokenData) {
@@ -63,9 +52,6 @@ export const AuthContextProvider = (props) => {
   const [isAdmin, setIsAdmin] = useState(false);
   const isUserLogged = !!tokenId;
 
-  /**
-   * Handler when user gets logged out
-   */
   const OnLoggedOutHandler = useCallback(() => {
     setTokenId(null);
     localStorage.removeItem("tokenID");
@@ -81,11 +67,6 @@ export const AuthContextProvider = (props) => {
     }
   }, [tokenData, OnLoggedOutHandler]);
 
-  /**
-   * Handler when user gets logged in
-   * @param {*} token
-   * @param {*} expTime
-   */
   const OnLoggedInHandler = (token, expTime, emailId) => {
     setTokenId(token);
     setUserEmail(emailId);

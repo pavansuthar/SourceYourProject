@@ -1,6 +1,5 @@
-// core, hooks
-import React from "react";
-import { useContext } from "react";
+// core
+import React, { useContext } from "react";
 // scss
 import "./../../assets/scss/App.scss";
 // redux
@@ -13,12 +12,13 @@ import AuthContext from "./../../store/auth-context";
 import store from "./../../store/recipe-store";
 // error boundary
 import ErrorBoundary from "./../ErrorBoundary/ErrorBoundary";
+// animations
+// import { TransitionGroup, CSSTransition } from "react-transition-group";
 // components
 import Spinner from "./../Loading/Loading";
 const Header = React.lazy(() => import("./../Header/header"));
 const Content = React.lazy(() => import("./../Pages/content"));
 const Home = React.lazy(() => import("./../Home/Home"));
-// const Animate = React.lazy(() => import("../Pages/animate"));
 const Login = React.lazy(() => import("../Login/AuthLoginPage"));
 const NotFound = React.lazy(() => import("./../NotFound/notFound"));
 const Product = React.lazy(() => import("../Pages/Product"));
@@ -28,20 +28,23 @@ const ProductInfo = React.lazy(() => import("./../ProductInfo/ProductInfo"));
 
 let App = () => {
   const authCxt = useContext(AuthContext);
-  const history = useHistory();
-  // const params = useParams();
+  let history = useHistory();
+
   return (
-    <React.Suspense fallback={<Spinner />}>
+    <React.Suspense
+      fallback={
+        <Spinner color="text-white" align="h-100 mh-100 align-items-center" />
+      }
+    >
       <Provider store={store}>
         {authCxt.isUserLoggedIn && <Header />}
-        <Content>
-          <ErrorBoundary>
-            {/* <Animate> */}
+        <ErrorBoundary>
+          <Content>
             <Switch>
               <Route exact path="/">
-                <Redirect exact to="/Login" />
+                <Redirect to="/Login" />
               </Route>
-              <Route exact path="/Login" component={Login} />
+              <Route path="/Login" component={Login} />
               <Route path="/Home" component={Home} />
               <Route exact path="/Product">
                 {authCxt.isUserLoggedIn && <Product />}
@@ -59,9 +62,8 @@ let App = () => {
               <Route exact path="/Product/:id" component={ProductInfo} />
               <Route exact path="*" component={NotFound} />
             </Switch>
-            {/* </Animate> */}
-          </ErrorBoundary>
-        </Content>
+          </Content>
+        </ErrorBoundary>
       </Provider>
     </React.Suspense>
   );

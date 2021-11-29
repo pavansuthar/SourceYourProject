@@ -6,7 +6,7 @@ const BouncyDiv = styled.div`
   animation: 2s ${keyframes`${fadeIn}`};
 `;
 
-const Auth = (props) => {
+const Animate = (props) => {
   return <BouncyDiv>{props.children}</BouncyDiv>;
 };
-export default Auth;
+export default Animate;

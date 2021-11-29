@@ -55,18 +55,6 @@ const Header = () => {
               {isAdminLoggedIn && (
                 <li className="nav-item">
                   <NavLink
-                    to="/AddProduct"
-                    className="nav-link"
-                    aria-current="page"
-                    activeClassName="active"
-                  >
-                    Add Product
-                  </NavLink>
-                </li>
-              )}
-              {isAdminLoggedIn && (
-                <li className="nav-item">
-                  <NavLink
                     to="/ViewProduct"
                     className="nav-link"
                     aria-current="page"
@@ -76,6 +64,20 @@ const Header = () => {
                   </NavLink>
                 </li>
               )}
+
+              {isAdminLoggedIn && (
+                <li className="nav-item">
+                  <NavLink
+                    to="/AddProduct"
+                    className="nav-link"
+                    aria-current="page"
+                    activeClassName="active"
+                  >
+                    Add Product
+                  </NavLink>
+                </li>
+              )}
+
               {isLoggedIn && (
                 <li className="nav-item">
                   <NavLink

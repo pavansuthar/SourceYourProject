@@ -75,10 +75,12 @@ export const RecipeContextProvider = (props) => {
 
   const recipeContextValue = {
     recipes: recipes,
+    totalAmount: 0,
     onAddRecipes: onAddRecipes,
     onDeleteRecipe: onDeleteRecipe,
     onUpdateRecipe: onUpdateRecipe,
   };
+
   return (
     <RecipeContext.Provider value={recipeContextValue}>
       {props.children}
