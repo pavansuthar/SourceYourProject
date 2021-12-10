@@ -1,24 +1,23 @@
 // core
 import React from "react";
 // css
-import "./../../assets/scss/AddProduct.scss";
+import "./AddProduct.scss";
 import InfoCircle from "./../../assets/images/info-circle.svg";
 // component
 import Spinner from "../Loading/Loading";
 // context
-import RecipeContext from "./../../store/recipe-context";
+import RecipeContext from "./../../store/recipeContext";
 
 class AddProduct extends React.Component {
-  static contextType = RecipeContext;
-
   constructor(props) {
     super(props);
     this.state = {
-      recipeID: "",
-      name: "",
+      id: "",
+      recipeNo: "",
+      recipeName: "",
       description: "",
       price: 0,
-      imgURL: "",
+      image: "",
       isActive: false,
       popular: false,
       favourite: 0,
@@ -32,7 +31,6 @@ class AddProduct extends React.Component {
     };
     this.addRecipeHandler = this.addRecipeHandler.bind(this);
     this.inputChangeHandler = this.inputChangeHandler.bind(this);
-    console.log(props);
   }
 
   componentDidMount() {
@@ -40,30 +38,30 @@ class AddProduct extends React.Component {
       const getParamsId = this.props?.match?.params?.id;
       const getRecipies = this.context?.recipes;
       const filterRecipe = getRecipies.filter(
-        (recipe) => recipe.recipeID === getParamsId
+        (recipe) => recipe.id === getParamsId
       );
-      console.log(filterRecipe[0]);
-      this.setState({
-        recipeID: filterRecipe[0]?.recipeID,
-        name: filterRecipe[0]?.name,
-        description: filterRecipe[0]?.description,
-        price: filterRecipe[0]?.price,
-        imgURL: filterRecipe[0]?.imgURL,
-        isActive: filterRecipe[0]?.isActive,
-        popular: filterRecipe[0]?.popular,
-        favourite: filterRecipe[0]?.favourite,
-        vegetarian: filterRecipe[0]?.vegetarian,
-        likes: filterRecipe[0]?.likes,
-        isLoading: filterRecipe[0]?.isLoading,
-      });
+      console.log(getRecipies);
+      // this.setState({
+      //   id: filterRecipe?.id,
+      //   recipeNo: filterRecipe?.recipeNo,
+      //   recipeName: filterRecipe?.recipeName,
+      //   description: filterRecipe?.description,
+      //   price: filterRecipe?.price,
+      //   image: filterRecipe?.image,
+      //   isActive: filterRecipe?.isActive,
+      //   popular: filterRecipe?.popular,
+      //   favourite: filterRecipe?.favourite,
+      //   vegetarian: filterRecipe?.vegetarian,
+      //   likes: filterRecipe?.likes,
+      //   isLoading: filterRecipe?.isLoading,
+      // });
     }
   }
 
   addRecipeHandler = (e) => {
     e.preventDefault();
     this.setState({ isLoading: true });
-    console.log(this.state);
-    if (!this.state.recipeID || !this.state.imgURL || !this.state.name) {
+    if (!this.state.recipeNo || !this.state.image || !this.state.recipeName) {
       this.setState({
         formError: {
           isError: true,
@@ -73,22 +71,22 @@ class AddProduct extends React.Component {
       this.setState({ isLoading: false });
       return;
     }
+    this.props?.history?.location?.pathname === "/AddProduct"
+      ? this.context.onAddRecipe(this.state)
+      : this.context.onUpdateRecipe(this.state);
+    setTimeout(() => {
+      this.props?.history?.push("./../ViewProduct");
+    }, 3000);
+  };
 
-    // this.props?.history?.location?.pathname === "/AddProduct"
-    //   ? this.context.onAddRecipes(this.state)
-    //   : this.context.onUpdateRecipe(this.state);
-
-    // this.props.history.push("./ViewProduct");
+  componentWillUnmount() {
     this.setState({
+      isLoading: false,
       formError: {
         isError: false,
         errorMsg: null,
       },
     });
-  };
-
-  componentWillUnmount() {
-    this.setState({ isLoading: false });
   }
 
   inputChangeHandler = (e) => {
@@ -119,12 +117,12 @@ class AddProduct extends React.Component {
         <h2>Add product</h2>
         <hr />
         <div className="col-md-12">
-          {this.state.formError.isError && (
+          {this.state?.formError?.isError && (
             <div className="row sub-main mb-3">
               <div className="col-md-6 card p-3">
                 <div className="alert alert-danger mb-0" role="alert">
                   <img src={InfoCircle} alt="info" />{" "}
-                  {this.state.formError.errorMsg}
+                  {this.state?.formError?.errorMsg}
                 </div>
               </div>
             </div>
@@ -136,18 +134,18 @@ class AddProduct extends React.Component {
                   <div className="col-md-4">
                     <div className="row mb-3">
                       <label
-                        htmlFor="recipeID"
+                        htmlFor="recipeNo"
                         className="col-sm-2 col-form-label"
                         disabled={false}
                       >
-                        ID <span class="text-danger fw-bold">*</span>
+                        ID <span className="text-danger fw-bold">*</span>
                       </label>
                       <div className="col-sm-10">
                         <input
-                          name="recipeID"
+                          name="recipeNo"
                           type="text"
                           className="form-control"
-                          value={this.state.recipeID}
+                          value={this.state.recipeNo}
                           onChange={this.inputChangeHandler}
                         />
                       </div>
@@ -155,15 +153,18 @@ class AddProduct extends React.Component {
                   </div>
                   <div className="col-md-8">
                     <div className="row mb-3">
-                      <label htmlFor="name" className="col-sm-2 col-form-label">
-                        Name <span class="text-danger fw-bold">*</span>
+                      <label
+                        htmlFor="recipeName"
+                        className="col-sm-2 col-form-label"
+                      >
+                        Name <span className="text-danger fw-bold">*</span>
                       </label>
                       <div className="col-sm-10">
                         <input
-                          name="name"
+                          name="recipeName"
                           type="text"
                           className="form-control"
-                          value={this.state.name}
+                          value={this.state.recipeName}
                           onChange={this.inputChangeHandler}
                         />
                       </div>
@@ -188,15 +189,16 @@ class AddProduct extends React.Component {
                   </div>
                 </div>
                 <div className="row mb-3">
-                  <label htmlFor="imgURL" className="col-sm-2 col-form-label">
-                    Recipe Image URL <span class="text-danger fw-bold">*</span>
+                  <label htmlFor="image" className="col-sm-2 col-form-label">
+                    Recipe Image URL{" "}
+                    <span className="text-danger fw-bold">*</span>
                   </label>
                   <div className="col-sm-10">
                     <input
-                      name="imgURL"
+                      name="image"
                       type="text"
                       className="form-control"
-                      value={this.state.imgURL}
+                      value={this.state.image}
                       onChange={this.inputChangeHandler}
                     />
                   </div>
@@ -257,6 +259,7 @@ class AddProduct extends React.Component {
                             type="checkbox"
                             name="isActive"
                             value={this.state.isActive}
+                            checked={this.state.isActive}
                             onChange={this.inputChangeHandler}
                           />
                         </div>
@@ -278,6 +281,7 @@ class AddProduct extends React.Component {
                             type="checkbox"
                             name="popular"
                             value={this.state.popular}
+                            checked={this.state.popular}
                             onChange={this.inputChangeHandler}
                           />
                         </div>
@@ -301,6 +305,7 @@ class AddProduct extends React.Component {
                             type="checkbox"
                             name="vegetarian"
                             value={this.state.vegetarian}
+                            checked={this.state.vegetarian}
                             onChange={this.inputChangeHandler}
                           />
                         </div>
@@ -336,7 +341,7 @@ class AddProduct extends React.Component {
                     >
                       Submit
                     </button>
-                    {this.state.isLoading && <Spinner text="Adding this"/>}
+                    {this.state.isLoading && <Spinner text="Adding this" />}
                   </div>
                 </div>
               </form>
@@ -348,4 +353,5 @@ class AddProduct extends React.Component {
   }
 }
 
+AddProduct.contextType = RecipeContext;
 export default AddProduct;

@@ -12,7 +12,7 @@ const Header = () => {
   const authCtx = useContext(AuthContext);
   const isLoggedIn = authCtx.isUserLoggedIn;
   const isAdminLoggedIn = authCtx.isUserAdmin;
-  const showProductPage = !authCtx.isUserAdmin && isLoggedIn;
+  // const showProductPage = !authCtx.isUserAdmin && isLoggedIn;
 
   /**
    * Handler when user log out
@@ -40,7 +40,7 @@ const Header = () => {
                   Home
                 </NavLink>
               </li>
-              {showProductPage && (
+              {/* {showProductPage && (
                 <li className="nav-item">
                   <NavLink
                     to="/Product"
@@ -51,7 +51,7 @@ const Header = () => {
                     Product
                   </NavLink>
                 </li>
-              )}
+              )} */}
               {isAdminLoggedIn && (
                 <li className="nav-item">
                   <NavLink

@@ -2,7 +2,6 @@
 import "./../../assets/scss/Product-item.scss";
 // icons
 import { BsTags } from "react-icons/bs";
-import { BiLike, BiHeart } from "react-icons/bi";
 import { FaThumbsUp } from "react-icons/fa";
 import { BsStarFill, BsHeartFill } from "react-icons/bs";
 
@@ -42,12 +41,8 @@ const ProductItem = (props) => {
             <div className="fav">
               <BsHeartFill /> {props?.items.favourite}
             </div>
-            <div className="pop">
-              {props?.items.popular && <BsStarFill />}
-            </div>
-            <div className="Qtn">
-              Add
-            </div>
+            <div className="pop">{props?.items.popular && <BsStarFill />}</div>
+            <div className="Qtn">Add</div>
           </div>
         </div>
       </div>

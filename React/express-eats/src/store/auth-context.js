@@ -70,16 +70,16 @@ export const AuthContextProvider = (props) => {
   const OnLoggedInHandler = (token, expTime, emailId) => {
     setTokenId(token);
     setUserEmail(emailId);
-    let getUsersData = [];
+    let getUserData = [];
     db.collection("users")
       .get()
       .then((snapshot) => {
-        let getUsers = snapshot.docs.map((doc) => ({
+        let getUser = snapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
         }));
-        getUsersData.push(...getUsers);
-        const getAdminUser = getUsersData.filter(
+        getUserData.push(...getUser);
+        const getAdminUser = getUserData.filter(
           (user) => user.emailId === emailId
         );
         setIsAdmin(getAdminUser[0]?.isAdmin);
@@ -106,4 +106,5 @@ export const AuthContextProvider = (props) => {
   );
 };
 
+AuthContextProvider.displayName = "authContext";
 export default AuthContext;

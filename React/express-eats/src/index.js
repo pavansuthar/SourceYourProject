@@ -10,15 +10,15 @@ import App from "./components/App/App";
 import { BrowserRouter as Router } from "react-router-dom";
 // context
 import { AuthContextProvider } from "./store/auth-context";
-import { RecipeContextProvider } from "./store/recipe-context";
+import RecipeProvider from "./store/RecipeProvider";
 
 ReactDOM.render(
   <React.StrictMode>
     <Router basename="/ExpressEats">
       <AuthContextProvider>
-        <RecipeContextProvider>
+        <RecipeProvider>
           <App />
-        </RecipeContextProvider>
+        </RecipeProvider>
       </AuthContextProvider>
     </Router>
   </React.StrictMode>,

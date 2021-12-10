@@ -88,7 +88,7 @@ const AuthLoginPage = () => {
           db.collection("users").add({
             emailId: getEmailID,
             isAdmin: isAdminUser,
-            timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+            registeredOn: firebase.firestore.FieldValue.serverTimestamp(),
           });
         }
         authCtx.LoggedIn(data.idToken, expTokenTime.toISOString(), getEmailID);

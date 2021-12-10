@@ -7,7 +7,10 @@ const Home = () => {
     <div className="row Home">
       <div className="col-md-6 text-light">
         <h1 className="text-bold">Express Eats</h1>
-        <h5>Your's favourite hotspot for all foddy things. Discover the best food and drinks</h5>
+        <h5>
+          Your's favourite hotspot for all foddy things. Discover the best food
+          and drinks
+        </h5>
       </div>
       <div className="col-md-6">
         <div className="card mt-3">

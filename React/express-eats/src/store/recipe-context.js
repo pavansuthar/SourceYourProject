@@ -1,5 +1,5 @@
 // core
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 // firebase
 import firebase from "firebase";
 import { db } from "./../firebase/firebase";
@@ -11,57 +11,80 @@ const initialState = {
   onDeleteRecipe: (id) => {},
   onUpdateRecipe: (item) => {},
 };
+
+db.collection("recipes")
+  .get()
+  .then((snapshot) => {
+    let getRecipes = snapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    initialState.recipes.push(getRecipes);
+  });
+
 const RecipeContext = React.createContext(initialState);
 
 export const RecipeContextProvider = (props) => {
-  const [recipes, setRecipies] = useState([]);
-
-  useEffect(() => {
-    db.collection("recipes")
-      .get()
-      .then((snapshot) => {
-        let getRecipes = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        setRecipies(getRecipes);
-      });
-  }, []);
+  const [recipes, setRecipies] = useState(initialState.recipes);
 
   const onAddRecipes = (items) => {
     console.log(items);
-    const recipeRef = firebase.firestore().collection("recipes");
-    recipeRef
-      .add({
-        ...items,
-        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-      })
+    delete items.formError;
+    delete items.isLoading;
+    const recipe = {
+      ...items,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+    };
+    const recipeFB = firebase.firestore().collection("recipes");
+    recipeFB
+      .add(recipe)
       .then((ref) => {
-        console.log("Add doc with ID", ref, ref.id);
-        const data = {
-          items,
-          timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-          id: ref.id,
-        };
-        setRecipies((prev) => {
-          return [...prev, data];
-        });
-      });
+        console.log("Add doc with ID", ref.id);
+        let getRefId = ref.id;
+        recipe.id = getRefId;
+        onUpdateRecipeId(getRefId);
+        let addRecipe;
+        if (recipes.length === 0) {
+          addRecipe = [recipe];
+        } else {
+          addRecipe = [...recipes, recipe];
+        }
+        setRecipies(addRecipe);
+      })
+      .catch((e) => console.error(e));
+  };
+
+  const onUpdateRecipeId = (id) => {
+    const recipeRef = firebase.firestore().collection("recipes").doc(id);
+    recipeRef
+      .update({
+        id,
+      })
+      .then(() => {
+        console.log("docID is updated");
+      })
+      .catch((e) => console.error(e));
   };
 
   const onUpdateRecipe = (items) => {
-    console.log(items);
+    console.log(items, items.id);
+    delete items.formError;
+    delete items.isLoading;
     const recipeRef = firebase.firestore().collection("recipes").doc(items.id);
     recipeRef
       .update(items)
-      .then(() => console.log("doc is updated"))
+      .then(() => {
+        console.log("doc is updated");
+        setRecipies((prevRecipe) => {
+          let allRecipes = recipes[0];
+          let filterIndex = recipes[0].findIndex(
+            (recipe) => recipe.id === items.id
+          );
+          allRecipes[filterIndex] = items;
+          return allRecipes;
+        });
+      })
       .catch((e) => console.error(e));
-    // setRecipies((prev) => {
-    //   return {
-    //     ...prev,
-    //     items,
-    //   };
-    // });
   };
 
   const onDeleteRecipe = (id) => {
@@ -88,4 +111,5 @@ export const RecipeContextProvider = (props) => {
   );
 };
 
+RecipeContextProvider.displayName = "recipeContext";
 export default RecipeContext;
