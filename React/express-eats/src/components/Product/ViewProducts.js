@@ -50,6 +50,7 @@ const ViewProducts = () => {
           price: responseData[key].price,
           recipeName: responseData[key].recipeName,
           recipeNo: responseData[key].recipeNo,
+          recipeKey: key,
           vegetarian: responseData[key].vegetarian,
         });
       }
@@ -91,7 +92,7 @@ const ViewProducts = () => {
       <ProductWrapper>
         <section className="col-md-6 card p-3">
           <div className="alert alert-danger m-3 p-3 w-100" role="alert">
-            <img src={InfoCircle} alt="info" /> {isHTTPError}
+            <img src={InfoCircle} alt="info"/> {isHTTPError}
           </div>
         </section>
       </ProductWrapper>
@@ -181,8 +182,8 @@ const ViewProducts = () => {
               })
               .map((value) => (
                 <tr
-                  key={value?.recipeID}
-                  onClick={() => onEditRecipes(value?.id)}
+                  key={value?.recipeKey}
+                  onClick={() => onEditRecipes(value?.recipeKey)}
                 >
                   <th scope="row">
                     {value?.recipeNo} {value?.popular ? "(popular)" : ""}
@@ -192,7 +193,7 @@ const ViewProducts = () => {
                     <FaSquare fill={value?.vegetarian ? "green" : "red"} />
                   </td>
                   <td>
-                    <img src={value?.image} alt={value?.id} />
+                    <img src={value?.image} alt={value?.id}  width="300"/>
                   </td>
                   <td>
                     {value?.description}

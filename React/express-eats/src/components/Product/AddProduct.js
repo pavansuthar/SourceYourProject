@@ -5,16 +5,18 @@ import "./AddProduct.scss";
 import InfoCircle from "./../../assets/images/info-circle.svg";
 // component
 import Spinner from "../Loading/Loading";
-// context
-import RecipeContext from "./../../store/recipeContext";
+// firebase
+import firebase from "firebase";
 
 class AddProduct extends React.Component {
+  static initialState = {};
   constructor(props) {
     super(props);
     this.state = {
       id: "",
       recipeNo: "",
       recipeName: "",
+      recipeKey: "",
       description: "",
       price: 0,
       image: "",
@@ -24,6 +26,7 @@ class AddProduct extends React.Component {
       vegetarian: false,
       likes: 0,
       isLoading: false,
+      isEditMode: false,
       formError: {
         isError: false,
         errorMsg: null,
@@ -31,34 +34,96 @@ class AddProduct extends React.Component {
     };
     this.addRecipeHandler = this.addRecipeHandler.bind(this);
     this.inputChangeHandler = this.inputChangeHandler.bind(this);
+    this.onAddRecipeToFirebase = this.onAddRecipeToFirebase.bind(this);
+    this.onGetRecipe = this.onGetRecipe.bind(this);
+    this.onUpdateRecipeIDKeyToFirebase =
+      this.onUpdateRecipeIDKeyToFirebase.bind(this);
+    this.onUpdateRecipeToFirebase = this.onUpdateRecipeToFirebase.bind(this);
+    this.onDeleteRecipe = this.onDeleteRecipe.bind(this);
   }
 
   componentDidMount() {
     if (this.props?.history?.location?.pathname !== "/AddProduct") {
+      this.setState({ isEditMode: true });
       const getParamsId = this.props?.match?.params?.id;
-      const getRecipies = this.context?.recipes;
-      const filterRecipe = getRecipies.filter(
-        (recipe) => recipe.id === getParamsId
-      );
-      console.log(getRecipies);
-      // this.setState({
-      //   id: filterRecipe?.id,
-      //   recipeNo: filterRecipe?.recipeNo,
-      //   recipeName: filterRecipe?.recipeName,
-      //   description: filterRecipe?.description,
-      //   price: filterRecipe?.price,
-      //   image: filterRecipe?.image,
-      //   isActive: filterRecipe?.isActive,
-      //   popular: filterRecipe?.popular,
-      //   favourite: filterRecipe?.favourite,
-      //   vegetarian: filterRecipe?.vegetarian,
-      //   likes: filterRecipe?.likes,
-      //   isLoading: filterRecipe?.isLoading,
-      // });
+      this.onGetRecipe(getParamsId);
+    } else {
+      this.setState({ isEditMode: false });
     }
   }
 
-  addRecipeHandler = (e) => {
+  onGetRecipe(paramID) {
+    firebase
+      .database()
+      .ref(`products/${paramID}`)
+      .once("value", (snap) => {
+        let filterRecipe = snap.val();
+        this.setState({
+          id: filterRecipe?.id,
+          recipeNo: filterRecipe?.recipeNo,
+          recipeName: filterRecipe?.recipeName,
+          recipeKey: filterRecipe?.recipeKey,
+          description: filterRecipe?.description,
+          price: filterRecipe?.price,
+          image: filterRecipe?.image,
+          isActive: filterRecipe?.isActive,
+          popular: filterRecipe?.popular,
+          favourite: filterRecipe?.favourite,
+          vegetarian: filterRecipe?.vegetarian,
+          likes: filterRecipe?.likes,
+          isLoading: filterRecipe?.isLoading,
+        });
+      });
+  }
+
+  onAddRecipeToFirebase() {
+    this.setState({
+      isLoading: true,
+      formError: {
+        isError: false,
+        errorMsg: null,
+      },
+    });
+    const recipe = {
+      ...this.state,
+      addedOn: firebase.firestore.FieldValue.serverTimestamp(),
+    };
+    recipe.id = +recipe?.recipeNo.substr(5);
+    delete recipe.formError;
+    delete recipe.isLoading;
+    delete recipe.isEditMode;
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(recipe),
+    };
+    const postProduct = async () => {
+      const productsURL =
+        "https://react-virtusa-expresseats-default-rtdb.firebaseio.com/products.json";
+      const response = await fetch(productsURL, options);
+      const responseData = await response.json();
+      this.onUpdateRecipeIDKeyToFirebase(responseData.name);
+    };
+    postProduct().catch((e) => {
+      this.setState({
+        isLoading: false,
+        formError: {
+          isError: true,
+          errorMsg: e.message,
+        },
+      });
+    });
+  }
+
+  onUpdateRecipeIDKeyToFirebase(key) {
+    firebase.database().ref().child(`products/${key}`).update({
+      recipeKey: key,
+    });
+  }
+
+  addRecipeHandler(e) {
     e.preventDefault();
     this.setState({ isLoading: true });
     if (!this.state.recipeNo || !this.state.image || !this.state.recipeName) {
@@ -71,13 +136,15 @@ class AddProduct extends React.Component {
       this.setState({ isLoading: false });
       return;
     }
-    this.props?.history?.location?.pathname === "/AddProduct"
-      ? this.context.onAddRecipe(this.state)
-      : this.context.onUpdateRecipe(this.state);
+    if (!this.state?.isEditMode) {
+      this.onAddRecipeToFirebase();
+    } else {
+      this.onUpdateRecipeToFirebase();
+    }
     setTimeout(() => {
       this.props?.history?.push("./../ViewProduct");
     }, 3000);
-  };
+  }
 
   componentWillUnmount() {
     this.setState({
@@ -89,7 +156,7 @@ class AddProduct extends React.Component {
     });
   }
 
-  inputChangeHandler = (e) => {
+  inputChangeHandler(e) {
     const name = e.target.name;
     const value = e.target.value;
     if (name === "isActive" || name === "popular" || name === "vegetarian") {
@@ -109,12 +176,67 @@ class AddProduct extends React.Component {
         errorMsg: null,
       },
     });
-  };
+  }
+
+  onUpdateRecipeToFirebase() {
+    this.setState({
+      isLoading: true,
+      formError: {
+        isError: false,
+        errorMsg: null,
+      },
+    });
+    const recipe = {
+      ...this.state,
+      addedOn: firebase.firestore.FieldValue.serverTimestamp(),
+    };
+    delete recipe.formError;
+    delete recipe.isLoading;
+    delete recipe.isEditMode;
+    const options = {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(recipe),
+    };
+    const postProduct = async () => {
+      const productsURL = `https://react-virtusa-expresseats-default-rtdb.firebaseio.com/products/${this.state.recipeKey}.json`;
+      const response = await fetch(productsURL, options);
+      const responseData = await response.json();
+      console.log(responseData);
+    };
+    postProduct().catch((e) => {
+      this.setState({
+        isLoading: false,
+        formError: {
+          isError: true,
+          errorMsg: e.message,
+        },
+      });
+    });
+  }
+
+  onDeleteRecipe() {
+    this.setState({
+      isLoading: true,
+    });
+    firebase.database().ref(`products/${this.state.recipeKey}`).remove();
+    this.setState({
+      isLoading: false,
+    });
+    setTimeout(() => {
+      this.props?.history?.push("./../ViewProduct");
+    }, 3000);
+  }
 
   render() {
     return (
       <div className="row addProduct">
-        <h2>Add product</h2>
+        <h2>
+          {this.state?.isEditMode ? `Edit ${this.state?.recipeNo}` : "Add new"}{" "}
+          product
+        </h2>
         <hr />
         <div className="col-md-12">
           {this.state?.formError?.isError && (
@@ -339,9 +461,25 @@ class AddProduct extends React.Component {
                       className="btn btn-success"
                       disabled={this.state.isLoading}
                     >
-                      Submit
+                      {this.state?.isEditMode ? "Save" : "Add"}
                     </button>
-                    {this.state.isLoading && <Spinner text="Adding this" />}
+                    {this.state?.isEditMode && (
+                      <button
+                        type="button"
+                        className="btn btn-danger ml-2"
+                        disabled={!this.state.isEditMode}
+                        onClick={this.onDeleteRecipe}
+                      >
+                        Delete
+                      </button>
+                    )}
+                    {this.state.isLoading && (
+                      <Spinner
+                        text={
+                          this.state.isEditMode ? "Saving this" : "Adding this"
+                        }
+                      />
+                    )}
                   </div>
                 </div>
               </form>
@@ -353,5 +491,4 @@ class AddProduct extends React.Component {
   }
 }
 
-AddProduct.contextType = RecipeContext;
 export default AddProduct;
