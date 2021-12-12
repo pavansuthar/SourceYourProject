@@ -3,8 +3,10 @@ import React from "react";
 
 const RecipeContext = React.createContext({
   recipes: [],
-  onAddRecipe: (item) => {},
-  onClearRecipe: () => {},
+  totalAmount: 0,
+  addItem: (recipe) => {},
+  removeItem: (id) => {},
+  clearItem: () => {},
 });
 
 export default RecipeContext;

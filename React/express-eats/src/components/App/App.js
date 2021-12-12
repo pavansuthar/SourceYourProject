@@ -16,9 +16,10 @@ const Wrapper = React.lazy(() => import("../../UI/Wrapper"));
 const Home = React.lazy(() => import("./../Home/Home"));
 const Login = React.lazy(() => import("../Login/AuthLoginPage"));
 const NotFound = React.lazy(() => import("../NotFound/NotFound"));
-// const Product = React.lazy(() => import("../Pages/Product"));
+const Product = React.lazy(() => import("../Pages/Product"));
 const AddProduct = React.lazy(() => import("../Product/AddProduct"));
 const ViewProducts = React.lazy(() => import("../Product/ViewProducts"));
+const CartRecipe = React.lazy(() => import("../Cart/CartRecipe"));
 // const ProductInfo = React.lazy(() => import("./../ProductInfo/ProductInfo"));
 
 let App = () => {
@@ -45,7 +46,7 @@ let App = () => {
                 {authCxt.isUserLoggedIn && <ViewProducts />}
                 {!authCxt.isUserLoggedIn && <Redirect exact to="/Home" />}
               </Route>
-              {/* <Route exact path="/Product/:id" component={ProductInfo} /> */}
+              <Route exact path="/Product" component={Product} />
               <Route exact path="/AddProduct">
                 <AddProduct history={history} />
               </Route>
@@ -54,6 +55,7 @@ let App = () => {
                 path="/EditProduct/:id"
                 render={(props) => <AddProduct {...props} />}
               />
+              <Route exact path="/Cart" component={CartRecipe} />
               <Route exact path="*" component={NotFound} />
             </Switch>
           </Animate>

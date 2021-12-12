@@ -1,18 +1,36 @@
 // scss
-import "./../../assets/scss/header.scss";
+import "./header.scss";
 // icons
 import { IoFastFood } from "react-icons/io5";
+import { BsCart3 } from "react-icons/bs";
 // routes, hooks
 import { NavLink } from "react-router-dom";
-import { useContext } from "react";
+import { useContext, useState, useEffect } from "react";
 // context
 import AuthContext from "../../store/auth-context";
+import RecipeContext from "../../store/recipeContext";
 
 const Header = () => {
+  const [noOfCartItems, setNoOfCartItems] = useState(0);
   const authCtx = useContext(AuthContext);
+  const cartContext = useContext(RecipeContext);
+  const { recipes } = cartContext;
+
   const isLoggedIn = authCtx.isUserLoggedIn;
   const isAdminLoggedIn = authCtx.isUserAdmin;
-  // const showProductPage = !authCtx.isUserAdmin && isLoggedIn;
+  const showProductPage = !authCtx.isUserAdmin && isLoggedIn;
+
+  const numberOfCartItems = recipes?.reduce((curNumber, item) => {
+    console.log("item", item);
+    return curNumber + item.amount;
+  }, 0);
+
+  useEffect(() => {
+    setNoOfCartItems(numberOfCartItems);
+  }, [numberOfCartItems]);
+
+  console.log(recipes);
+  console.log("HEader render");
 
   /**
    * Handler when user log out
@@ -40,7 +58,7 @@ const Header = () => {
                   Home
                 </NavLink>
               </li>
-              {/* {showProductPage && (
+              {showProductPage && (
                 <li className="nav-item">
                   <NavLink
                     to="/Product"
@@ -51,7 +69,20 @@ const Header = () => {
                     Product
                   </NavLink>
                 </li>
-              )} */}
+              )}
+              {showProductPage && (
+                <li className="nav-item">
+                  <NavLink
+                    to="/Cart"
+                    className="nav-link"
+                    aria-current="page"
+                    activeClassName="active"
+                  >
+                    <BsCart3 /> Cart
+                    <span className="badge">{noOfCartItems}</span>
+                  </NavLink>
+                </li>
+              )}
               {isAdminLoggedIn && (
                 <li className="nav-item">
                   <NavLink

@@ -3,23 +3,36 @@ import { useReducer } from "react";
 // context
 import RecipeContext from "./recipeContext";
 
-const defaultRecipeState = {
+const defaultRecipeCart = {
   items: [],
+  totalAmount: 0,
 };
 
 const recipeReducer = (state, action) => {
   switch (action.type) {
     case "ADD":
-      const addRecipeInfo = {
-        recipeKey: action.recipes.name,
-        recipeId: action.recipes.id,
-      };
-      console.log(addRecipeInfo);
+      const updatedTotalAmount =
+        state.totalAmount + +action.item.price * action.item.amount;
+
+      const existingCartItemIndex = state.items.findIndex(
+        (item) => item.id === action.item.id
+      );
+      const existingCartItem = state.items[existingCartItemIndex];
+
+      let updatedItems;
+      if (existingCartItem) {
+        const updatedItem = {
+          ...existingCartItem,
+          amount: existingCartItem.amount + action.item.amount,
+        };
+        updatedItems = [...state.items];
+        updatedItems[existingCartItemIndex] = updatedItem;
+      } else {
+        updatedItems = state.items.concat(action.item);
+      }
       return {
-        items:
-          state.items.length === 0
-            ? [addRecipeInfo]
-            : [state.items, addRecipeInfo],
+        items: updatedItems,
+        totalAmount: updatedTotalAmount,
       };
     case "CLEAR":
       return {
@@ -27,27 +40,32 @@ const recipeReducer = (state, action) => {
       };
     default:
   }
-  return defaultRecipeState;
+  return defaultRecipeCart;
 };
 
 const RecipeProvider = (props) => {
-  const [recipeState, dispatchRecipeAction] = useReducer(
+  const [recipeCartState, dispatchRecipeCartAction] = useReducer(
     recipeReducer,
-    defaultRecipeState
+    defaultRecipeCart
   );
 
   const onAddRecipeHandler = (recipes) => {
-    dispatchRecipeAction({ type: "ADD", recipes: recipes });
+    dispatchRecipeCartAction({ type: "ADD", item: recipes });
+  };
+
+  const onRemoveRecipeHandler = (id) => {
+    dispatchRecipeCartAction({ type: "REMOVE", id: id });
   };
 
   const onClearRecipeHandler = () => {
-    dispatchRecipeAction({ type: "CLEAR" });
+    dispatchRecipeCartAction({ type: "CLEAR" });
   };
 
   const recipeContextValue = {
-    recipes: recipeState?.items,
-    onAddRecipe: onAddRecipeHandler,
-    onClearRecipe: onClearRecipeHandler,
+    recipes: recipeCartState?.items,
+    addItem: onAddRecipeHandler,
+    removeItem: onRemoveRecipeHandler,
+    clearItem: onClearRecipeHandler,
   };
 
   return (
