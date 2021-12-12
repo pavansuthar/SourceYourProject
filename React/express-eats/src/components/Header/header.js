@@ -21,16 +21,12 @@ const Header = () => {
   const showProductPage = !authCtx.isUserAdmin && isLoggedIn;
 
   const numberOfCartItems = recipes?.reduce((curNumber, item) => {
-    console.log("item", item);
     return curNumber + item.amount;
   }, 0);
 
   useEffect(() => {
     setNoOfCartItems(numberOfCartItems);
   }, [numberOfCartItems]);
-
-  console.log(recipes);
-  console.log("HEader render");
 
   /**
    * Handler when user log out
@@ -79,7 +75,9 @@ const Header = () => {
                     activeClassName="active"
                   >
                     <BsCart3 /> Cart
-                    <span className="badge">{noOfCartItems}</span>
+                    {noOfCartItems !== 0 && (
+                      <span className="badge">{noOfCartItems}</span>
+                    )}
                   </NavLink>
                 </li>
               )}
