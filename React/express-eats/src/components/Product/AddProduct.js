@@ -4,7 +4,7 @@ import React from "react";
 import "./AddProduct.scss";
 import InfoCircle from "./../../assets/images/info-circle.svg";
 // component
-import Spinner from "../Loading/Loading";
+import Spinner from "../Spinner/Spinner";
 // firebase
 import firebase from "firebase";
 

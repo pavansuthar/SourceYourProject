@@ -9,7 +9,7 @@ import "./CartRecipe.scss";
 import InfoCircle from "./../../assets/images/info-circle.svg";
 import { FaRupeeSign } from "react-icons/fa";
 // components
-import Spinner from "./../Loading/Loading";
+import Spinner from "../Spinner/Spinner";
 import CartModal from "./CartModal";
 
 const CartRecipeWrapper = (props) => {

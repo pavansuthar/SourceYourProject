@@ -1,5 +1,5 @@
 // scss
-import "./../../assets/scss/loader.scss";
+import "./Spinner.scss";
 
 const Spinner = (props) => {
   let color = props.color || "text-dark";

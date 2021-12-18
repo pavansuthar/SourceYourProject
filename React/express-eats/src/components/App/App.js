@@ -9,7 +9,7 @@ import AuthContext from "./../../store/auth-context";
 // error boundary
 import ErrorBoundary from "./../ErrorBoundary/ErrorBoundary";
 // components
-import Spinner from "./../Loading/Loading";
+import Spinner from "../Spinner/Spinner";
 import Animate from "./../Pages/animate";
 const Header = React.lazy(() => import("./../Header/header"));
 const Wrapper = React.lazy(() => import("../../UI/Wrapper"));
@@ -20,11 +20,11 @@ const Product = React.lazy(() => import("../Pages/Product"));
 const AddProduct = React.lazy(() => import("../Product/AddProduct"));
 const ViewProducts = React.lazy(() => import("../Product/ViewProducts"));
 const CartRecipe = React.lazy(() => import("../Cart/CartRecipe"));
-// const ProductInfo = React.lazy(() => import("./../ProductInfo/ProductInfo"));
 
-let App = () => {
+const App = () => {
   const authCxt = useContext(AuthContext);
-  let history = useHistory();
+  const isUserLoggedIn = authCxt.isUserLoggedIn;
+  const history = useHistory();
 
   return (
     <Suspense
@@ -32,7 +32,7 @@ let App = () => {
         <Spinner color="text-white" align="h-100 mh-100 align-items-center" />
       }
     >
-      {authCxt.isUserLoggedIn && <Header />}
+      {isUserLoggedIn && <Header />}
       <ErrorBoundary>
         <Wrapper>
           <Animate>
@@ -43,8 +43,8 @@ let App = () => {
               <Route path="/Login" component={Login} />
               <Route path="/Home" component={Home} />
               <Route exact path="/ViewProduct">
-                {authCxt.isUserLoggedIn && <ViewProducts />}
-                {!authCxt.isUserLoggedIn && <Redirect exact to="/Home" />}
+                {isUserLoggedIn && <ViewProducts />}
+                {!isUserLoggedIn && <Redirect exact to="/Home" />}
               </Route>
               <Route exact path="/Product" component={Product} />
               <Route exact path="/AddProduct">

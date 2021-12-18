@@ -4,21 +4,23 @@ import { useHistory } from "react-router-dom";
 // context
 import AuthContext from "./../../store/auth-context";
 // component
-import Spinner from "./../Loading/Loading";
+import Spinner from "../Spinner/Spinner";
+import Alerts from "../Alerts/Alerts";
 // css
-import "./../../assets/scss/custom.scss";
 import "./../../assets/scss/AuthLoginPage.scss";
+import InfoCircle from "./../../assets/images/info-circle.svg";
 // firebase
 import firebase from "firebase";
 import { db } from "./../../firebase/firebase";
 
 const AuthLoginPage = () => {
+  const authCtx = useContext(AuthContext);
+  const { LoggedIn } = authCtx;
   const [isLogin, setIsLogIn] = useState(true);
   const [onLoading, setOnLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const emailField = useRef();
   const pwdField = useRef();
-  const authCtx = useContext(AuthContext);
   const history = useHistory();
 
   useEffect(() => {
@@ -30,13 +32,17 @@ const AuthLoginPage = () => {
 
   const ToggleView = () => setIsLogIn((prevState) => !prevState);
 
+  const onHideAlert = () => setErrorMsg(null);
+
   let error = null;
   if (errorMsg) {
     error = (
-      <div className="col-md-12 cards text-danger">
-        <i className="bi bi-info-circle"></i>
-        <b>{errorMsg}</b>
-      </div>
+      <Alerts
+        alertType="alert-danger"
+        icon={InfoCircle}
+        msg={errorMsg}
+        onClose={onHideAlert}
+      />
     );
   }
 
@@ -45,6 +51,12 @@ const AuthLoginPage = () => {
     setOnLoading(true);
     const getEmailID = emailField.current.value;
     const getpassword = pwdField.current.value;
+
+    if (getEmailID === "" || getpassword === "") {
+      setErrorMsg("Enter missing fields");
+      setOnLoading(false);
+      return;
+    }
 
     const apiKey = "AIzaSyBKQjU1z4exP8hoSAlGa0YLT1axBj6Aj9k";
     let url = "";
@@ -67,7 +79,6 @@ const AuthLoginPage = () => {
       },
     };
 
-    // fetch firebase auth api
     fetch(url, config)
       .then((res) => {
         if (res.ok) {
@@ -91,7 +102,7 @@ const AuthLoginPage = () => {
             registeredOn: firebase.firestore.FieldValue.serverTimestamp(),
           });
         }
-        authCtx.LoggedIn(data.idToken, expTokenTime.toISOString(), getEmailID);
+        LoggedIn(data.idToken, expTokenTime.toISOString(), getEmailID);
         history.replace("/Home");
       })
       .catch((err) => {

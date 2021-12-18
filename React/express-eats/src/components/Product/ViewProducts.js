@@ -7,7 +7,7 @@ import "./ViewProducts.scss";
 import { FaSquare, FaRupeeSign, FaStar, FaThumbsUp } from "react-icons/fa";
 import InfoCircle from "./../../assets/images/info-circle.svg";
 // components
-import Spinner from "./../Loading/Loading";
+import Spinner from "../Spinner/Spinner";
 
 const ProductWrapper = (props) => {
   return (

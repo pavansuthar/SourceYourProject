@@ -1,7 +1,7 @@
 // core
 import { useState, useEffect } from "react";
 // components
-import Spinner from "./../Loading/Loading";
+import Spinner from "../Spinner/Spinner";
 import ProductDetails from "./../ProductDetails/ProductDetails";
 // css, icons
 import "./Product.scss";
