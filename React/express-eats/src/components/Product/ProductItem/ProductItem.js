@@ -1,15 +1,14 @@
 // core
 import { useContext } from "react";
 // css
-import "./Product-item.scss";
+import "./ProductItem.scss";
 // icons
-import { BsTags } from "react-icons/bs";
 import { FaThumbsUp, FaSquare } from "react-icons/fa";
 import { BsStarFill, BsHeartFill } from "react-icons/bs";
 // components
 import ProductItemForm from "../ProductItemForm/ProductItemForm";
 // context
-import RecipeContext from "../../store/recipeContext";
+import RecipeContext from "../../../store/recipeContext";
 
 const ProductItem = (props) => {
   const recipeCart = useContext(RecipeContext);
@@ -55,9 +54,6 @@ const ProductItem = (props) => {
                     ? props?.items?.description?.substr(0, 60) + " ..."
                     : props?.items.description}
                 </p>
-                <p className="card-text">
-                  <BsTags /> Rs. {props?.items.price}
-                </p>
               </div>
             </div>
           </div>
@@ -70,10 +66,8 @@ const ProductItem = (props) => {
             </div>
             <div className="pop">{props?.items.popular && <BsStarFill />}</div>
           </div>
-        </div>
-        <div className="row">
-          <div className="col-md-6">
-            <ProductItemForm onAddToCart={addToCartHandler} />
+          <div className="row">
+            <ProductItemForm onAddToCart={addToCartHandler} amount={props?.items.price}/>
           </div>
         </div>
       </div>

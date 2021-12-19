@@ -1,5 +1,7 @@
+@import "./colors.scss";
+
 $theme-colors: (
-  "primary": #0074d9,
+  "primary": $CornflowerBlue,
   "secondary": #6c757d,
   "danger": #f71212,
   "success": #198754,
@@ -7,22 +9,23 @@ $theme-colors: (
   "info": #0dcaf0,
   "light": #f8f9fa,
   "dark": #212529,
+  "bgSecondary": #C9DFFE 
 );
 .active {
-  border: 1px solid #ffffff;
+  border: 1px solid #C9DFFE;
   border-radius: 20px;
   font-weight: bold;
-  color: #0074d9 !important;
-  background-color: #ffffff;
+  color: $CornflowerBlue !important;
+  background-color: #C9DFFE;
 }
 hr {
-  border: 1px solid #ffffff !important;
+  border: 1px solid $White !important;
   height: 3px !important;
-  background-color: #ffffff !important;
+  background-color: $White !important;
 }
 
 .btn-danger {
-  color: #ffffff !important;
+  color: $White !important;
   margin-left: 10px;
 }
 

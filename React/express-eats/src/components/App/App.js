@@ -11,12 +11,12 @@ import ErrorBoundary from "./../ErrorBoundary/ErrorBoundary";
 // components
 import Spinner from "../Spinner/Spinner";
 import Animate from "./../Pages/animate";
-const Header = React.lazy(() => import("./../Header/header"));
+const Header = React.lazy(() => import("../Header/Header"));
 const Wrapper = React.lazy(() => import("../../UI/Wrapper"));
 const Home = React.lazy(() => import("./../Home/Home"));
-const Login = React.lazy(() => import("../Login/AuthLoginPage"));
+const Login = React.lazy(() => import("../Login/AuthLogin"));
 const NotFound = React.lazy(() => import("../NotFound/NotFound"));
-const Product = React.lazy(() => import("../Pages/Product"));
+const Product = React.lazy(() => import("../Product/Product"));
 const AddProduct = React.lazy(() => import("../Product/AddProduct"));
 const ViewProducts = React.lazy(() => import("../Product/ViewProducts"));
 const CartRecipe = React.lazy(() => import("../Cart/CartRecipe"));

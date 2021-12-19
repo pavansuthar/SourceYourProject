@@ -1,3 +1,5 @@
+@import "./assets/scss/colors.scss";
+
 html {
   height: 100%;
 }
@@ -21,7 +23,7 @@ code {
   max-height: 100%;
   min-height: 100%;
   overflow-y: scroll;
-  background: linear-gradient(110deg, #0074d9 60%, #c9dffee3 60%);
+  background: linear-gradient(110deg, $CornflowerBlue 60%, $FrenchPass 60%);
 }
 .sc-bdvvtL {
   height: 100%;

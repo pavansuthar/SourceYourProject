@@ -1,8 +1,7 @@
 // scss
-import "./header.scss";
+import "./Header.scss";
 // icons
 import { IoFastFood } from "react-icons/io5";
-import { BsCart3 } from "react-icons/bs";
 // routes, hooks
 import { NavLink } from "react-router-dom";
 import { useContext, useState, useEffect } from "react";
@@ -11,10 +10,10 @@ import AuthContext from "../../store/auth-context";
 import RecipeContext from "../../store/recipeContext";
 
 const Header = () => {
-  const [noOfCartItems, setNoOfCartItems] = useState(0);
   const authCtx = useContext(AuthContext);
   const cartContext = useContext(RecipeContext);
   const { recipes } = cartContext;
+  const [noOfCartItems, setNoOfCartItems] = useState(0);
 
   const isLoggedIn = authCtx.isUserLoggedIn;
   const isAdminLoggedIn = authCtx.isUserAdmin;
@@ -28,9 +27,6 @@ const Header = () => {
     setNoOfCartItems(numberOfCartItems);
   }, [numberOfCartItems]);
 
-  /**
-   * Handler when user log out
-   */
   const logOutHandler = () => {
     authCtx.LoggedOut();
   };
@@ -74,9 +70,9 @@ const Header = () => {
                     aria-current="page"
                     activeClassName="active"
                   >
-                    <BsCart3 /> Cart
+                    Cart
                     {noOfCartItems !== 0 && (
-                      <span className="badge">{noOfCartItems}</span>
+                      <div className="badge bg-bgSecondary text-primary border border-2 border-primary">{noOfCartItems}</div>
                     )}
                   </NavLink>
                 </li>
@@ -122,7 +118,10 @@ const Header = () => {
               )}
               {isLoggedIn && (
                 <li className="nav-item">
-                  <div className="emailInfo">({authCtx.userEmailId})</div>
+                  <div className="emailInfo">
+                    ({isAdminLoggedIn ? "Admin" : "Customer"}){" "}
+                    {authCtx.userEmailId}
+                  </div>
                 </li>
               )}
             </ul>

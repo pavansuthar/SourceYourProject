@@ -1,0 +1,16 @@
+@import "./../../../assets/scss/colors.scss";
+
+.addForm {
+  form {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-content: center;
+    div {
+      padding-right: 10px;
+    }
+    label {
+      padding-right: 10px;
+    }
+  }
+}

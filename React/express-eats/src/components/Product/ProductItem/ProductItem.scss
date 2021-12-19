@@ -1,6 +1,8 @@
+@import "./../../../assets/scss/colors.scss";
+
 .ProductItems {
   p.card-text {
-    color: #000000 !important;
+    color: $Black !important;
   }
   .likeSection {
     font-size: 30px;
@@ -10,12 +12,12 @@
     padding: 10px;
   }
   .likeSection .likes {
-    color: #0074d9;
+    color: $CornflowerBlue;
   }
   .likeSection .fav {
-    color: #e91e63;
+    color: $Red;
   }
   .likeSection .pop {
-    color: #ffc107;
+    color: $Yellow;
   }
 }

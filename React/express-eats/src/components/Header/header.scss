@@ -1,11 +1,13 @@
+@import "./../../assets/scss/colors.scss";
+
 .logo {
-  color: #ffffff;
+  color: $White;
   margin-right: 10px;
   font-size: 20px;
 }
 
 .badge {
-  background-color: #0074d9;
+  background-color: $CornflowerBlue;
   padding: 0.25rem 1rem;
   border-radius: 25px;
   margin-left: 1rem;
@@ -17,21 +19,23 @@
     margin-right: 10px;
     .nav-link {
       &:hover {
-        color: #ffffff;
+        color: $White;
         text-decoration: underline;
       }
       &:focus {
-        color: #ffffff;
+        color: $White;
       }
     }
     .emailInfo {
       padding-right: 0.5rem;
       padding-left: 0.5rem;
-      color: #ffffff;
+      color: $White;
       padding: 0.5rem 1rem;
+      font-size: 18px;
     }
   }
   a {
-    color: #ffffff;
+    color: $White;
+    font-size: 18px;
   }
 }

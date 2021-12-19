@@ -1,0 +1,13 @@
+@import "./../assets/scss/colors.scss";
+
+.mainSection {
+  h2,
+  p {
+    color: $White;
+  }
+  .sub-main {
+    flex: 1;
+    flex-direction: row;
+    justify-content: center;
+  }
+}

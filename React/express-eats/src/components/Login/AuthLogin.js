@@ -2,18 +2,18 @@
 import React, { useContext, useRef, useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 // context
-import AuthContext from "./../../store/auth-context";
+import AuthContext from "../../store/auth-context";
 // component
 import Spinner from "../Spinner/Spinner";
-import Alerts from "../Alerts/Alerts";
+import Alerts from "../common/Alerts/Alerts";
 // css
-import "./../../assets/scss/AuthLoginPage.scss";
+import "./AuthLogin.scss";
 import InfoCircle from "./../../assets/images/info-circle.svg";
 // firebase
 import firebase from "firebase";
-import { db } from "./../../firebase/firebase";
+import { db } from "../../firebase/firebase";
 
-const AuthLoginPage = () => {
+const AuthLogin = () => {
   const authCtx = useContext(AuthContext);
   const { LoggedIn } = authCtx;
   const [isLogin, setIsLogIn] = useState(true);
@@ -21,6 +21,8 @@ const AuthLoginPage = () => {
   const [errorMsg, setErrorMsg] = useState("");
   const emailField = useRef();
   const pwdField = useRef();
+  const getEmailID = emailField?.current?.value;
+  const getpassword = pwdField?.current?.value;
   const history = useHistory();
 
   useEffect(() => {
@@ -33,6 +35,17 @@ const AuthLoginPage = () => {
   const ToggleView = () => setIsLogIn((prevState) => !prevState);
 
   const onHideAlert = () => setErrorMsg(null);
+
+  const onSaveUserToFirebase = () => {
+    const isAdminUser = false;
+    if (!isLogin) {
+      db.collection("users").add({
+        emailId: getEmailID.trim(),
+        isAdmin: isAdminUser.trim(),
+        registeredOn: firebase.firestore.FieldValue.serverTimestamp(),
+      });
+    }
+  };
 
   let error = null;
   if (errorMsg) {
@@ -49,8 +62,6 @@ const AuthLoginPage = () => {
   const onLogInHandler = (e) => {
     e.preventDefault();
     setOnLoading(true);
-    const getEmailID = emailField.current.value;
-    const getpassword = pwdField.current.value;
 
     if (getEmailID === "" || getpassword === "") {
       setErrorMsg("Enter missing fields");
@@ -94,14 +105,7 @@ const AuthLoginPage = () => {
         const expTokenTime = new Date(
           new Date().getTime() + +data.expiresIn * 1000
         );
-        const isAdminUser = false;
-        if (!isLogin) {
-          db.collection("users").add({
-            emailId: getEmailID,
-            isAdmin: isAdminUser,
-            registeredOn: firebase.firestore.FieldValue.serverTimestamp(),
-          });
-        }
+        onSaveUserToFirebase();
         LoggedIn(data.idToken, expTokenTime.toISOString(), getEmailID);
         history.replace("/Home");
       })
@@ -154,13 +158,13 @@ const AuthLoginPage = () => {
                 <div className="d-grid gap-2">
                   <button
                     type="submit"
-                    className="btn btn-primary rounded-pill mt-2"
+                    className="btn btn-success rounded-pill mt-2"
                   >
                     {!isLogin ? "Sign up" : "Log in"}
                   </button>
                   <button
                     type="button"
-                    className="btn btn-light mt-2 rounded-pill"
+                    className="btn btn-primary mt-2 rounded-pill"
                     onClick={ToggleView}
                   >
                     {isLogin ? "New here? Sign up" : "Already user? Sign in"}
@@ -180,4 +184,4 @@ const AuthLoginPage = () => {
   );
 };
 
-export default AuthLoginPage;
+export default AuthLogin;
