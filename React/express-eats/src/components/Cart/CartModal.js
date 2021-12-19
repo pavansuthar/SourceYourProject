@@ -68,7 +68,7 @@ const CartModal = (props) => {
         <div className="modal-dialog">
           <div className="modal-content">
             <div className="modal-header">
-              <h5 className="modal-title">Fill form</h5>
+              <h5 className="modal-title">Fill about your address</h5>
               <button
                 type="button"
                 className="btn-close"
@@ -82,26 +82,26 @@ const CartModal = (props) => {
                 <div className="control">
                   <label htmlFor="name">Your Name</label>
                   <input type="text" id="name" ref={nameInputRef} />
-                  {!formInputValid.name && <p>Please enter a valid name!</p>}
+                  {!formInputValid.name && <p className="text-danger text-bold">Please enter a valid name.</p>}
                 </div>
                 <div className="control">
                   <label htmlFor="street">Street</label>
                   <input type="text" id="street" ref={streetInputRef} />
                   {!formInputValid.street && (
-                    <p>Please enter a valid street!</p>
+                    <p className="text-danger text-bold">Please enter a valid street.</p>
                   )}
                 </div>
                 <div className="control">
                   <label htmlFor="postal">Postal Code</label>
                   <input type="text" id="postal" ref={postalInputRef} />
                   {!formInputValid.postal && (
-                    <p>Please enter a valid postal!</p>
+                    <p className="text-danger text-bold">Please enter a valid postal.</p>
                   )}
                 </div>
                 <div className="control">
                   <label htmlFor="city">City</label>
                   <input type="text" id="city" ref={cityInputRef} />
-                  {!formInputValid.city && <p>Please enter a valid city!</p>}
+                  {!formInputValid.city && <p className="text-danger text-bold">Please enter a valid city.</p>}
                 </div>
                 <div className="modal-footer">
                   <button
@@ -109,7 +109,7 @@ const CartModal = (props) => {
                     className="btn btn-success rounded-pill"
                     data-bs-dismiss="modal"
                   >
-                    Order
+                    Place order
                   </button>
                   <button
                     type="button"

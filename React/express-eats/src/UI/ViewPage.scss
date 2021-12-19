@@ -10,4 +10,14 @@
     flex-direction: row;
     justify-content: center;
   }
+  .alert {
+    p {
+      font-weight: bold;
+      display: inline;
+      cursor: pointer;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
 }

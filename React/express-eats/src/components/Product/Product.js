@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 // components
 import Spinner from "../Spinner/Spinner";
 import ProductDetails from "./ProductDetails/ProductDetails";
+import Alerts from "./../common/Alerts/Alerts";
 // css, icons
 import "./Product.scss";
 import InfoCircle from "./../../assets/images/info-circle.svg";
@@ -34,18 +35,14 @@ const Product = () => {
         </section>
       )}
       {error && (
-        <section className="col-md-6 card p-3">
-          <div className="alert alert-danger m-3 p-3 w-100" role="alert">
-            <img src={InfoCircle} alt="info" /> {error}
-          </div>
-        </section>
+        <Alerts alertType="alert-danger" icon={InfoCircle} msg={error} />
       )}
       {products.length === 0 && !error && !isLoading && (
-        <section className="col-md-6 card p-3">
-          <div className="alert alert-primary m-3 p-3 w-100" role="alert">
-            <img src={InfoCircle} alt="info" /> No products are available.
-          </div>
-        </section>
+        <Alerts
+          alertType="alert-primary"
+          icon={InfoCircle}
+          msg={"No products are available"}
+        />
       )}
       {products && !error && !isLoading && (
         <div className="col-md-12">

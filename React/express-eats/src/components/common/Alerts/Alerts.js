@@ -32,13 +32,15 @@ const Alerts = (props) => {
         <span style={{ marginLeft: 10, verticalAlign: "text-top" }}>
           {props.msg}
         </span>
-        <button
-          type="button"
-          className="btn-close"
-          data-dismiss="alert"
-          aria-label="Close"
-          onClick={props.onClose}
-        ></button>
+        {props.onClose && (
+          <button
+            type="button"
+            className="btn-close"
+            data-dismiss="alert"
+            aria-label="Close"
+            onClick={props.onClose}
+          ></button>
+        )}
       </div>
     </div>
   );

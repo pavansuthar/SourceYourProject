@@ -72,7 +72,9 @@ const Header = () => {
                   >
                     Cart
                     {noOfCartItems !== 0 && (
-                      <div className="badge bg-bgSecondary text-primary border border-2 border-primary">{noOfCartItems}</div>
+                      <div className="badge bg-bgSecondary text-primary border border-2 border-primary">
+                        {noOfCartItems}
+                      </div>
                     )}
                   </NavLink>
                 </li>
@@ -118,10 +120,7 @@ const Header = () => {
               )}
               {isLoggedIn && (
                 <li className="nav-item">
-                  <div className="emailInfo">
-                    ({isAdminLoggedIn ? "Admin" : "Customer"}){" "}
-                    {authCtx.userEmailId}
-                  </div>
+                  <div className="emailInfo">({authCtx.userEmailId})</div>
                 </li>
               )}
             </ul>

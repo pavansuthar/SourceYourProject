@@ -11,33 +11,25 @@ import { FaRupeeSign } from "react-icons/fa";
 // components
 import Spinner from "../Spinner/Spinner";
 import CartModal from "./CartModal";
-
-const CartRecipeWrapper = (props) => {
-  return (
-    <div className="row CartRecipe">
-      <h2>View cart</h2>
-      <hr />
-      <div className="col-md-12">
-        <div className="row sub-main">{props.children}</div>
-      </div>
-    </div>
-  );
-};
+import ViewPage from "./../../UI/ViewPage";
+import Alerts from "./../common/Alerts/Alerts";
+// hooks
+import useHttp from "../../hooks/use-http";
 
 const modalElement = document.getElementById("popup");
 
 const CartRecipe = () => {
-  const [isLoading, setIsLoading] = useState(true);
   const [isCheckedout, setIsCheckedOut] = useState(false);
   const [didSubmit, setDidSubmit] = useState(false);
   const [products, setProducts] = useState([]);
+  const { isLoadings, error, sendHttpRequet: fetchCartProducts } = useHttp();
+
   const recipeCart = useContext(RecipeContext);
   const { recipes, totalAmount } = recipeCart;
   const history = useHistory();
 
   useEffect(() => {
     setProducts(recipes);
-    setIsLoading(false);
   }, [recipes]);
 
   const goToAddProduct = () => history.push("/Product");
@@ -45,53 +37,59 @@ const CartRecipe = () => {
   const onCartCheckout = () => setIsCheckedOut((prev) => !prev);
 
   const submitOrderHandler = async (userData) => {
-    setIsLoading(true);
-    const options = {
+    fetchCartProducts({
+      url: "https://react-virtusa-expresseats-default-rtdb.firebaseio.com/orderHistory.json",
       method: "POST",
       body: JSON.stringify({
         user: userData,
         orderedRecipe: products,
       }),
-    };
-    await fetch(
-      "https://react-virtusa-expresseats-default-rtdb.firebaseio.com/orderHistory.json",
-      options
-    );
-    setIsLoading(false);
+    });
     setDidSubmit(true);
     recipeCart.clearItem();
   };
 
-  if (isLoading) {
+  if (isLoadings) {
     return (
-      <CartRecipeWrapper>
+      <ViewPage title="View cart">
         <section className="col-md-6 card p-3">
           <Spinner color="text-dark" text="Loading all products" />
         </section>
-      </CartRecipeWrapper>
+      </ViewPage>
     );
   }
 
-  if (products?.length === 0 || !products) {
+  if (error) {
     return (
-      <CartRecipeWrapper>
+      <ViewPage title="View cart">
+        <Alerts alertType="alert-danger" icon={InfoCircle} msg={error} />
+      </ViewPage>
+    );
+  }
+
+  if ((products?.length === 0 || !products) && !didSubmit) {
+    return (
+      <ViewPage title="View cart">
         <section className="col-md-6 card p-3">
           <div className="alert alert-primary m-3 p-3" role="alert">
             <img src={InfoCircle} alt="info" /> Your cart is empty.{" "}
-            <p onClick={goToAddProduct}>Click here</p> to add new one ...
+            <p className="text-primary" onClick={goToAddProduct}>
+              Click here
+            </p>{" "}
+            to add new one ...
           </div>
         </section>
-      </CartRecipeWrapper>
+      </ViewPage>
     );
   }
 
   return (
-    <CartRecipeWrapper>
+    <ViewPage title="View cart">
       {products && (
         <React.Fragment>
           <div className="col-md-7 card m-3">
-            <div className="card p-3 m-3">
-              <p className="h3 text-primary">Products in cart</p>
+            <div className="p-2 m-2">
+              <p className="h3 text-primary">Items in cart</p>
               <section>
                 <table className="table">
                   <thead>
@@ -108,10 +106,11 @@ const CartRecipe = () => {
                         <th scope="row">{value?.recipeNo}</th>
                         <td>{value?.recipeName}</td>
                         <td>
-                          {value?.price} (x {value?.amount})
+                          {Math.round(value?.price)} (x {value?.amount})
                         </td>
                         <td className="price">
-                          <FaRupeeSign /> {value?.price * value?.amount}
+                          <FaRupeeSign />{" "}
+                          {Math.round(value?.price * value?.amount)}
                         </td>
                       </tr>
                     ))}
@@ -121,10 +120,10 @@ const CartRecipe = () => {
             </div>
           </div>
           <div className="col-md-2 card m-3">
-            <div className="card p-3 m-3">
-              <p className="h3 text-primary">Order info</p>
-              <p className="h5">
-                Total - <FaRupeeSign /> {totalAmount}
+            <div className="p-2 m-2">
+              <p className="h3 text-primary">Items info</p>
+              <p className="h5 text-dark">
+                Total - <FaRupeeSign /> {Math.round(totalAmount)}
               </p>
               <div className="d-grid gap-2">
                 <div className="btn-group-vertical">
@@ -156,7 +155,7 @@ const CartRecipe = () => {
           <CartModal onClose={onCartCheckout} onConfirm={submitOrderHandler} />,
           modalElement
         )}
-    </CartRecipeWrapper>
+    </ViewPage>
   );
 };
 

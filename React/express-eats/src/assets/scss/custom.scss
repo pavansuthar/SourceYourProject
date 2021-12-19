@@ -9,14 +9,14 @@ $theme-colors: (
   "info": #0dcaf0,
   "light": #f8f9fa,
   "dark": #212529,
-  "bgSecondary": #C9DFFE 
+  "bgSecondary": #c9dffe,
 );
 .active {
-  border: 1px solid #C9DFFE;
+  border: 1px solid #c9dffe;
   border-radius: 20px;
   font-weight: bold;
   color: $CornflowerBlue !important;
-  background-color: #C9DFFE;
+  background-color: #c9dffe;
 }
 hr {
   border: 1px solid $White !important;
@@ -27,6 +27,13 @@ hr {
 .btn-danger {
   color: $White !important;
   margin-left: 10px;
+}
+
+.toast:not(.show) {
+  display: block !important;
+  position: fixed;
+  right: 40px;
+  top: 70px;
 }
 
 @import "~bootstrap/scss/bootstrap.scss";

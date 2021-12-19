@@ -32,8 +32,8 @@ const ProductItemForm = (props) => {
           <p className="text-dark">
             <BsTags />
             {QtyAmount === 0
-              ? " Rs." + props.amount
-              : " Rs." + props.amount * QtyAmount}
+              ? " Rs." + Math.round(props.amount)
+              : " Rs." + Math.round(props.amount) * QtyAmount}
           </p>
         </div>
         <div className="col-md-6">
@@ -67,7 +67,7 @@ const ProductItemForm = (props) => {
       {!amountIsValid && (
         <div className="row">
           <div className="col-md-12 m-1">
-            <p className="text-danger">Please enter a valid amount (1-5).</p>
+            <p className="text-danger">Please enter a valid Qty (1-5).</p>
           </div>
         </div>
       )}

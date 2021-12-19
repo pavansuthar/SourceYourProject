@@ -1,5 +1,6 @@
 // core
-import { useContext } from "react";
+import { useContext, useState } from "react";
+import ReactDOM from "react-dom";
 // css
 import "./ProductItem.scss";
 // icons
@@ -7,11 +8,13 @@ import { FaThumbsUp, FaSquare } from "react-icons/fa";
 import { BsStarFill, BsHeartFill } from "react-icons/bs";
 // components
 import ProductItemForm from "../ProductItemForm/ProductItemForm";
+import Toast from "./../../common/Toast/Toast";
 // context
 import RecipeContext from "../../../store/recipeContext";
 
 const ProductItem = (props) => {
   const recipeCart = useContext(RecipeContext);
+  const [showToast, setShowToast] = useState(false);
 
   const addToCartHandler = (amount) => {
     recipeCart.addItem({
@@ -29,10 +32,29 @@ const ProductItem = (props) => {
       likes: props?.items.likes,
       amount,
     });
+    setShowToast(true);
+    localStorage.setItem("showProductToast", true);
+    setTimeout(() => onHideToast(), 3000);
+  };
+
+  const ToastMsg = (
+    <p>
+      Added <b>{props?.items.recipeName}</b> to cart
+    </p>
+  );
+
+  const onHideToast = () => {
+    setShowToast(false);
+    localStorage.setItem("showProductToast", false);
   };
 
   return (
     <div className="row">
+      {showToast &&
+        ReactDOM.createPortal(
+          <Toast message={ToastMsg} onClose={onHideToast} />,
+          document.getElementById("toast")
+        )}
       <div className="col-md-12 ProductItems">
         <div className="card mb-2 mt-3">
           <div className="row g-0">
@@ -52,7 +74,7 @@ const ProductItem = (props) => {
                 <p className="card-text">
                   {props?.items?.description?.length > 50
                     ? props?.items?.description?.substr(0, 60) + " ..."
-                    : props?.items.description}
+                    : props?.items?.description}
                 </p>
               </div>
             </div>
@@ -67,7 +89,10 @@ const ProductItem = (props) => {
             <div className="pop">{props?.items.popular && <BsStarFill />}</div>
           </div>
           <div className="row">
-            <ProductItemForm onAddToCart={addToCartHandler} amount={props?.items.price}/>
+            <ProductItemForm
+              onAddToCart={addToCartHandler}
+              amount={props?.items.price}
+            />
           </div>
         </div>
       </div>
