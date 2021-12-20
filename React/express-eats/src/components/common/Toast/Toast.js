@@ -14,7 +14,7 @@ const Toast = (props) => {
   const month = new Date().getMonth();
   const year = new Date().getFullYear();
 
-  const currentDate = `${date}/${month}/${year}`;
+  const currentDate = `${date}/${month + 1}/${year}`;
   return (
     <FadeDownToast>
       <div

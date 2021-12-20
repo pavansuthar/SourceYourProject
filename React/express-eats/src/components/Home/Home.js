@@ -19,6 +19,7 @@ const Home = () => {
       setShowToast(true);
       localStorage.setItem("showToast", true);
     }
+    setTimeout(() => onHideToast(), 3000);
   }, []);
 
   const onHideToast = () => {

@@ -4,7 +4,7 @@ import { useHistory } from "react-router-dom";
 // context
 import AuthContext from "../../store/auth-context";
 // component
-import Spinner from "../Spinner/Spinner";
+import Spinner from "../common/Spinner/Spinner";
 import Alerts from "../common/Alerts/Alerts";
 // css
 import "./AuthLogin.scss";

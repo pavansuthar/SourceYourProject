@@ -9,7 +9,7 @@ import "./CartRecipe.scss";
 import InfoCircle from "./../../assets/images/info-circle.svg";
 import { FaRupeeSign } from "react-icons/fa";
 // components
-import Spinner from "../Spinner/Spinner";
+import Spinner from "../common/Spinner/Spinner";
 import CartModal from "./CartModal";
 import ViewPage from "./../../UI/ViewPage";
 import Alerts from "./../common/Alerts/Alerts";
@@ -36,18 +36,25 @@ const CartRecipe = () => {
 
   const onCartCheckout = () => setIsCheckedOut((prev) => !prev);
 
+  const ongetResponse = (data) => console.log(data);
+
   const submitOrderHandler = async (userData) => {
-    fetchCartProducts({
-      url: "https://react-virtusa-expresseats-default-rtdb.firebaseio.com/orderHistory.json",
-      method: "POST",
-      body: JSON.stringify({
-        user: userData,
-        orderedRecipe: products,
-      }),
-    });
+    fetchCartProducts(
+      {
+        URL: "https://react-virtusa-expresseats-default-rtdb.firebaseio.com/orderHistory.json",
+        method: "POST",
+        body: {
+          user: userData,
+          orderedRecipe: products,
+        },
+      },
+      ongetResponse
+    );
     setDidSubmit(true);
-    recipeCart.clearItem();
+    onClearCart();
   };
+
+  const onClearCart = () => recipeCart.clearItem();
 
   if (isLoadings) {
     return (
@@ -59,37 +66,36 @@ const CartRecipe = () => {
     );
   }
 
-  if (error) {
-    return (
-      <ViewPage title="View cart">
-        <Alerts alertType="alert-danger" icon={InfoCircle} msg={error} />
-      </ViewPage>
-    );
-  }
-
-  if ((products?.length === 0 || !products) && !didSubmit) {
-    return (
-      <ViewPage title="View cart">
-        <section className="col-md-6 card p-3">
-          <div className="alert alert-primary m-3 p-3" role="alert">
-            <img src={InfoCircle} alt="info" /> Your cart is empty.{" "}
-            <p className="text-primary" onClick={goToAddProduct}>
-              Click here
-            </p>{" "}
-            to add new one ...
-          </div>
-        </section>
-      </ViewPage>
-    );
-  }
-
   return (
     <ViewPage title="View cart">
-      {products && (
-        <React.Fragment>
-          <div className="col-md-7 card m-3">
-            <div className="p-2 m-2">
-              <p className="h3 text-primary">Items in cart</p>
+      <React.Fragment>
+        <div className="col-md-7 card m-3">
+          <div className="p-2 m-2">
+            <p className="h3 text-primary">Items in cart</p>
+            {didSubmit && (
+              <Alerts
+                alertType="alert-success"
+                icon={InfoCircle}
+                msg={"Successfully booked your orders in Expresseats. Click here to see your purchase history."}
+              />
+            )}
+            {error && (
+              <Alerts alertType="alert-danger" icon={InfoCircle} msg={error} />
+            )}
+            {(products?.length === 0 || !products) && !didSubmit && (
+              <div className="row">
+                <section className="col-md-12">
+                  <div className="alert alert-primary mt-3" role="alert">
+                    <img src={InfoCircle} alt="info" /> Your cart is empty.{" "}
+                    <p className="text-primary" onClick={goToAddProduct}>
+                      Click here
+                    </p>{" "}
+                    to add new one ...
+                  </div>
+                </section>
+              </div>
+            )}
+            {products.length !== 0 && (
               <section>
                 <table className="table">
                   <thead>
@@ -117,39 +123,39 @@ const CartRecipe = () => {
                   </tbody>
                 </table>
               </section>
-            </div>
+            )}
           </div>
-          <div className="col-md-2 card m-3">
-            <div className="p-2 m-2">
-              <p className="h3 text-primary">Items info</p>
-              <p className="h5 text-dark">
-                Total - <FaRupeeSign /> {Math.round(totalAmount)}
-              </p>
-              <div className="d-grid gap-2">
-                <div className="btn-group-vertical">
-                  {" "}
-                  <button
-                    className="btn btn-success m-2 rounded-pill"
-                    type="button"
-                    onClick={onCartCheckout}
-                    disabled={isCheckedout}
-                  >
-                    Checkout
-                  </button>
-                  <button
-                    className="btn btn-secondary m-2 rounded-pill"
-                    type="button"
-                    disabled={isCheckedout}
-                  >
-                    Clear cart
-                  </button>
-                </div>
+        </div>
+        <div className="col-md-2 card m-3">
+          <div className="p-2 m-2">
+            <p className="h3 text-primary">Items info</p>
+            <p className="h5 text-dark">
+              Total - <FaRupeeSign /> {Math.round(totalAmount)}
+            </p>
+            <div className="d-grid gap-2">
+              <div className="btn-group-vertical">
+                {" "}
+                <button
+                  className="btn btn-success m-2 rounded-pill"
+                  type="button"
+                  onClick={onCartCheckout}
+                  disabled={isCheckedout || totalAmount === 0}
+                >
+                  Checkout
+                </button>
+                <button
+                  className="btn btn-secondary m-2 rounded-pill"
+                  type="button"
+                  disabled={isCheckedout || totalAmount === 0}
+                  onClick={onClearCart}
+                >
+                  Clear cart
+                </button>
               </div>
             </div>
           </div>
-        </React.Fragment>
-      )}
-
+        </div>
+      </React.Fragment>
       {isCheckedout &&
         ReactDOM.createPortal(
           <CartModal onClose={onCartCheckout} onConfirm={submitOrderHandler} />,

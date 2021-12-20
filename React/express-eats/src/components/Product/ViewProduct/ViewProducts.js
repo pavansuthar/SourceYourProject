@@ -1,13 +1,16 @@
 // core
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 // router
 import { useHistory } from "react-router";
 // css, icons
 import "./ViewProducts.scss";
 import { FaSquare, FaRupeeSign, FaStar, FaThumbsUp } from "react-icons/fa";
-import InfoCircle from "./../../assets/images/info-circle.svg";
+import InfoCircle from "./../../../assets/images/info-circle.svg";
 // components
-import Spinner from "../Spinner/Spinner";
+import Spinner from "../../common/Spinner/Spinner";
+import Alerts from "../../common/Alerts/Alerts";
+// hooks
+import useHttp from "./../../../hooks/use-http";
 
 const ProductWrapper = (props) => {
   return (
@@ -23,45 +26,42 @@ const ProductWrapper = (props) => {
 
 const ViewProducts = () => {
   const [products, setProducts] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isHTTPError, setIsHTTPError] = useState();
   const [recipeSearch, setRecipeSearch] = useState("");
   const [recpVege, setRecpVege] = useState(false);
   const [recpActive, setRecpActive] = useState(false);
   const history = useHistory();
+  const { isLoading, error, sendHttpRequet: fetchProducts } = useHttp();
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      const productsURL =
-        "https://react-virtusa-expresseats-default-rtdb.firebaseio.com/products.json";
-      const response = await fetch(productsURL);
-      const responseData = await response.json();
+    const getAllProducts = (products) => {
       const allProducts = [];
-      for (const key in responseData) {
+      for (const key in products) {
         allProducts.push({
-          addedOn: responseData[key].addedOn,
-          description: responseData[key].description,
-          favourite: responseData[key].favourite,
-          id: responseData[key].id,
-          image: responseData[key].image,
-          isActive: responseData[key].isActive,
-          likes: responseData[key].likes,
-          popular: responseData[key].popular,
-          price: responseData[key].price,
-          recipeName: responseData[key].recipeName,
-          recipeNo: responseData[key].recipeNo,
+          addedOn: products[key].addedOn,
+          description: products[key].description,
+          favourite: products[key].favourite,
+          id: products[key].id,
+          image: products[key].image,
+          isActive: products[key].isActive,
+          likes: products[key].likes,
+          popular: products[key].popular,
+          price: products[key].price,
+          recipeName: products[key].recipeName,
+          recipeNo: products[key].recipeNo,
           recipeKey: key,
-          vegetarian: responseData[key].vegetarian,
+          vegetarian: products[key].vegetarian,
         });
       }
       setProducts(allProducts);
-      setIsLoading(false);
     };
-    fetchProducts().catch((e) => {
-      setIsHTTPError(e.message);
-      setIsLoading(false);
-    });
-  }, []);
+
+    fetchProducts(
+      {
+        URL: "https://react-virtusa-expresseats-default-rtdb.firebaseio.com/products.json",
+      },
+      getAllProducts
+    );
+  }, [fetchProducts]);
 
   const goToAddProduct = () => history.push("/AddProduct");
 
@@ -87,26 +87,27 @@ const ViewProducts = () => {
     );
   }
 
-  if (isHTTPError) {
+  if (error) {
     return (
       <ProductWrapper>
         <section className="col-md-6 card p-3">
-          <div className="alert alert-danger m-3 p-3 w-100" role="alert">
-            <img src={InfoCircle} alt="info"/> {isHTTPError}
-          </div>
+          <Alerts alertType="alert-danger" icon={InfoCircle} msg={error} />
         </section>
       </ProductWrapper>
     );
   }
 
-  if (products.length === 0 && !isHTTPError) {
+  if (products.length === 0 && !error) {
+    const Content = (
+      <React.Fragment>
+        No products are available. <p onClick={goToAddProduct}>Click here</p> to
+        add new one ...
+      </React.Fragment>
+    );
     return (
       <ProductWrapper>
         <section className="col-md-6 card p-3">
-          <div className="alert alert-primary m-3 p-3 w-100" role="alert">
-            <img src={InfoCircle} alt="info" /> No products are available.{" "}
-            <p onClick={goToAddProduct}>Click here</p> to add new one ...
-          </div>
+          <Alerts alertType="alert-primary" icon={InfoCircle} msg={Content} />
         </section>
       </ProductWrapper>
     );
@@ -193,7 +194,7 @@ const ViewProducts = () => {
                     <FaSquare fill={value?.vegetarian ? "green" : "red"} />
                   </td>
                   <td>
-                    <img src={value?.image} alt={value?.id}  width="300"/>
+                    <img src={value?.image} alt={value?.id} width="300" />
                   </td>
                   <td>
                     {value?.description}

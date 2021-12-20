@@ -1,7 +1,7 @@
 // core
 import React, { useState, useEffect } from "react";
 // components
-import Spinner from "../Spinner/Spinner";
+import Spinner from "../common/Spinner/Spinner";
 import ProductDetails from "./ProductDetails/ProductDetails";
 import Alerts from "./../common/Alerts/Alerts";
 // css, icons

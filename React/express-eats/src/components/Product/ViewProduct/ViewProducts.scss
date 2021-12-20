@@ -1,6 +1,8 @@
+@import "./../../../assets/scss/colors.scss";
+
 .ViewProduct {
   h2 {
-    color: #ffffff;
+    color: $White;
   }
   .sub-main {
     flex: 1;
@@ -14,11 +16,11 @@
       font-size: 30px;
     }
     .form-check-input:checked {
-      background-color: #198754;
-      border-color: #198754;
+      background-color: $Green;
+      border-color: $Green;
     }
     div.filterTitle {
-      color: #0074d9;
+      color: $CornflowerBlue;
       font-size: 30px;
     }
     table {

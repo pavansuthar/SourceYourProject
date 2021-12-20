@@ -1,5 +1,7 @@
 // core
 import React, { useState, useRef } from "react";
+// components
+import Spinner from "../common/Spinner/Spinner";
 // css
 import "./CartModal.scss";
 
@@ -17,6 +19,8 @@ const CartModal = (props) => {
     city: true,
     postal: true,
   });
+  const [loading, setLoading] = useState(false);
+  const [formIsValid, setFormIsValid] = useState(false);
 
   const nameInputRef = useRef();
   const streetInputRef = useRef();
@@ -24,6 +28,7 @@ const CartModal = (props) => {
   const cityInputRef = useRef();
 
   const confirmHandler = (e) => {
+    setLoading(true);
     e.preventDefault();
     const enteredName = nameInputRef.current.value;
     const enteredStreet = streetInputRef.current.value;
@@ -42,23 +47,27 @@ const CartModal = (props) => {
       postal: enteredPortalIsValid,
     });
 
-    const formIsValid =
+    setFormIsValid(
       enteredNameIsValid &&
-      enteredStreetIsValid &&
-      enteredCitytIsValid &&
-      enteredPortalIsValid;
+        enteredStreetIsValid &&
+        enteredCitytIsValid &&
+        enteredPortalIsValid
+    );
 
     if (!formIsValid) {
       return;
     }
 
-    props.onConfirm({
-      name: enteredName,
-      street: enteredStreet,
-      city: enteredPostal,
-      postal: enteredCity,
-    });
-    props.onClose();
+    setTimeout(() => {
+      setLoading(false);
+      props.onConfirm({
+        name: enteredName,
+        street: enteredStreet,
+        city: enteredPostal,
+        postal: enteredCity,
+      });
+      props.onClose();
+    }, 4000);
   };
 
   return (
@@ -68,7 +77,7 @@ const CartModal = (props) => {
         <div className="modal-dialog">
           <div className="modal-content">
             <div className="modal-header">
-              <h5 className="modal-title">Fill about your address</h5>
+              <h5 className="modal-title">Fill your address</h5>
               <button
                 type="button"
                 className="btn-close"
@@ -81,27 +90,68 @@ const CartModal = (props) => {
               <form onSubmit={confirmHandler}>
                 <div className="control">
                   <label htmlFor="name">Your Name</label>
-                  <input type="text" id="name" ref={nameInputRef} />
-                  {!formInputValid.name && <p className="text-danger text-bold">Please enter a valid name.</p>}
+                  <input
+                    type="text"
+                    id="name"
+                    ref={nameInputRef}
+                    placeholder="Full name"
+                  />
+                  {!formInputValid.name && (
+                    <p className="text-danger text-bold">
+                      Please enter a valid name.
+                    </p>
+                  )}
                 </div>
                 <div className="control">
                   <label htmlFor="street">Street</label>
-                  <input type="text" id="street" ref={streetInputRef} />
+                  <input
+                    type="text"
+                    id="street"
+                    ref={streetInputRef}
+                    placeholder="Street name"
+                  />
                   {!formInputValid.street && (
-                    <p className="text-danger text-bold">Please enter a valid street.</p>
+                    <p className="text-danger text-bold">
+                      Please enter a valid street.
+                    </p>
                   )}
                 </div>
                 <div className="control">
                   <label htmlFor="postal">Postal Code</label>
-                  <input type="text" id="postal" ref={postalInputRef} />
+                  <input
+                    type="text"
+                    id="postal"
+                    ref={postalInputRef}
+                    placeholder="Only 5 digits"
+                  />
                   {!formInputValid.postal && (
-                    <p className="text-danger text-bold">Please enter a valid postal.</p>
+                    <p className="text-danger text-bold">
+                      Please enter a valid postal.
+                    </p>
                   )}
                 </div>
                 <div className="control">
                   <label htmlFor="city">City</label>
-                  <input type="text" id="city" ref={cityInputRef} />
-                  {!formInputValid.city && <p className="text-danger text-bold">Please enter a valid city.</p>}
+                  <input
+                    type="text"
+                    id="city"
+                    ref={cityInputRef}
+                    placeholder="Like Bengaluru"
+                  />
+                  {!formInputValid.city && (
+                    <p className="text-danger text-bold">
+                      Please enter a valid city.
+                    </p>
+                  )}
+                </div>
+                <div className="mt-3 mb-3">
+                  {loading && formIsValid && (
+                    <Spinner
+                      color="text-black"
+                      align="h-100 mh-100 align-items-center"
+                      text="Booking order"
+                    />
+                  )}
                 </div>
                 <div className="modal-footer">
                   <button

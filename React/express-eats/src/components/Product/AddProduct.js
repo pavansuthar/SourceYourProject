@@ -4,12 +4,15 @@ import React from "react";
 import "./AddProduct.scss";
 import InfoCircle from "./../../assets/images/info-circle.svg";
 // component
-import Spinner from "../Spinner/Spinner";
+import Spinner from "../common/Spinner/Spinner";
+import ViewPage from "../../UI/ViewPage";
 // firebase
 import firebase from "firebase";
+import Alerts from "../common/Alerts/Alerts";
 
 class AddProduct extends React.Component {
   static initialState = {};
+
   constructor(props) {
     super(props);
     this.state = {
@@ -40,6 +43,8 @@ class AddProduct extends React.Component {
       this.onUpdateRecipeIDKeyToFirebase.bind(this);
     this.onUpdateRecipeToFirebase = this.onUpdateRecipeToFirebase.bind(this);
     this.onDeleteRecipe = this.onDeleteRecipe.bind(this);
+    this.onCloseAlert = this.onCloseAlert.bind(this);
+    this.onPageBack = this.onPageBack.bind(this);
   }
 
   componentDidMount() {
@@ -230,22 +235,38 @@ class AddProduct extends React.Component {
     }, 3000);
   }
 
+  onCloseAlert() {
+    this.setState({
+      formError: {
+        isError: false,
+        errorMsg: null,
+      },
+    });
+  }
+
+  onPageBack() {
+    this.props?.history?.push("./../ViewProduct");
+  }
+
   render() {
     return (
-      <div className="row addProduct">
-        <h2>
-          {this.state?.isEditMode ? `Edit ${this.state?.recipeNo}` : "Add new"}{" "}
-          product
-        </h2>
-        <hr />
+      <ViewPage
+        title={
+          this.state?.isEditMode
+            ? `Edit ${this.state?.recipeNo} product`
+            : "Add new product"
+        }
+      >
         <div className="col-md-12">
           {this.state?.formError?.isError && (
             <div className="row sub-main mb-3">
               <div className="col-md-6 card p-3">
-                <div className="alert alert-danger mb-0" role="alert">
-                  <img src={InfoCircle} alt="info" />{" "}
-                  {this.state?.formError?.errorMsg}
-                </div>
+                <Alerts
+                  alertType="alert-danger"
+                  icon={InfoCircle}
+                  msg={this.state?.formError?.errorMsg}
+                  onClose={this.onCloseAlert}
+                />
               </div>
             </div>
           )}
@@ -466,13 +487,20 @@ class AddProduct extends React.Component {
                     {this.state?.isEditMode && (
                       <button
                         type="button"
-                        className="btn btn-danger ml-2"
-                        disabled={!this.state.isEditMode}
+                        className="btn btn-danger"
+                        disabled={!this.state.isEditMode || this.state.isLoading}
                         onClick={this.onDeleteRecipe}
                       >
                         Delete
                       </button>
                     )}
+                    <button
+                      type="button"
+                      className="btn btn-primary"
+                      onClick={this.onPageBack}
+                    >
+                      Back
+                    </button>
                     {this.state.isLoading && (
                       <Spinner
                         text={
@@ -486,7 +514,7 @@ class AddProduct extends React.Component {
             </div>
           </div>
         </div>
-      </div>
+      </ViewPage>
     );
   }
 }

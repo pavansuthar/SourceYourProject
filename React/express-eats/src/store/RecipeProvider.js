@@ -36,7 +36,7 @@ const recipeReducer = (state, action) => {
       };
     case "CLEAR":
       return {
-        items: null,
+        items: [],
         totalAmount: 0,
       };
     default:

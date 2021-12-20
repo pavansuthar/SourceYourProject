@@ -7,9 +7,9 @@ import { Route, Switch, Redirect, useHistory } from "react-router-dom";
 // context
 import AuthContext from "./../../store/auth-context";
 // error boundary
-import ErrorBoundary from "./../ErrorBoundary/ErrorBoundary";
+import ErrorBoundary from "./../common/ErrorBoundary/ErrorBoundary";
 // components
-import Spinner from "../Spinner/Spinner";
+import Spinner from "../common/Spinner/Spinner";
 import Animate from "./../Pages/animate";
 const Header = React.lazy(() => import("../Header/Header"));
 const Wrapper = React.lazy(() => import("../../UI/Wrapper"));
@@ -18,7 +18,7 @@ const Login = React.lazy(() => import("../Login/AuthLogin"));
 const NotFound = React.lazy(() => import("../NotFound/NotFound"));
 const Product = React.lazy(() => import("../Product/Product"));
 const AddProduct = React.lazy(() => import("../Product/AddProduct"));
-const ViewProducts = React.lazy(() => import("../Product/ViewProducts"));
+const ViewProducts = React.lazy(() => import("../Product/ViewProduct/ViewProducts"));
 const CartRecipe = React.lazy(() => import("../Cart/CartRecipe"));
 
 const App = () => {
