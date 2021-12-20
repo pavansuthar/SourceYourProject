@@ -66,6 +66,16 @@ const CartRecipe = () => {
     );
   }
 
+  const Content = (
+    <React.Fragment>
+      Your cart is empty.{" "}
+      <p className="text-primary" onClick={goToAddProduct}>
+        Click here
+      </p>{" "}
+      to add new one.
+    </React.Fragment>
+  );
+
   return (
     <ViewPage title="View cart">
       <React.Fragment>
@@ -76,7 +86,9 @@ const CartRecipe = () => {
               <Alerts
                 alertType="alert-success"
                 icon={InfoCircle}
-                msg={"Successfully booked your orders in Expresseats. Click here to see your purchase history."}
+                msg={
+                  "Successfully booked your orders in Expresseats. Click here to see your purchase history."
+                }
               />
             )}
             {error && (
@@ -85,13 +97,11 @@ const CartRecipe = () => {
             {(products?.length === 0 || !products) && !didSubmit && (
               <div className="row">
                 <section className="col-md-12">
-                  <div className="alert alert-primary mt-3" role="alert">
-                    <img src={InfoCircle} alt="info" /> Your cart is empty.{" "}
-                    <p className="text-primary" onClick={goToAddProduct}>
-                      Click here
-                    </p>{" "}
-                    to add new one ...
-                  </div>
+                  <Alerts
+                    alertType="alert-primary mt-3"
+                    icon={InfoCircle}
+                    msg={Content}
+                  />
                 </section>
               </div>
             )}

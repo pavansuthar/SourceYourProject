@@ -101,7 +101,7 @@ const ViewProducts = () => {
     const Content = (
       <React.Fragment>
         No products are available. <p onClick={goToAddProduct}>Click here</p> to
-        add new one ...
+        add new one.
       </React.Fragment>
     );
     return (

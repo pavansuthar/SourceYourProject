@@ -12,13 +12,16 @@ import ErrorBoundary from "./../common/ErrorBoundary/ErrorBoundary";
 import Spinner from "../common/Spinner/Spinner";
 import Animate from "./../Pages/animate";
 const Header = React.lazy(() => import("../Header/Header"));
+const Footer = React.lazy(() => import("../Footer/Footer"));
 const Wrapper = React.lazy(() => import("../../UI/Wrapper"));
 const Home = React.lazy(() => import("./../Home/Home"));
 const Login = React.lazy(() => import("../Login/AuthLogin"));
 const NotFound = React.lazy(() => import("../NotFound/NotFound"));
 const Product = React.lazy(() => import("../Product/Product"));
 const AddProduct = React.lazy(() => import("../Product/AddProduct"));
-const ViewProducts = React.lazy(() => import("../Product/ViewProduct/ViewProducts"));
+const ViewProducts = React.lazy(() =>
+  import("../Product/ViewProduct/ViewProducts")
+);
 const CartRecipe = React.lazy(() => import("../Cart/CartRecipe"));
 
 const App = () => {
@@ -33,9 +36,10 @@ const App = () => {
       }
     >
       {isUserLoggedIn && <Header />}
-      <ErrorBoundary>
+      
         <Wrapper>
           <Animate>
+          <ErrorBoundary>
             <Switch>
               <Route exact path="/">
                 <Redirect to="/Login" />
@@ -58,9 +62,12 @@ const App = () => {
               <Route exact path="/Cart" component={CartRecipe} />
               <Route exact path="*" component={NotFound} />
             </Switch>
+            </ErrorBoundary>
           </Animate>
         </Wrapper>
-      </ErrorBoundary>
+        {/* {isUserLoggedIn && <Footer />} */}
+      
+      
     </Suspense>
   );
 };

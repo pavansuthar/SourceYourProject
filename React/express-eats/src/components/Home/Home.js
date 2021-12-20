@@ -31,6 +31,31 @@ const Home = () => {
     isAdminLoggedIn ? "Admin" : "Customer"
   }.`;
 
+  const cities = [
+    "Delhi NCR",
+    "Hydreabad",
+    "Ahmedabad",
+    "Ooty",
+    "Kanpur",
+    "Kolkata",
+    "Chennai",
+    "Chandigarh",
+    "Shimla",
+    "Allahabad",
+    "Mumbai",
+    "Lucknow",
+    "Goa",
+    "Ludhiana",
+    "Coimbatore",
+    "Bengaluru",
+    "Kochi",
+    "Indore",
+    "Guwahati",
+    "Bhopal",
+    "Mangalore",
+    "Udaipur",
+  ];
+
   return (
     <div className="row Home">
       {showToast &&
@@ -48,6 +73,18 @@ const Home = () => {
       <div className="col-md-6">
         <div className="card mt-3">
           <img className="card-img-top img-fluid" src={foodImage} alt="food" />
+        </div>
+      </div>
+      <div className="col-md-6 text-light mt-3">
+        <h1 className="text-bold">Cities, we deliver to</h1>
+        <div className="row">
+          <div className="col-md-12">
+            <ul className="list-group">
+              {cities.map((name) => {
+                return <li className="list-group-item m-1">{name}</li>;
+              })}
+            </ul>
+          </div>
         </div>
       </div>
     </div>

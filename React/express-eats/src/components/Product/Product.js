@@ -18,6 +18,7 @@ const Product = () => {
   useEffect(() => {
     const getAllProducts = (products) => {
       setProducts(products);
+      console.log(products);
     };
     fetchProducts(
       {
@@ -37,12 +38,14 @@ const Product = () => {
       {error && (
         <Alerts alertType="alert-danger" icon={InfoCircle} msg={error} />
       )}
-      {products.length === 0 && !error && !isLoading && (
-        <Alerts
-          alertType="alert-primary"
-          icon={InfoCircle}
-          msg={"No products are available"}
-        />
+      {(products?.length === 0 || products === null) && !error && !isLoading && (
+        <section className="col-md-6 card p-3">
+          <Alerts
+            alertType="alert-primary"
+            icon={InfoCircle}
+            msg={"No products are available in Expresseats."}
+          />
+        </section>
       )}
       {products && !error && !isLoading && (
         <div className="col-md-12">
@@ -55,4 +58,5 @@ const Product = () => {
 
   return <React.Fragment>{content}</React.Fragment>;
 };
+
 export default Product;

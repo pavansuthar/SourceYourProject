@@ -41,7 +41,7 @@ const AuthLogin = () => {
     if (!isLogin) {
       db.collection("users").add({
         emailId: getEmailID.trim(),
-        isAdmin: isAdminUser.trim(),
+        isAdmin: isAdminUser,
         registeredOn: firebase.firestore.FieldValue.serverTimestamp(),
       });
     }

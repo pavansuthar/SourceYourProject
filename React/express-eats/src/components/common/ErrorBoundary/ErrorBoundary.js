@@ -1,5 +1,7 @@
 // core
 import React from "react";
+// components
+import ViewPage from "../../../UI/ViewPage";
 
 class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -20,14 +22,15 @@ class ErrorBoundary extends React.Component {
   render() {
     if (this.state.errorInfo) {
       return (
-        <React.Fragment>
-          <h2>Something went wrong.</h2>
-          <details style={{ whiteSpace: "pre-wrap" }}>
-            {this.state.error && this.state.error.toString()}
-            <br />
-            {this.state.errorInfo.componentStack}
-          </details>
-        </React.Fragment>
+        <ViewPage title="Something went wrong.">
+          <section className="col-md-6 card p-3">
+            <details style={{ whiteSpace: "pre-wrap" }}>
+              {this.state.error && this.state.error.toString()}
+              <br />
+              {this.state.errorInfo.componentStack}
+            </details>
+          </section>
+        </ViewPage>
       );
     }
     return this.props.children;

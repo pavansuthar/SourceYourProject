@@ -1,0 +1,15 @@
+@import "./../../assets/scss/colors.scss";
+
+.footerSection {
+  flex-direction: row;
+  color: $White;
+  background-color: $BlackA !important;
+  padding: 20px;
+  font-size: 16px;
+  div {
+    flex: 1;
+  }
+  .logo {
+    font-size: 16px;
+  }
+}
