@@ -10,7 +10,6 @@ import AuthContext from "./../../store/auth-context";
 import ErrorBoundary from "./../common/ErrorBoundary/ErrorBoundary";
 // components
 import Spinner from "../common/Spinner/Spinner";
-import Animate from "./../Pages/animate";
 const Header = React.lazy(() => import("../Header/Header"));
 const Footer = React.lazy(() => import("../Footer/Footer"));
 const Wrapper = React.lazy(() => import("../../UI/Wrapper"));
@@ -36,38 +35,34 @@ const App = () => {
       }
     >
       {isUserLoggedIn && <Header />}
-      
-        <Wrapper>
-          <Animate>
-          <ErrorBoundary>
-            <Switch>
-              <Route exact path="/">
-                <Redirect to="/Login" />
-              </Route>
-              <Route path="/Login" component={Login} />
-              <Route path="/Home" component={Home} />
-              <Route exact path="/ViewProduct">
-                {isUserLoggedIn && <ViewProducts />}
-                {!isUserLoggedIn && <Redirect exact to="/Home" />}
-              </Route>
-              <Route exact path="/Product" component={Product} />
-              <Route exact path="/AddProduct">
-                <AddProduct history={history} />
-              </Route>
-              <Route
-                exact
-                path="/EditProduct/:id"
-                render={(props) => <AddProduct {...props} />}
-              />
-              <Route exact path="/Cart" component={CartRecipe} />
-              <Route exact path="*" component={NotFound} />
-            </Switch>
-            </ErrorBoundary>
-          </Animate>
-        </Wrapper>
-        {/* {isUserLoggedIn && <Footer />} */}
-      
-      
+
+      <Wrapper>
+        <ErrorBoundary>
+          <Switch>
+            <Route exact path="/">
+              <Redirect to="/Login" />
+            </Route>
+            <Route path="/Login" component={Login} />
+            <Route path="/Home" component={Home} />
+            <Route exact path="/ViewProduct">
+              {isUserLoggedIn && <ViewProducts />}
+              {!isUserLoggedIn && <Redirect exact to="/Home" />}
+            </Route>
+            <Route exact path="/Product" component={Product} />
+            <Route exact path="/AddProduct">
+              <AddProduct history={history} />
+            </Route>
+            <Route
+              exact
+              path="/EditProduct/:id"
+              render={(props) => <AddProduct {...props} />}
+            />
+            <Route exact path="/Cart" component={CartRecipe} />
+            <Route exact path="*" component={NotFound} />
+          </Switch>
+        </ErrorBoundary>
+      </Wrapper>
+      {isUserLoggedIn && <Footer />}
     </Suspense>
   );
 };

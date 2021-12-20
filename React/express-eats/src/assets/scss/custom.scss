@@ -24,7 +24,8 @@ hr {
   background-color: $White !important;
 }
 
-.btn-danger, .btn-primary {
+.btn-danger,
+.btn-primary {
   color: $White !important;
   margin-left: 10px;
 }
@@ -34,6 +35,11 @@ hr {
   position: fixed;
   right: 40px;
   top: 70px;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
 }
 
 @import "~bootstrap/scss/bootstrap.scss";
