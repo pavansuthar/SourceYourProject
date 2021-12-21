@@ -17,11 +17,14 @@ const Home = React.lazy(() => import("./../Home/Home"));
 const Login = React.lazy(() => import("../Login/AuthLogin"));
 const NotFound = React.lazy(() => import("../NotFound/NotFound"));
 const Product = React.lazy(() => import("../Product/Product"));
-const AddProduct = React.lazy(() => import("../Product/AddProduct"));
+const AddProduct = React.lazy(() => import("../Product/AddProduct/AddProduct"));
 const ViewProducts = React.lazy(() =>
   import("../Product/ViewProduct/ViewProducts")
 );
 const CartRecipe = React.lazy(() => import("../Cart/CartRecipe"));
+const ProductHistory = React.lazy(() =>
+  import("../Product/ProductHistory/ProductHistory")
+);
 
 const App = () => {
   const authCxt = useContext(AuthContext);
@@ -58,6 +61,7 @@ const App = () => {
               render={(props) => <AddProduct {...props} />}
             />
             <Route exact path="/Cart" component={CartRecipe} />
+            <Route exact path="/ProductHistory" component={ProductHistory} />
             <Route exact path="*" component={NotFound} />
           </Switch>
         </ErrorBoundary>

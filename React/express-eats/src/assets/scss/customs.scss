@@ -22,11 +22,11 @@ $theme-colors: (
   "bgSecondary": $bgSecondary,
 );
 .active {
-  border: 1px solid #e0e4e9 !important;
+  border: 1px solid $White !important;
   border-radius: 20px;
   font-weight: bold;
   color: var(--c-primary) !important;
-  background-color: #e0e4e9 !important;
+  background-color: $White !important;
 }
 hr {
   border: 1px solid $White !important;
@@ -46,7 +46,8 @@ hr {
   right: 40px;
   top: 70px;
 }
-.dropdown-menu, .modal {
+.dropdown-menu,
+.modal {
   display: block !important;
 }
 
@@ -56,7 +57,7 @@ hr {
 }
 
 .btn-primary {
-  color: #fff;
+  color: $White;
   background-color: var(--c-primary) !important;
   border-color: var(--c-primary) !important;
 }

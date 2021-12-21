@@ -21,8 +21,6 @@ const AuthLogin = () => {
   const [errorMsg, setErrorMsg] = useState("");
   const emailField = useRef();
   const pwdField = useRef();
-  const getEmailID = emailField?.current?.value;
-  const getpassword = pwdField?.current?.value;
   const history = useHistory();
 
   useEffect(() => {
@@ -38,9 +36,10 @@ const AuthLogin = () => {
 
   const onSaveUserToFirebase = () => {
     const isAdminUser = false;
+
     if (!isLogin) {
       db.collection("users").add({
-        emailId: getEmailID.trim(),
+        emailId: emailField?.current?.value.trim(),
         isAdmin: isAdminUser,
         registeredOn: firebase.firestore.FieldValue.serverTimestamp(),
       });
@@ -63,7 +62,7 @@ const AuthLogin = () => {
     e.preventDefault();
     setOnLoading(true);
 
-    if (getEmailID === "" || getpassword === "") {
+    if (emailField?.current?.value === "" || pwdField?.current?.value === "") {
       setErrorMsg("Enter missing fields");
       setOnLoading(false);
       return;
@@ -81,8 +80,8 @@ const AuthLogin = () => {
     const config = {
       method: "POST",
       body: JSON.stringify({
-        email: getEmailID,
-        password: getpassword,
+        email: emailField?.current?.value,
+        password: pwdField?.current?.value,
         returnSecureToken: true,
       }),
       headers: {
@@ -106,7 +105,11 @@ const AuthLogin = () => {
           new Date().getTime() + +data.expiresIn * 1000
         );
         onSaveUserToFirebase();
-        LoggedIn(data.idToken, expTokenTime.toISOString(), getEmailID);
+        LoggedIn(
+          data.idToken,
+          expTokenTime.toISOString(),
+          emailField?.current?.value
+        );
         history.replace("/Home");
       })
       .catch((err) => {

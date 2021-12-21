@@ -81,9 +81,7 @@ const Header = () => {
                   >
                     Cart
                     {noOfCartItems !== 0 && (
-                      <div className="badge">
-                        {noOfCartItems}
-                      </div>
+                      <div className="badge">{noOfCartItems}</div>
                     )}
                   </NavLink>
                 </li>
@@ -110,6 +108,19 @@ const Header = () => {
                     activeClassName="active"
                   >
                     Add Product
+                  </NavLink>
+                </li>
+              )}
+
+              {isLoggedIn && (
+                <li className="nav-item">
+                  <NavLink
+                    to="/ProductHistory"
+                    className="nav-link"
+                    aria-current="page"
+                    activeClassName="active"
+                  >
+                    History
                   </NavLink>
                 </li>
               )}
@@ -151,19 +162,31 @@ const Header = () => {
                     <li>
                       <div
                         className="dropdown-item colorA"
-                        onClick={onChangeTheme.bind(null, "#0d6efd", "#0d6efd75")}
+                        onClick={onChangeTheme.bind(
+                          null,
+                          "#0d6efd",
+                          "#0d6efd75"
+                        )}
                       ></div>
                     </li>
                     <li>
                       <div
                         className="dropdown-item colorB"
-                        onClick={onChangeTheme.bind(null, "#198754", "#19875475")}
+                        onClick={onChangeTheme.bind(
+                          null,
+                          "#198754",
+                          "#19875475"
+                        )}
                       ></div>
                     </li>
                     <li>
                       <div
                         className="dropdown-item colorC"
-                        onClick={onChangeTheme.bind(null, "#673ab7", "#673ab775")}
+                        onClick={onChangeTheme.bind(
+                          null,
+                          "#673ab7",
+                          "#673ab775"
+                        )}
                       ></div>
                     </li>
                   </ul>

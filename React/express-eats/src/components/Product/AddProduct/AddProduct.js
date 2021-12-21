@@ -2,13 +2,13 @@
 import React from "react";
 // css
 import "./AddProduct.scss";
-import InfoCircle from "./../../assets/images/info-circle.svg";
+import InfoCircle from "./../../../assets/images/info-circle.svg";
 // component
-import Spinner from "../common/Spinner/Spinner";
-import ViewPage from "../../UI/ViewPage";
+import Spinner from "../../common/Spinner/Spinner";
+import ViewPage from "../../../UI/ViewPage";
 // firebase
 import firebase from "firebase";
-import Alerts from "../common/Alerts/Alerts";
+import Alerts from "../../common/Alerts/Alerts";
 
 class AddProduct extends React.Component {
   static initialState = {};

@@ -36,6 +36,8 @@ const CartRecipe = () => {
 
   const goToAddProduct = () => history.push("/Product");
 
+  const goToHistory = () => history.push("/ProductHistory");
+
   const onCartCheckout = () => setIsCheckedOut((prev) => !prev);
 
   const ongetResponse = (data) => console.log(data);
@@ -57,7 +59,9 @@ const CartRecipe = () => {
     onClearCart();
   };
 
-  const onClearCart = () => recipeCart.clearItem();
+  const onClearCart = () => {
+    recipeCart.clearItem();
+  };
 
   if (isLoadings) {
     return (
@@ -69,7 +73,7 @@ const CartRecipe = () => {
     );
   }
 
-  const Content = (
+  const NoProductContent = (
     <React.Fragment>
       Your cart is empty.{" "}
       <p className="text-primary" onClick={goToAddProduct}>
@@ -79,19 +83,27 @@ const CartRecipe = () => {
     </React.Fragment>
   );
 
+  const SuccessContent = (
+    <React.Fragment>
+      Successfully booked your orders in Expresseats.
+      <p className="text-primary" onClick={goToHistory}>
+        Click here
+      </p>{" "}
+      to see your purchase history.
+    </React.Fragment>
+  );
+
   return (
     <ViewPage title="View cart">
       <React.Fragment>
-        <div className="col-md-7 card m-3">
+        <div className="col-md-7 card m-3 cartRecipe">
           <div className="p-2 m-2">
-            <p className="h3 text-primary">Items in cart</p>
+            <p className="h3">Items in cart</p>
             {didSubmit && (
               <Alerts
                 alertType="alert-success"
                 icon={InfoCircle}
-                msg={
-                  "Successfully booked your orders in Expresseats. Click here to see your purchase history."
-                }
+                msg={SuccessContent}
               />
             )}
             {error && (
@@ -103,7 +115,7 @@ const CartRecipe = () => {
                   <Alerts
                     alertType="alert-primary mt-3"
                     icon={InfoCircle}
-                    msg={Content}
+                    msg={NoProductContent}
                   />
                 </section>
               </div>
@@ -139,9 +151,9 @@ const CartRecipe = () => {
             )}
           </div>
         </div>
-        <div className="col-md-2 card m-3">
+        <div className="col-md-2 card m-3 cartRecipe">
           <div className="p-2 m-2">
-            <p className="h3 text-primary">Items info</p>
+            <p className="h3">Items info</p>
             <p className="h5 text-dark">
               Total - <FaRupeeSign /> {Math.round(totalAmount)}
             </p>

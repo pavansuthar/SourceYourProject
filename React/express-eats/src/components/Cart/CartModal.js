@@ -1,7 +1,9 @@
 // core
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useContext } from "react";
 // components
 import Spinner from "../common/Spinner/Spinner";
+// context
+import AuthContext from "./../../store/auth-context";
 // css
 import "./CartModal.scss";
 
@@ -21,6 +23,8 @@ const CartModal = (props) => {
   });
   const [loading, setLoading] = useState(false);
   const [formIsValid, setFormIsValid] = useState(false);
+  const authContext = useContext(AuthContext);
+  const { userEmailId } = authContext;
 
   const nameInputRef = useRef();
   const streetInputRef = useRef();
@@ -57,17 +61,15 @@ const CartModal = (props) => {
     if (!formIsValid) {
       return;
     }
-
-    setTimeout(() => {
-      setLoading(false);
-      props.onConfirm({
-        name: enteredName,
-        street: enteredStreet,
-        city: enteredPostal,
-        postal: enteredCity,
-      });
-      props.onClose();
-    }, 4000);
+    props.onConfirm({
+      name: enteredName,
+      street: enteredStreet,
+      city: enteredPostal,
+      postal: enteredCity,
+      emailID: userEmailId,
+    });
+    setLoading(false);
+    props.onClose();
   };
 
   return (

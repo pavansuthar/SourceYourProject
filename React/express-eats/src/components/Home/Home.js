@@ -2,7 +2,7 @@
 import { useState, useContext, useEffect } from "react";
 import ReactDOM from "react-dom";
 // css
-import "./home.scss";
+import "./Home.scss";
 import foodImage from "./../../assets/images/main2.jpg";
 import foodOrderA from "./../../assets/images/foodA.png";
 import foodOrderB from "./../../assets/images/foodB.png";
