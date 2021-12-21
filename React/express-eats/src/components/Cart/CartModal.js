@@ -73,7 +73,7 @@ const CartModal = (props) => {
   return (
     <React.Fragment>
       <Backdrop />
-      <div className="modal" tabIndex="-1">
+      <div className="modal cartModal" tabIndex="-1">
         <div className="modal-dialog">
           <div className="modal-content">
             <div className="modal-header">

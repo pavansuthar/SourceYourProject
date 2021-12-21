@@ -17,13 +17,21 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+:root {
+  --c-primary: #{$CornflowerBlue};
+  --c-secondary: #{$FrenchPass};
+}
 
 #root {
   height: 100%;
   max-height: 100%;
   min-height: 100%;
   overflow-y: scroll;
-  background: linear-gradient(110deg, $CornflowerBlue 60%, $FrenchPass 60%);
+  background: linear-gradient(
+    110deg,
+    var(--c-primary) 60%,
+    var(--c-secondary) 60%
+  );
 }
 .sc-bdvvtL {
   height: 100%;

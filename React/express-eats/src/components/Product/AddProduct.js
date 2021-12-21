@@ -273,66 +273,56 @@ class AddProduct extends React.Component {
           <div className="row sub-main">
             <div className="col-md-6 card p-3">
               <form onSubmit={this.addRecipeHandler}>
-                <div className="row">
+                <div className="row mb-3">
                   <div className="col-md-4">
-                    <div className="row mb-3">
-                      <label
-                        htmlFor="recipeNo"
-                        className="col-sm-2 col-form-label"
-                        disabled={false}
-                      >
-                        ID <span className="text-danger fw-bold">*</span>
-                      </label>
-                      <div className="col-sm-10">
-                        <input
-                          name="recipeNo"
-                          type="text"
-                          className="form-control"
-                          value={this.state.recipeNo}
-                          onChange={this.inputChangeHandler}
-                        />
-                      </div>
+                    <label
+                      htmlFor="recipeNo"
+                      className="col-form-label"
+                      disabled={false}
+                    >
+                      ID <span className="text-danger fw-bold">*</span>
+                    </label>
+                    <div className="col-md-12">
+                      <input
+                        name="recipeNo"
+                        type="text"
+                        className="form-control"
+                        value={this.state.recipeNo}
+                        onChange={this.inputChangeHandler}
+                      />
                     </div>
                   </div>
                   <div className="col-md-8">
-                    <div className="row mb-3">
-                      <label
-                        htmlFor="recipeName"
-                        className="col-sm-2 col-form-label"
-                      >
-                        Name <span className="text-danger fw-bold">*</span>
-                      </label>
-                      <div className="col-sm-10">
-                        <input
-                          name="recipeName"
-                          type="text"
-                          className="form-control"
-                          value={this.state.recipeName}
-                          onChange={this.inputChangeHandler}
-                        />
-                      </div>
+                    <label htmlFor="recipeName" className="col-form-label">
+                      Name <span className="text-danger fw-bold">*</span>
+                    </label>
+                    <div className="col-md-12">
+                      <input
+                        name="recipeName"
+                        type="text"
+                        className="form-control"
+                        value={this.state.recipeName}
+                        onChange={this.inputChangeHandler}
+                      />
+                    </div>
+                  </div>
+                  <div className="col-md-12">
+                    <label htmlFor="description" className="col-form-label">
+                      Description
+                    </label>
+                    <div className="col-md-12">
+                      <textarea
+                        name="description"
+                        rows="2"
+                        className="form-control"
+                        value={this.state.description}
+                        onChange={this.inputChangeHandler}
+                      ></textarea>
                     </div>
                   </div>
                 </div>
                 <div className="row mb-3">
-                  <label
-                    htmlFor="description"
-                    className="col-sm-2 col-form-label"
-                  >
-                    Description
-                  </label>
-                  <div className="col-sm-10">
-                    <textarea
-                      name="description"
-                      rows="2"
-                      className="form-control"
-                      value={this.state.description}
-                      onChange={this.inputChangeHandler}
-                    ></textarea>
-                  </div>
-                </div>
-                <div className="row mb-3">
-                  <label htmlFor="image" className="col-sm-2 col-form-label">
+                  <label htmlFor="image" className="col-form-label">
                     Recipe Image URL{" "}
                     <span className="text-danger fw-bold">*</span>
                   </label>
@@ -346,137 +336,105 @@ class AddProduct extends React.Component {
                     />
                   </div>
                 </div>
-                <div className="row">
-                  <div className="col-md-6">
-                    <div className="row mb-3">
-                      <label
-                        htmlFor="price"
-                        className="col-sm-2 col-form-label"
-                      >
-                        Price
-                      </label>
-                      <div className="col-sm-10">
+                <div className="row mb-3">
+                  <div className="col-md-3">
+                    <label htmlFor="price" className="col-form-label">
+                      Price
+                    </label>
+                    <div className="col-sm-10">
+                      <input
+                        name="price"
+                        type="number"
+                        className="form-control"
+                        value={this.state.price}
+                        onChange={this.inputChangeHandler}
+                      />
+                    </div>
+                  </div>
+                  <div className="col-md-3">
+                    <label htmlFor="favourite" className="col-form-label">
+                      Fav
+                    </label>
+                    <div className="col-sm-10">
+                      <input
+                        name="favourite"
+                        type="number"
+                        className="form-control"
+                        value={this.state.favourite}
+                        onChange={this.inputChangeHandler}
+                      />
+                    </div>
+                  </div>
+                  <div className="col-md-3">
+                    <label htmlFor="isActive" className="col-form-label">
+                      Active
+                    </label>
+                    <div className="col-sm-10">
+                      <div className="form-check">
                         <input
-                          name="price"
-                          type="number"
-                          className="form-control"
-                          value={this.state.price}
+                          className="form-check-input"
+                          type="checkbox"
+                          name="isActive"
+                          value={this.state.isActive}
+                          checked={this.state.isActive}
                           onChange={this.inputChangeHandler}
                         />
                       </div>
                     </div>
                   </div>
-                  <div className="col-md-6">
-                    <div className="row mb-3">
-                      <label
-                        htmlFor="favourite"
-                        className="col-sm-2 col-form-label"
-                      >
-                        Fav
-                      </label>
-                      <div className="col-sm-10">
+                  <div className="col-md-3">
+                    <label htmlFor="popular" className="col-form-label">
+                      Popular
+                    </label>
+                    <div className="col-sm-10">
+                      <div className="form-check">
                         <input
-                          name="favourite"
-                          type="number"
-                          className="form-control"
-                          value={this.state.favourite}
-                          onChange={this.inputChangeHandler}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col-md-6">
-                    <div className="row mb-3">
-                      <label
-                        htmlFor="isActive"
-                        className="col-sm-2 col-form-label"
-                      >
-                        Active
-                      </label>
-                      <div className="col-sm-10">
-                        <div className="form-check">
-                          <input
-                            className="form-check-input"
-                            type="checkbox"
-                            name="isActive"
-                            value={this.state.isActive}
-                            checked={this.state.isActive}
-                            onChange={this.inputChangeHandler}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="row mb-3">
-                      <label
-                        htmlFor="popular"
-                        className="col-sm-2 col-form-label"
-                      >
-                        Popular
-                      </label>
-                      <div className="col-sm-10">
-                        <div className="form-check">
-                          <input
-                            className="form-check-input"
-                            type="checkbox"
-                            name="popular"
-                            value={this.state.popular}
-                            checked={this.state.popular}
-                            onChange={this.inputChangeHandler}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col-md-6">
-                    <div className="row mb-3">
-                      <label
-                        htmlFor="vegetarian"
-                        className="col-sm-2 col-form-label"
-                      >
-                        Vege
-                      </label>
-                      <div className="col-sm-10">
-                        <div className="form-check">
-                          <input
-                            className="form-check-input"
-                            type="checkbox"
-                            name="vegetarian"
-                            value={this.state.vegetarian}
-                            checked={this.state.vegetarian}
-                            onChange={this.inputChangeHandler}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="row mb-3">
-                      <label
-                        htmlFor="likes"
-                        className="col-sm-2 col-form-label"
-                      >
-                        Likes
-                      </label>
-                      <div className="col-sm-10">
-                        <input
-                          name="likes"
-                          type="number"
-                          className="form-control"
-                          value={this.state.likes}
+                          className="form-check-input"
+                          type="checkbox"
+                          name="popular"
+                          value={this.state.popular}
+                          checked={this.state.popular}
                           onChange={this.inputChangeHandler}
                         />
                       </div>
                     </div>
                   </div>
                 </div>
-                <div className="row">
-                  <div className="col-md-12">
+                <div className="row mb-3">
+                  <div className="col-md-3">
+                    <label htmlFor="vegetarian" className="col-form-label">
+                      Vege
+                    </label>
+                    <div className="col-sm-10">
+                      <div className="form-check">
+                        <input
+                          className="form-check-input"
+                          type="checkbox"
+                          name="vegetarian"
+                          value={this.state.vegetarian}
+                          checked={this.state.vegetarian}
+                          onChange={this.inputChangeHandler}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-md-3">
+                    <label htmlFor="likes" className="col-form-label">
+                      Likes
+                    </label>
+                    <div className="col-sm-10">
+                      <input
+                        name="likes"
+                        type="number"
+                        className="form-control"
+                        value={this.state.likes}
+                        onChange={this.inputChangeHandler}
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className="row mb-3">
+                  <div className="col-md-12 jus">
                     <button
                       type="submit"
                       className="btn btn-success"
@@ -488,7 +446,9 @@ class AddProduct extends React.Component {
                       <button
                         type="button"
                         className="btn btn-danger"
-                        disabled={!this.state.isEditMode || this.state.isLoading}
+                        disabled={
+                          !this.state.isEditMode || this.state.isLoading
+                        }
                         onClick={this.onDeleteRecipe}
                       >
                         Delete

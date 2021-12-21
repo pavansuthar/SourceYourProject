@@ -14,6 +14,7 @@ const Header = () => {
   const cartContext = useContext(RecipeContext);
   const { recipes } = cartContext;
   const [noOfCartItems, setNoOfCartItems] = useState(0);
+  const [showThemes, setShowThemes] = useState(false);
 
   const isLoggedIn = authCtx.isUserLoggedIn;
   const isAdminLoggedIn = authCtx.isUserAdmin;
@@ -31,9 +32,17 @@ const Header = () => {
     authCtx.LoggedOut();
   };
 
+  const onToggleTheme = () => setShowThemes((prev) => !prev);
+
+  const onChangeTheme = (primary, secondary) => {
+    getComputedStyle(document.documentElement).getPropertyValue("--c-primary");
+    document.documentElement.style.setProperty("--c-primary", primary);
+    document.documentElement.style.setProperty("--c-secondary", secondary);
+  };
+
   return (
-    <div className="sticky-top">
-      <nav className="navbar navbar-expand-lg navbar-primary bg-primary">
+    <div className="sticky-top HeaderMain">
+      <nav className="navbar navbar-expand-lg navbar-primary">
         <div className="container-fluid">
           <div className="logo">
             Express <IoFastFood /> Eats
@@ -72,7 +81,7 @@ const Header = () => {
                   >
                     Cart
                     {noOfCartItems !== 0 && (
-                      <div className="badge bg-bgSecondary text-primary border border-2 border-primary">
+                      <div className="badge">
                         {noOfCartItems}
                       </div>
                     )}
@@ -118,13 +127,50 @@ const Header = () => {
                   </NavLink>
                 </li>
               )}
-              {isLoggedIn && (
-                <li className="nav-item">
-                  <div className="emailInfo">({authCtx.userEmailId})</div>
-                </li>
-              )}
             </ul>
           </div>
+          {isLoggedIn && (
+            <div className="d-flex">
+              <div className="emailInfo">({authCtx.userEmailId})</div>
+              <div className="dropdown">
+                <button
+                  className="btn btn-primary dropdown-toggle"
+                  type="button"
+                  id="dropdownMenuButton2"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                  onClick={onToggleTheme}
+                >
+                  Theme
+                </button>
+                {showThemes && (
+                  <ul
+                    className="dropdown-menu"
+                    aria-labelledby="dropdownMenuButton2"
+                  >
+                    <li>
+                      <div
+                        className="dropdown-item colorA"
+                        onClick={onChangeTheme.bind(null, "#0d6efd", "#0d6efd75")}
+                      ></div>
+                    </li>
+                    <li>
+                      <div
+                        className="dropdown-item colorB"
+                        onClick={onChangeTheme.bind(null, "#198754", "#19875475")}
+                      ></div>
+                    </li>
+                    <li>
+                      <div
+                        className="dropdown-item colorC"
+                        onClick={onChangeTheme.bind(null, "#673ab7", "#673ab775")}
+                      ></div>
+                    </li>
+                  </ul>
+                )}
+              </div>
+            </div>
+          )}
         </div>
       </nav>
     </div>

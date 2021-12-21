@@ -28,7 +28,6 @@ export const RecipeContextProvider = (props) => {
   const [recipes, setRecipies] = useState(initialState.recipes);
 
   const onAddRecipes = (items) => {
-    console.log(items);
     delete items.formError;
     delete items.isLoading;
     const recipe = {
@@ -39,7 +38,6 @@ export const RecipeContextProvider = (props) => {
     recipeFB
       .add(recipe)
       .then((ref) => {
-        console.log("Add doc with ID", ref.id);
         let getRefId = ref.id;
         recipe.id = getRefId;
         onUpdateRecipeId(getRefId);
@@ -60,21 +58,17 @@ export const RecipeContextProvider = (props) => {
       .update({
         id,
       })
-      .then(() => {
-        console.log("docID is updated");
-      })
+      .then(() => {})
       .catch((e) => console.error(e));
   };
 
   const onUpdateRecipe = (items) => {
-    console.log(items, items.id);
     delete items.formError;
     delete items.isLoading;
     const recipeRef = firebase.firestore().collection("recipes").doc(items.id);
     recipeRef
       .update(items)
       .then(() => {
-        console.log("doc is updated");
         setRecipies((prevRecipe) => {
           let allRecipes = recipes[0];
           let filterIndex = recipes[0].findIndex(
@@ -89,11 +83,6 @@ export const RecipeContextProvider = (props) => {
 
   const onDeleteRecipe = (id) => {
     console.log(id);
-    // const recipeRef = firebase.firestore().collection("recipes").doc(id);
-    // recipeRef
-    //   .delete()
-    //   .then(() => console.log("doc is deleted"))
-    //   .catch((e) => console.error(e));
   };
 
   const recipeContextValue = {

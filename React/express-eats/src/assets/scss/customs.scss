@@ -1,0 +1,80 @@
+@import "./colors.scss";
+
+$primary: $CornflowerBlue;
+$secondary: $Gray;
+$danger: $Red;
+$success: $Green;
+$warning: $Yellow;
+$info: $Blue;
+$light: $White;
+$dark: $BlackA;
+$bgSecondary: $FrenchPass;
+
+$theme-colors: (
+  "primary": $primary,
+  "secondary": $secondary,
+  "danger": $danger,
+  "success": $success,
+  "warning": $warning,
+  "info": $info,
+  "light": $light,
+  "dark": $dark,
+  "bgSecondary": $bgSecondary,
+);
+.active {
+  border: 1px solid #e0e4e9 !important;
+  border-radius: 20px;
+  font-weight: bold;
+  color: var(--c-primary) !important;
+  background-color: #e0e4e9 !important;
+}
+hr {
+  border: 1px solid $White !important;
+  height: 3px !important;
+  background-color: $White !important;
+}
+
+.btn-danger,
+.btn-primary {
+  color: $White !important;
+  margin-left: 10px;
+}
+
+.toast:not(.show) {
+  display: block !important;
+  position: fixed;
+  right: 40px;
+  top: 70px;
+}
+.dropdown-menu, .modal {
+  display: block !important;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+}
+
+.btn-primary {
+  color: #fff;
+  background-color: var(--c-primary) !important;
+  border-color: var(--c-primary) !important;
+}
+
+.navbar-primary {
+  background-color: var(--c-primary) !important;
+  border-color: var(--c-primary) !important;
+}
+
+.bg-primary {
+  background-color: var(--c-primary) !important;
+}
+
+.text-primary {
+  color: var(--c-primary) !important;
+}
+.border-primary {
+  border-color: var(--c-primary) !important;
+}
+
+@import "~bootstrap/scss/bootstrap.scss";

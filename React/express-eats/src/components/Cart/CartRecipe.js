@@ -15,6 +15,8 @@ import ViewPage from "./../../UI/ViewPage";
 import Alerts from "./../common/Alerts/Alerts";
 // hooks
 import useHttp from "../../hooks/use-http";
+// firebase
+import firebase from "firebase";
 
 const modalElement = document.getElementById("popup");
 
@@ -46,6 +48,7 @@ const CartRecipe = () => {
         body: {
           user: userData,
           orderedRecipe: products,
+          purchasedOn: firebase.firestore.FieldValue.serverTimestamp(),
         },
       },
       ongetResponse

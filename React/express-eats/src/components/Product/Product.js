@@ -18,7 +18,6 @@ const Product = () => {
   useEffect(() => {
     const getAllProducts = (products) => {
       setProducts(products);
-      console.log(products);
     };
     fetchProducts(
       {
