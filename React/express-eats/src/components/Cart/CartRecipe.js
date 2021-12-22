@@ -13,17 +13,18 @@ import Spinner from "../common/Spinner/Spinner";
 import CartModal from "./CartModal";
 import ViewPage from "./../../UI/ViewPage";
 import Alerts from "./../common/Alerts/Alerts";
+import Modal from "../common/Modal/Modal";
 // hooks
 import useHttp from "../../hooks/use-http";
 // firebase
 import firebase from "firebase";
 
-const modalElement = document.getElementById("popup");
-
 const CartRecipe = () => {
   const [isCheckedout, setIsCheckedOut] = useState(false);
+  const [isProductModal, setIsProductModal] = useState(false);
   const [didSubmit, setDidSubmit] = useState(false);
   const [products, setProducts] = useState([]);
+  const [productsPopup, setProductsPopup] = useState([]);
   const { isLoadings, error, sendHttpRequet: fetchCartProducts } = useHttp();
 
   const recipeCart = useContext(RecipeContext);
@@ -93,6 +94,18 @@ const CartRecipe = () => {
     </React.Fragment>
   );
 
+  const onShowProducts = (recipeNo) => {
+    const filterProduct = products.filter((product) => {
+      return product.recipeNo === recipeNo;
+    });
+    setProductsPopup(filterProduct);
+    setIsProductModal(true);
+  };
+
+  const onCloseProducts = () => {
+    setIsProductModal(false);
+  };
+
   return (
     <ViewPage title="View cart">
       <React.Fragment>
@@ -134,7 +147,13 @@ const CartRecipe = () => {
                   <tbody>
                     {products?.map((value) => (
                       <tr key={value?.recipeKey}>
-                        <th scope="row">{value?.recipeNo}</th>
+                        <th
+                          scope="row"
+                          onClick={onShowProducts.bind(null, value?.recipeNo)}
+                          className="pe-cursor"
+                        >
+                          {value?.recipeNo}
+                        </th>
                         <td>{value?.recipeName}</td>
                         <td>
                           {Math.round(value?.price)} (x {value?.amount})
@@ -184,7 +203,12 @@ const CartRecipe = () => {
       {isCheckedout &&
         ReactDOM.createPortal(
           <CartModal onClose={onCartCheckout} onConfirm={submitOrderHandler} />,
-          modalElement
+          document.getElementById("popup")
+        )}
+      {isProductModal &&
+        ReactDOM.createPortal(
+          <Modal onClose={onCloseProducts} productData={productsPopup} />,
+          document.getElementById("modal-popup")
         )}
     </ViewPage>
   );
