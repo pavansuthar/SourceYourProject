@@ -50,11 +50,6 @@ const ProductItem = (props) => {
 
   return (
     <div className="row">
-      {showToast &&
-        ReactDOM.createPortal(
-          <Toast message={ToastMsg} onClose={onHideToast} />,
-          document.getElementById("toast")
-        )}
       <div className="col-md-12 ProductItems">
         <div className="card mb-2 mt-3">
           <div className="row g-0">
@@ -96,6 +91,11 @@ const ProductItem = (props) => {
           </div>
         </div>
       </div>
+      {showToast &&
+        ReactDOM.createPortal(
+          <Toast message={ToastMsg} onClose={onHideToast} />,
+          document.getElementById("toast")
+        )}
     </div>
   );
 };

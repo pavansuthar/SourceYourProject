@@ -37,27 +37,29 @@ const ProductHistory = () => {
   let contentHistory = (
     <React.Fragment>
       <section className="col-md-9 card p-3 historyProduct">
-        {isLoading && <Spinner color="text-dark" text="Loading all products" />}
-        {error && (
-          <Alerts alertType="alert-danger" icon={InfoCircle} msg={error} />
-        )}
-        {products && !error && !isLoading && (
-          <div className="row">
-            <div className="col-md-12">
-              <p className="h3 text-primary">Your purchase history</p>
+        <div className="row">
+          <div className="col-md-12">
+            <p className="h3 text-primary">Your purchase history</p>
+            {isLoading && (
+              <Spinner color="text-dark" text="Loading all products" />
+            )}
+            {error && (
+              <Alerts alertType="alert-danger" icon={InfoCircle} msg={error} />
+            )}
+            {(products?.length === 0 || products === null) &&
+              !error &&
+              !isLoading && (
+                <Alerts
+                  alertType="alert-primary"
+                  icon={InfoCircle}
+                  msg={"No history are available in Expresseats."}
+                />
+              )}
+            {products && !error && !isLoading && (
               <ProductHistoryAcc products={products} />
-            </div>
+            )}
           </div>
-        )}
-        {(products?.length === 0 || products === null) &&
-          !error &&
-          !isLoading && (
-            <Alerts
-              alertType="alert-primary"
-              icon={InfoCircle}
-              msg={"No history are available in Expresseats."}
-            />
-          )}
+        </div>
       </section>
     </React.Fragment>
   );

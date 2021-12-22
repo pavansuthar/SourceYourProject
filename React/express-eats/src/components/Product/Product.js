@@ -47,10 +47,7 @@ const Product = () => {
         </section>
       )}
       {products && !error && !isLoading && (
-        <div className="col-md-12">
-          <p>Take a look at our products</p>
-          <ProductDetails recipes={products} />
-        </div>
+        <ProductDetails recipes={products} />
       )}
     </ViewPage>
   );

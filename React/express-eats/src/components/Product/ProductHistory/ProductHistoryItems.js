@@ -1,22 +1,33 @@
 // core
-import React from "react";
+import React, { useState } from "react";
 // components
 import { FaRupeeSign } from "react-icons/fa";
 
 const ProductHistoryItems = (props) => {
   const orderRecipe = props?.getItems?.orderedRecipe;
   const userInfo = props?.getItems?.user;
+  const [showAcc, setShowAcc] = useState(false);
 
   const getAllPrice = orderRecipe?.reduce((prev, curr) => {
-    return prev + +curr.price;
+    return prev + curr.amount * +curr.price;
   }, 0);
+
+  const onShowAccordin = () => {
+    setShowAcc((prev) => !prev);
+  };
+
+  const showAccordinClass = showAcc
+    ? "accordion-collapse collapse show"
+    : "accordion-collapse collapse";
 
   return (
     <div className="historyItem">
-      <div className="accordion-item">
+      <div className="accordion-item" onClick={onShowAccordin}>
         <h2 className="accordion-header" id="headingOne">
           <button
-            className="accordion-button collapsed"
+            className={
+              showAcc ? "accordion-button" : "accordion-button collapsed"
+            }
             type="button"
             data-bs-toggle="collapse"
             data-bs-target="#collapseOne"
@@ -28,13 +39,13 @@ const ProductHistoryItems = (props) => {
         </h2>
         <div
           id="collapseOne"
-          className="accordion-collapse collapse"
+          className={showAccordinClass}
           aria-labelledby="headingOne"
           data-bs-parent="#accordionExample"
         >
           <div className="accordion-body">
             <div className="row">
-              <div className="col-md-6">
+              <div className="col-md-4">
                 <h5 className="text-primary">Address</h5>
                 <address>
                   <b>{userInfo?.name}</b>
@@ -45,25 +56,32 @@ const ProductHistoryItems = (props) => {
                   </div>
                 </address>
               </div>
-              <div className="col-md-6">
+              <div className="col-md-8">
                 <h5 className="text-primary">Purchase</h5>
                 <table className="table table-bordered">
                   <thead>
                     <tr>
+                      <th scope="col">Recipe No</th>
                       <th scope="col">Recipe Name</th>
-                      <th scope="col">Qty</th>
                       <th scope="col">Price</th>
+                      <th scope="col">Amount</th>
                     </tr>
                   </thead>
                   <tbody>
                     {orderRecipe?.map((data) => {
                       return (
                         <tr key={data?.recipeNo}>
-                          <td>{data?.recipeName}</td>
-                          <td>{data?.amount}</td>
+                          <td>{data?.recipeNo}</td>
+                          <td>
+                            {data?.recipeName} (x {data?.amount})
+                          </td>
                           <td>
                             <FaRupeeSign />
                             {Math.round(data?.price)}
+                          </td>
+                          <td>
+                            <FaRupeeSign />
+                            {Math.round(data?.price * data?.amount)}
                           </td>
                         </tr>
                       );

@@ -40,17 +40,17 @@ const ProductDetails = (props) => {
   }, [products]);
 
   return (
-    <div className="row">
-      <div className="col-md-12">
-        <div className="row">
-          {recipes?.map((item) => (
+    <div className="col-md-12">
+      <div className="row">
+        {recipes
+          ?.filter((products) => products.isActive === true)
+          .map((item) => (
             <div className="col-md-3 items" key={item.id}>
               <BouncyDiv>
                 <ProductItem items={item} />
               </BouncyDiv>
             </div>
           ))}
-        </div>
       </div>
     </div>
   );
