@@ -208,8 +208,7 @@ class AddProduct extends React.Component {
     const postProduct = async () => {
       const productsURL = `https://react-virtusa-expresseats-default-rtdb.firebaseio.com/products/${this.state.recipeKey}.json`;
       const response = await fetch(productsURL, options);
-      const responseData = await response.json();
-      console.log(responseData);
+      await response.json();
     };
     postProduct().catch((e) => {
       this.setState({
@@ -271,7 +270,7 @@ class AddProduct extends React.Component {
             </div>
           )}
           <div className="row sub-main">
-            <div className="col-md-6 card p-3">
+            <div className="col-md-6 card p-3 addProduct">
               <form onSubmit={this.addRecipeHandler}>
                 <div className="row mb-3">
                   <div className="col-md-4">
@@ -306,34 +305,54 @@ class AddProduct extends React.Component {
                       />
                     </div>
                   </div>
-                  <div className="col-md-12">
-                    <label htmlFor="description" className="col-form-label">
-                      Description
-                    </label>
-                    <div className="col-md-12">
-                      <textarea
-                        name="description"
-                        rows="2"
-                        className="form-control"
-                        value={this.state.description}
-                        onChange={this.inputChangeHandler}
-                      ></textarea>
+                  <div className="row mt-2 mb-2">
+                    <div className="col-md-8">
+                      <div className="row">
+                        <div className="col-md-12">
+                          <label
+                            htmlFor="description"
+                            className="col-form-label"
+                          >
+                            Description
+                          </label>
+                          <div className="col-md-12">
+                            <textarea
+                              name="description"
+                              rows="2"
+                              className="form-control"
+                              value={this.state.description}
+                              onChange={this.inputChangeHandler}
+                            ></textarea>
+                          </div>
+                        </div>
+                        <div className="col-md-12">
+                          <label htmlFor="image" className="col-form-label">
+                            Recipe Image URL{" "}
+                            <span className="text-danger fw-bold">*</span>
+                          </label>
+                          <div className="col-md-12">
+                            <input
+                              name="image"
+                              type="text"
+                              className="form-control"
+                              value={this.state.image}
+                              onChange={this.inputChangeHandler}
+                            />
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
-                <div className="row mb-3">
-                  <label htmlFor="image" className="col-form-label">
-                    Recipe Image URL{" "}
-                    <span className="text-danger fw-bold">*</span>
-                  </label>
-                  <div className="col-sm-10">
-                    <input
-                      name="image"
-                      type="text"
-                      className="form-control"
-                      value={this.state.image}
-                      onChange={this.inputChangeHandler}
-                    />
+                    <div className="col-md-4">
+                      <div className="row">
+                        <div className="col-md-12">
+                          <img
+                            src={this.state.image}
+                            alt={this.state.recipeName}
+                            className="img-thumbnail"
+                          />
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <div className="row mb-3">
@@ -434,14 +453,7 @@ class AddProduct extends React.Component {
                   </div>
                 </div>
                 <div className="row mb-3">
-                  <div className="col-md-12 jus">
-                    <button
-                      type="submit"
-                      className="btn btn-success"
-                      disabled={this.state.isLoading}
-                    >
-                      {this.state?.isEditMode ? "Save" : "Add"}
-                    </button>
+                  <div className="col-md-12 Btns">
                     {this.state?.isEditMode && (
                       <button
                         type="button"
@@ -455,21 +467,26 @@ class AddProduct extends React.Component {
                       </button>
                     )}
                     <button
+                      type="submit"
+                      className="btn btn-success"
+                      disabled={this.state.isLoading}
+                    >
+                      {this.state?.isEditMode ? "Save" : "Add"}
+                    </button>
+                    <button
                       type="button"
                       className="btn btn-primary"
                       onClick={this.onPageBack}
                     >
                       Back
                     </button>
-                    {this.state.isLoading && (
-                      <Spinner
-                        text={
-                          this.state.isEditMode ? "Saving this" : "Adding this"
-                        }
-                      />
-                    )}
                   </div>
                 </div>
+                {this.state.isLoading && (
+                  <Spinner
+                    text={this.state.isEditMode ? "Saving this" : "Adding this"}
+                  />
+                )}
               </form>
             </div>
           </div>

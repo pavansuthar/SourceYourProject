@@ -37,7 +37,6 @@ hr {
 .btn-danger,
 .btn-primary {
   color: $White !important;
-  margin-left: 10px;
 }
 
 .toast:not(.show) {
@@ -49,11 +48,6 @@ hr {
 .dropdown-menu,
 .modal {
   display: block !important;
-}
-
-#root {
-  display: flex;
-  flex-direction: column;
 }
 
 .btn-primary {

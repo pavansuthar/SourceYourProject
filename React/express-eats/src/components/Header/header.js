@@ -112,7 +112,7 @@ const Header = () => {
                 </li>
               )}
 
-              {isLoggedIn && (
+              {showProductPage && (
                 <li className="nav-item">
                   <NavLink
                     to="/ProductHistory"

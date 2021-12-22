@@ -7,6 +7,10 @@
     font-size: 20px;
   }
 
+  .container-fluid {
+    overflow-y: unset;
+  }
+
   .badge {
     background-color: $White;
     border: 2px solid var(--c-primary) !important;

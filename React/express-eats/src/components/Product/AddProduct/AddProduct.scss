@@ -1,12 +1,9 @@
 @import "./../../../assets/scss/colors.scss";
 
 .addProduct {
-  h2 {
-    color: $White;
-  }
-  .sub-main {
-    flex: 1;
-    flex-direction: row;
-    justify-content: center;
+  .Btns {
+    button {
+      margin-right: 10px;
+    }
   }
 }
