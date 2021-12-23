@@ -3,6 +3,8 @@ import { useState } from "react";
 // css, icons
 import "./ProductItemForm.scss";
 import { BsTags } from "react-icons/bs";
+// components
+import CSSTransition from "react-transition-group/CSSTransition";
 
 const ProductItemForm = (props) => {
   const [amountIsValid, setAmountIsValid] = useState(true);
@@ -64,13 +66,21 @@ const ProductItemForm = (props) => {
           </form>
         </div>
       </div>
-      {!amountIsValid && (
+      <CSSTransition
+        in={!amountIsValid}
+        timeout={300}
+        classNames="errorMsg"
+        unmountOnExit
+      >
         <div className="row">
           <div className="col-md-12 m-1">
             <p className="text-danger">Please enter a valid Qty (1-5).</p>
           </div>
         </div>
-      )}
+      </CSSTransition>
+      {/* {!amountIsValid && ( */}
+
+      {/* )} */}
     </div>
   );
 };

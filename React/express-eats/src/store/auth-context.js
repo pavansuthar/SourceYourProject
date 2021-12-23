@@ -3,6 +3,12 @@ import React, { useCallback, useState, useEffect } from "react";
 // firebase
 import { db } from "./../firebase/firebase";
 
+const storageObj = {
+  token: "tokenID",
+  expiry: "expiryTime",
+  Toast: "showToast",
+  prodToast: "showProductToast",
+};
 let logOutTimer;
 
 const AuthContext = React.createContext({
@@ -27,12 +33,12 @@ const calculateRemainingTime = (expTime) => {
 };
 
 const retrieveTokenData = () => {
-  const TokenId = localStorage.getItem("tokenID");
-  const Expiration = localStorage.getItem("expiryTime");
+  const TokenId = localStorage.getItem(storageObj.token);
+  const Expiration = localStorage.getItem(storageObj.expiry);
   const remainingTime = calculateRemainingTime(Expiration);
   if (remainingTime <= 60000) {
-    localStorage.removeItem("token");
-    localStorage.removeItem("expTime");
+    localStorage.removeItem(storageObj.token);
+    localStorage.removeItem(storageObj.expiry);
     return null;
   }
   return {
@@ -54,10 +60,10 @@ export const AuthContextProvider = (props) => {
 
   const OnLoggedOutHandler = useCallback(() => {
     setTokenId(null);
-    localStorage.removeItem("tokenID");
-    localStorage.removeItem("expiryTime");
-    localStorage.removeItem("showToast");
-    localStorage.removeItem("showProductToast");
+    localStorage.removeItem(storageObj.token);
+    localStorage.removeItem(storageObj.expiry);
+    localStorage.removeItem(storageObj.Toast);
+    localStorage.removeItem(storageObj.prodToast);
     if (logOutTimer) {
       clearInterval(logOutTimer);
     }
@@ -85,8 +91,8 @@ export const AuthContextProvider = (props) => {
           (user) => user.emailId === emailId
         );
         setIsAdmin(getAdminUser[0]?.isAdmin);
-        localStorage.setItem("tokenID", token);
-        localStorage.setItem("expiryTime", expTime);
+        localStorage.setItem(storageObj.token, token);
+        localStorage.setItem(storageObj.expiry, expTime);
         let remainingTime = calculateRemainingTime(expTime);
         logOutTimer = setTimeout(OnLoggedOutHandler, remainingTime);
       });

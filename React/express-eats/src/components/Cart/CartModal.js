@@ -7,8 +7,8 @@ import AuthContext from "./../../store/auth-context";
 // css
 import "./CartModal.scss";
 
-const Backdrop = () => {
-  return <div className="backdrop" />;
+const Backdrop = (props) => {
+  return <div className="backdrop">{props.children}</div>;
 };
 
 const isEmpty = (value) => value.trim() === "";
@@ -74,109 +74,110 @@ const CartModal = (props) => {
 
   return (
     <React.Fragment>
-      <Backdrop />
-      <div className="modal cartModal" tabIndex="-1">
-        <div className="modal-dialog">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h5 className="modal-title">Fill your address</h5>
-              <button
-                type="button"
-                className="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-                onClick={props.onClose}
-              ></button>
-            </div>
-            <div className="modal-body">
-              <form onSubmit={confirmHandler}>
-                <div className="control">
-                  <label htmlFor="name">Your Name</label>
-                  <input
-                    type="text"
-                    id="name"
-                    ref={nameInputRef}
-                    placeholder="Full name"
-                  />
-                  {!formInputValid.name && (
-                    <p className="text-danger text-bold">
-                      Please enter a valid name.
-                    </p>
-                  )}
-                </div>
-                <div className="control">
-                  <label htmlFor="street">Street</label>
-                  <input
-                    type="text"
-                    id="street"
-                    ref={streetInputRef}
-                    placeholder="Street name"
-                  />
-                  {!formInputValid.street && (
-                    <p className="text-danger text-bold">
-                      Please enter a valid street.
-                    </p>
-                  )}
-                </div>
-                <div className="control">
-                  <label htmlFor="postal">Postal Code</label>
-                  <input
-                    type="text"
-                    id="postal"
-                    ref={postalInputRef}
-                    placeholder="Only 5 digits"
-                  />
-                  {!formInputValid.postal && (
-                    <p className="text-danger text-bold">
-                      Please enter a valid postal.
-                    </p>
-                  )}
-                </div>
-                <div className="control">
-                  <label htmlFor="city">City</label>
-                  <input
-                    type="text"
-                    id="city"
-                    ref={cityInputRef}
-                    placeholder="Like Bengaluru"
-                  />
-                  {!formInputValid.city && (
-                    <p className="text-danger text-bold">
-                      Please enter a valid city.
-                    </p>
-                  )}
-                </div>
-                <div className="mt-3 mb-3">
-                  {loading && formIsValid && (
-                    <Spinner
-                      color="text-black"
-                      align="h-100 mh-100 align-items-center"
-                      text="Booking order"
+      <Backdrop>
+        <div className="modal cartModal" tabIndex="-1">
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title">Fill your address</h5>
+                <button
+                  type="button"
+                  className="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                  onClick={props.onClose}
+                ></button>
+              </div>
+              <div className="modal-body">
+                <form onSubmit={confirmHandler}>
+                  <div className="control">
+                    <label htmlFor="name">Your Name</label>
+                    <input
+                      type="text"
+                      id="name"
+                      ref={nameInputRef}
+                      placeholder="Full name"
                     />
-                  )}
-                </div>
-                <div className="modal-footer">
-                  <button
-                    type="submit"
-                    className="btn btn-success rounded-pill"
-                    data-bs-dismiss="modal"
-                  >
-                    Place order
-                  </button>
-                  <button
-                    type="button"
-                    className="btn btn-primary rounded-pill"
-                    data-bs-dismiss="modal"
-                    onClick={props.onClose}
-                  >
-                    Close
-                  </button>
-                </div>
-              </form>
+                    {!formInputValid.name && (
+                      <p className="text-danger text-bold">
+                        Please enter a valid name.
+                      </p>
+                    )}
+                  </div>
+                  <div className="control">
+                    <label htmlFor="street">Street</label>
+                    <input
+                      type="text"
+                      id="street"
+                      ref={streetInputRef}
+                      placeholder="Street name"
+                    />
+                    {!formInputValid.street && (
+                      <p className="text-danger text-bold">
+                        Please enter a valid street.
+                      </p>
+                    )}
+                  </div>
+                  <div className="control">
+                    <label htmlFor="postal">Postal Code</label>
+                    <input
+                      type="text"
+                      id="postal"
+                      ref={postalInputRef}
+                      placeholder="Only 5 digits"
+                    />
+                    {!formInputValid.postal && (
+                      <p className="text-danger text-bold">
+                        Please enter a valid postal.
+                      </p>
+                    )}
+                  </div>
+                  <div className="control">
+                    <label htmlFor="city">City</label>
+                    <input
+                      type="text"
+                      id="city"
+                      ref={cityInputRef}
+                      placeholder="Like Bengaluru"
+                    />
+                    {!formInputValid.city && (
+                      <p className="text-danger text-bold">
+                        Please enter a valid city.
+                      </p>
+                    )}
+                  </div>
+                  <div className="mt-3 mb-3">
+                    {loading && formIsValid && (
+                      <Spinner
+                        color="text-black"
+                        align="h-100 mh-100 align-items-center"
+                        text="Booking order"
+                      />
+                    )}
+                  </div>
+                  <div className="modal-footer">
+                    <button
+                      type="submit"
+                      className="btn btn-success rounded-pill"
+                      data-bs-dismiss="modal"
+                    >
+                      Place order
+                    </button>
+                    <button
+                      type="button"
+                      className="btn btn-primary rounded-pill"
+                      data-bs-dismiss="modal"
+                      onClick={props.onClose}
+                    >
+                      Close
+                    </button>
+                  </div>
+                </form>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </Backdrop>
     </React.Fragment>
   );
 };

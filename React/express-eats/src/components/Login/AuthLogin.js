@@ -8,6 +8,7 @@ import Spinner from "../common/Spinner/Spinner";
 import Alerts from "../common/Alerts/Alerts";
 // css
 import "./AuthLogin.scss";
+import CSSTransition from "react-transition-group/CSSTransition";
 import InfoCircle from "./../../assets/images/info-circle.svg";
 // firebase
 import firebase from "firebase";
@@ -18,7 +19,7 @@ const AuthLogin = () => {
   const { LoggedIn } = authCtx;
   const [isLogin, setIsLogIn] = useState(true);
   const [onLoading, setOnLoading] = useState(false);
-  const [errorMsg, setErrorMsg] = useState("");
+  const [errorMsg, setErrorMsg] = useState(null);
   const emailField = useRef();
   const pwdField = useRef();
   const history = useHistory();
@@ -45,18 +46,6 @@ const AuthLogin = () => {
       });
     }
   };
-
-  let error = null;
-  if (errorMsg) {
-    error = (
-      <Alerts
-        alertType="alert-danger"
-        icon={InfoCircle}
-        msg={errorMsg}
-        onClose={onHideAlert}
-      />
-    );
-  }
 
   const onLogInHandler = (e) => {
     e.preventDefault();
@@ -120,7 +109,19 @@ const AuthLogin = () => {
 
   return (
     <div className="row logInSection">
-      {error}
+      <CSSTransition
+        in={errorMsg ? true : false}
+        timeout={300}
+        classNames="alertBox"
+        unmountOnExit
+      >
+        <Alerts
+          alertType="alert-danger"
+          icon={InfoCircle}
+          msg={errorMsg}
+          onClose={onHideAlert}
+        />
+      </CSSTransition>
       <div className="col-md-12 cards">
         <h3>
           Express <span className="text-primary">Eats</span>

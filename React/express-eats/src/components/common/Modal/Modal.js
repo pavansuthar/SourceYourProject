@@ -5,18 +5,27 @@ import "./Modal.scss";
 // icons
 import { FaSquare, FaRupeeSign } from "react-icons/fa";
 
+const Backdrop = (props) => {
+  return (
+    <div className="backdrop" onClick={props.onClose}>
+      {props.children}
+    </div>
+  );
+};
+
 const Modal = (props) => {
   const products = props?.productData;
   return (
-    <div
-      className="modal"
-      id="staticBackdrop"
-      data-bs-backdrop="static"
-      data-bs-keyboard="false"
-      tabIndex="-1"
-      aria-labelledby="staticBackdropLabel"
-      aria-hidden="true"
-    >
+    // <div
+    //   className="modal"
+    //   id="staticBackdrop"
+    //   data-bs-backdrop="static"
+    //   data-bs-keyboard="false"
+    //   tabIndex="-1"
+    //   aria-labelledby="staticBackdropLabel"
+    //   aria-hidden="true"
+    // >
+    <Backdrop onClose={props.onClose}>
       <div className="modal" tabIndex="-1">
         <div className="modal-dialog modal-dialog-centered">
           <div className="modal-content">
@@ -41,10 +50,10 @@ const Modal = (props) => {
                 <FaSquare fill={products[0].vegetarian ? "green" : "red"} />
               </h6>
               <p>{products[0].description}</p>
-              <p className="lead">
+              <p>
                 Favourite - {products[0].favourite} | Likes -{" "}
                 {products[0].likes} | {products[0].popular ? "Popular" : ""} |{" "}
-                <FaRupeeSign fill={"gray"} /> {products[0].price}
+                <FaRupeeSign /> {products[0].price}
               </p>
             </div>
             <div className="modal-footer">
@@ -60,7 +69,8 @@ const Modal = (props) => {
           </div>
         </div>
       </div>
-    </div>
+    </Backdrop>
+    // </div>
   );
 };
 

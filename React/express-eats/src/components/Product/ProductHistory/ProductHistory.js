@@ -36,7 +36,7 @@ const ProductHistory = () => {
 
   let contentHistory = (
     <React.Fragment>
-      <section className="col-md-9 card p-3 historyProduct">
+      <section className="col-md-9 card p-3 historyProduct mt-3">
         <div className="row">
           <div className="col-md-12">
             <p className="h3 text-primary">Your purchase history</p>

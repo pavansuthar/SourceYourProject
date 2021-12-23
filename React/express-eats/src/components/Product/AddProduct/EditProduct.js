@@ -38,6 +38,7 @@ class AddProduct extends React.Component {
     this.addRecipeHandler = this.addRecipeHandler.bind(this);
     this.inputChangeHandler = this.inputChangeHandler.bind(this);
     this.onAddRecipeToFirebase = this.onAddRecipeToFirebase.bind(this);
+    this.onGetRecipe = this.onGetRecipe.bind(this);
     this.onUpdateRecipeIDKeyToFirebase =
       this.onUpdateRecipeIDKeyToFirebase.bind(this);
     this.onUpdateRecipeToFirebase = this.onUpdateRecipeToFirebase.bind(this);
@@ -47,7 +48,33 @@ class AddProduct extends React.Component {
   }
 
   componentDidMount() {
-    this.setState({ isEditMode: false });
+    this.setState({ isEditMode: true });
+    const getParamsId = this.props?.match?.params?.id;
+    this.onGetRecipe(getParamsId);
+  }
+
+  onGetRecipe(paramID) {
+    firebase
+      .database()
+      .ref(`products/${paramID}`)
+      .once("value", (snap) => {
+        let filterRecipe = snap.val();
+        this.setState({
+          id: filterRecipe?.id,
+          recipeNo: filterRecipe?.recipeNo,
+          recipeName: filterRecipe?.recipeName,
+          recipeKey: filterRecipe?.recipeKey,
+          description: filterRecipe?.description,
+          price: filterRecipe?.price,
+          image: filterRecipe?.image,
+          isActive: filterRecipe?.isActive,
+          popular: filterRecipe?.popular,
+          favourite: filterRecipe?.favourite,
+          vegetarian: filterRecipe?.vegetarian,
+          likes: filterRecipe?.likes,
+          isLoading: filterRecipe?.isLoading,
+        });
+      });
   }
 
   onAddRecipeToFirebase() {

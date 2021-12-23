@@ -1,6 +1,7 @@
 @import "./../../assets/scss/colors.scss";
 
 .HeaderMain {
+  z-index: 20;
   .logo {
     color: $White;
     margin-right: 10px;

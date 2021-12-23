@@ -1,12 +1,16 @@
 // core
 import React, { useState } from "react";
+import ReactDOM from "react-dom";
 // components
+import Modal from "./../../common/Modal/Modal";
 import { FaRupeeSign } from "react-icons/fa";
 
 const ProductHistoryItems = (props) => {
   const orderRecipe = props?.getItems?.orderedRecipe;
   const userInfo = props?.getItems?.user;
   const [showAcc, setShowAcc] = useState(false);
+  const [productsPopup, setProductsPopup] = useState([]);
+  const [isProductModal, setIsProductModal] = useState(false);
 
   const getAllPrice = orderRecipe?.reduce((prev, curr) => {
     return prev + curr.amount * +curr.price;
@@ -15,6 +19,17 @@ const ProductHistoryItems = (props) => {
   const onShowAccordin = () => {
     setShowAcc((prev) => !prev);
   };
+
+  const onShowProducts = (recipeNo, e) => {
+    e.stopPropagation();
+    const filterProduct = orderRecipe.filter((product) => {
+      return product.recipeNo === recipeNo;
+    });
+    setProductsPopup(filterProduct);
+    setIsProductModal(true);
+  };
+
+  const onCloseProducts = () => setIsProductModal(false);
 
   const showAccordinClass = showAcc
     ? "accordion-collapse collapse show"
@@ -71,7 +86,12 @@ const ProductHistoryItems = (props) => {
                     {orderRecipe?.map((data) => {
                       return (
                         <tr key={data?.recipeNo}>
-                          <td>{data?.recipeNo}</td>
+                          <td
+                            className="pe-cursor"
+                            onClick={(e) => onShowProducts(data?.recipeNo, e)}
+                          >
+                            {data?.recipeNo}
+                          </td>
                           <td>
                             {data?.recipeName} (x {data?.amount})
                           </td>
@@ -99,6 +119,11 @@ const ProductHistoryItems = (props) => {
           </div>
         </div>
       </div>
+      {isProductModal &&
+        ReactDOM.createPortal(
+          <Modal onClose={onCloseProducts} productData={productsPopup} />,
+          document.getElementById("modal-popup")
+        )}
     </div>
   );
 };

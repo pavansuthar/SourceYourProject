@@ -128,7 +128,7 @@ const Header = () => {
               {isLoggedIn && (
                 <li className="nav-item">
                   <NavLink
-                    to="/Login"
+                    to="/Logout"
                     className="nav-link"
                     aria-current="page"
                     activeClassName="active"
