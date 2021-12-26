@@ -31,7 +31,6 @@ const ViewProducts = () => {
   const [recpActive, setRecpActive] = useState(false);
   const history = useHistory();
   const { isLoading, error, sendHttpRequet: fetchProducts } = useHttp();
-
   useEffect(() => {
     const getAllProducts = (products) => {
       const allProducts = [];
@@ -150,7 +149,7 @@ const ViewProducts = () => {
           />
         </div>
       </div>
-      <section className="col-md-7 card p-3">
+      <section className="col-md-9 card p-3">
         <table className="table table-hover">
           <thead>
             <tr>
@@ -159,6 +158,7 @@ const ViewProducts = () => {
               <th scope="col">Image</th>
               <th scope="col">Description</th>
               <th scope="col">Price</th>
+              <th scope="col">Added On</th>
             </tr>
           </thead>
           <tbody>
@@ -209,6 +209,9 @@ const ViewProducts = () => {
                   </td>
                   <td className="price">
                     <FaRupeeSign /> {value?.price}
+                  </td>
+                  <td>
+                    <p>{value?.addedOn}</p>
                   </td>
                 </tr>
               ))}

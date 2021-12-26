@@ -3,7 +3,7 @@ import React, { useState, useRef, useContext } from "react";
 // components
 import Spinner from "../common/Spinner/Spinner";
 // context
-import AuthContext from "./../../store/auth-context";
+import AuthContext from "./../../store/authProvider";
 // css
 import "./CartModal.scss";
 

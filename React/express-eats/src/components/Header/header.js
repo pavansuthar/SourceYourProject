@@ -6,7 +6,7 @@ import { IoFastFood } from "react-icons/io5";
 import { NavLink } from "react-router-dom";
 import { useContext, useState, useEffect } from "react";
 // context
-import AuthContext from "../../store/auth-context";
+import AuthContext from "../../store/authProvider";
 import RecipeContext from "../../store/recipeContext";
 
 const Header = () => {

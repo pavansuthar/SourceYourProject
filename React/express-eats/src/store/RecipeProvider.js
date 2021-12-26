@@ -16,12 +16,13 @@ const recipeReducer = (state, action) => {
       );
       const existingCartItem = state.items[existingCartItemIndex];
       const updatedTotalAmount =
-        state.totalAmount + +action.item.price * action.item.amount;
+        state.totalAmount +
+        +action.item.price * (action?.isCart ? 1 : action.item.amount);
       let updatedItems;
       if (existingCartItem) {
         const updatedItem = {
           ...existingCartItem,
-          amount: existingCartItem.amount + action.item.amount,
+          amount: existingCartItem.amount + 1,
         };
         updatedItems = [...state.items];
         updatedItems[existingCartItemIndex] = updatedItem;
@@ -38,9 +39,6 @@ const recipeReducer = (state, action) => {
       );
       const existingItem = state.items[existingCartItemsIndex];
       const updatedTotalAmt = state?.totalAmount - existingItem?.price;
-      console.log(existingCartItemsIndex);
-      console.log(existingItem);
-      console.log(updatedTotalAmt);
       let updatedCartItems;
       if (existingItem?.amount === 1) {
         updatedCartItems = state.items.filter((item) => item.id !== action.id);
@@ -69,12 +67,11 @@ const RecipeProvider = (props) => {
     defaultRecipeCart
   );
 
-  const onAddRecipeHandler = (recipes) => {
-    dispatchRecipeCartAction({ type: "ADD", item: recipes });
+  const onAddRecipeHandler = (recipes, isCart) => {
+    dispatchRecipeCartAction({ type: "ADD", item: recipes, isCart });
   };
 
   const onRemoveRecipeHandler = (id) => {
-    console.log(id);
     dispatchRecipeCartAction({ type: "REMOVE", id });
   };
 

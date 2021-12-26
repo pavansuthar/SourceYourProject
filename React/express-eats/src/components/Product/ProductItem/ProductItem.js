@@ -32,7 +32,7 @@ const ProductItem = (props) => {
       vegetarian: props?.items.vegetarian,
       likes: props?.items.likes,
       amount,
-    });
+    }, false);
     setShowToast(true);
     setToastMsg(`Added ${props?.items.recipeName} to the cart`);
     localStorage.setItem("showProductToast", true);

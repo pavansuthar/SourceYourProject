@@ -9,8 +9,8 @@ import App from "./components/App/App";
 // router
 import { BrowserRouter as Router } from "react-router-dom";
 // context
-import { AuthContextProvider } from "./store/auth-context";
-import RecipeProvider from "./store/RecipeProvider";
+import { AuthContextProvider } from "./store/authProvider";
+import RecipeProvider from "./store/recipeProvider";
 
 ReactDOM.render(
   <React.StrictMode>

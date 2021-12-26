@@ -10,7 +10,7 @@ import useHttp from "../../../hooks/use-http";
 import Spinner from "./../../common/Spinner/Spinner";
 import Alerts from "./../../common/Alerts/Alerts";
 // context
-import AuthContext from "./../../../store/auth-context";
+import AuthContext from "./../../../store/authProvider";
 
 const ProductHistory = () => {
   const authCtx = useContext(AuthContext);

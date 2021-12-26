@@ -15,10 +15,9 @@ import CartModal from "./CartModal";
 import ViewPage from "./../../UI/ViewPage";
 import Alerts from "./../common/Alerts/Alerts";
 import Modal from "../common/Modal/Modal";
+import Toast from "./../common/Toast/Toast";
 // hooks
 import useHttp from "../../hooks/use-http";
-// firebase
-import firebase from "firebase";
 
 const CartRecipe = () => {
   const [isCheckedout, setIsCheckedOut] = useState(false);
@@ -26,6 +25,8 @@ const CartRecipe = () => {
   const [didSubmit, setDidSubmit] = useState(false);
   const [products, setProducts] = useState([]);
   const [productsPopup, setProductsPopup] = useState([]);
+  const [showToast, setShowToast] = useState(false);
+  const [toastMsg, setToastMsg] = useState("");
   const { isLoadings, error, sendHttpRequet: fetchCartProducts } = useHttp();
 
   const recipeCart = useContext(RecipeContext);
@@ -45,6 +46,7 @@ const CartRecipe = () => {
   const ongetResponse = (data) => console.log(data);
 
   const submitOrderHandler = async (userData) => {
+    const dateTime = new Date().getTime();
     fetchCartProducts(
       {
         URL: "https://react-virtusa-expresseats-default-rtdb.firebaseio.com/orderHistory.json",
@@ -52,7 +54,7 @@ const CartRecipe = () => {
         body: {
           user: userData,
           orderedRecipe: products,
-          purchasedOn: firebase.firestore.FieldValue.serverTimestamp(),
+          purchasedOn: new Date(dateTime).toLocaleString(),
         },
       },
       ongetResponse
@@ -65,11 +67,25 @@ const CartRecipe = () => {
     recipeCart.clearItem();
   };
 
-  const addCartHandler = () => {};
+  const addCartHandler = (items) => {
+    recipeCart.addItem(items, true);
+    setShowToast(true);
+    setToastMsg(`Added ${items?.recipeName} to the cart`);
+    localStorage.setItem("showCartToast", true);
+    setTimeout(() => onHideToast(), 3000);
+  };
 
-  const removeCartHandler = (id) => {
-    console.log(id);
+  const removeCartHandler = (id, name) => {
     recipeCart.removeItem(id);
+    setShowToast(true);
+    setToastMsg(`Removed ${name} from the cart`);
+    localStorage.setItem("showCartToast", true);
+    setTimeout(() => onHideToast(), 3000);
+  };
+
+  const onHideToast = () => {
+    setShowToast(false);
+    localStorage.setItem("showCartToast", false);
   };
 
   if (isLoadings) {
@@ -96,6 +112,7 @@ const CartRecipe = () => {
     <React.Fragment>
       Successfully booked your orders in Expresseats.
       <p className="text-primary" onClick={goToHistory}>
+        {" "}
         Click here
       </p>{" "}
       to see your purchase history.
@@ -172,12 +189,14 @@ const CartRecipe = () => {
                         <td className="iconsBtn">
                           <BsFillPlusCircleFill
                             fill="#0d6efd"
-                            onClick={addCartHandler}
+                            onClick={() => addCartHandler(value)}
                           />
                           <p>{value?.amount}</p>
                           <FaMinusCircle
                             fill="#f71212"
-                            onClick={() => removeCartHandler(value?.id)}
+                            onClick={() =>
+                              removeCartHandler(value?.id, value?.recipeName)
+                            }
                           />
                         </td>
                       </tr>
@@ -227,6 +246,11 @@ const CartRecipe = () => {
         ReactDOM.createPortal(
           <Modal onClose={onCloseProducts} productData={productsPopup} />,
           document.getElementById("modal-popup")
+        )}
+      {showToast &&
+        ReactDOM.createPortal(
+          <Toast message={toastMsg} onClose={onHideToast} />,
+          document.getElementById("toast")
         )}
     </ViewPage>
   );

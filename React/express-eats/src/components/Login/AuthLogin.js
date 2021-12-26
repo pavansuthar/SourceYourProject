@@ -2,7 +2,7 @@
 import React, { useContext, useRef, useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 // context
-import AuthContext from "../../store/auth-context";
+import AuthContext from "../../store/authProvider";
 // component
 import Spinner from "../common/Spinner/Spinner";
 import Alerts from "../common/Alerts/Alerts";

@@ -49,7 +49,8 @@ const ProductHistoryItems = (props) => {
             aria-expanded="true"
             aria-controls="collapseOne"
           >
-            {userInfo.name} ({userInfo.emailID})
+            {userInfo.name} ({userInfo.emailID}) |{" "}
+            {props?.getItems?.purchasedOn}
           </button>
         </h2>
         <div

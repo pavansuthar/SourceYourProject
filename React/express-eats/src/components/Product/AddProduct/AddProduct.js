@@ -58,9 +58,10 @@ class AddProduct extends React.Component {
         errorMsg: null,
       },
     });
+    const dateTime = new Date().getTime();
     const recipe = {
       ...this.state,
-      addedOn: firebase.firestore.FieldValue.serverTimestamp(),
+      addedOn: new Date(dateTime).toLocaleString(),
     };
     recipe.id = +recipe?.recipeNo.substr(5);
     delete recipe.formError;
@@ -160,9 +161,10 @@ class AddProduct extends React.Component {
         errorMsg: null,
       },
     });
+    const dateTime = new Date().getTime();
     const recipe = {
       ...this.state,
-      addedOn: firebase.firestore.FieldValue.serverTimestamp(),
+      addedOn: new Date(dateTime).toLocaleString(),
     };
     delete recipe.formError;
     delete recipe.isLoading;

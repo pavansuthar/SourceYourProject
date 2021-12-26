@@ -11,7 +11,7 @@ import {
   useLocation,
 } from "react-router-dom";
 // context
-import AuthContext from "./../../store/auth-context";
+import AuthContext from "./../../store/authProvider";
 // error boundary
 import ErrorBoundary from "./../common/ErrorBoundary/ErrorBoundary";
 // animations

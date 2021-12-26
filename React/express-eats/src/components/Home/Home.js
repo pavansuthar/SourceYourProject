@@ -10,7 +10,7 @@ import foodOrderC from "./../../assets/images/foodC.png";
 // components
 import Toast from "../common/Toast/Toast";
 // context
-import AuthContext from "./../../store/auth-context";
+import AuthContext from "./../../store/authProvider";
 
 const Home = () => {
   const [showToast, setShowToast] = useState(false);

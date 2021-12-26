@@ -1,13 +1,14 @@
 // core
 import React, { useCallback, useState, useEffect } from "react";
 // firebase
-import { db } from "./../firebase/firebase";
+import { db } from "../firebase/firebase";
 
 const storageObj = {
   token: "tokenID",
   expiry: "expiryTime",
   Toast: "showToast",
   prodToast: "showProductToast",
+  cartToast: "showCartToast",
 };
 let logOutTimer;
 
@@ -64,6 +65,7 @@ export const AuthContextProvider = (props) => {
     localStorage.removeItem(storageObj.expiry);
     localStorage.removeItem(storageObj.Toast);
     localStorage.removeItem(storageObj.prodToast);
+    localStorage.removeItem(storageObj.cartToast);
     if (logOutTimer) {
       clearInterval(logOutTimer);
     }
