@@ -15,6 +15,7 @@ import RecipeContext from "../../../store/recipeContext";
 const ProductItem = (props) => {
   const recipeCart = useContext(RecipeContext);
   const [showToast, setShowToast] = useState(false);
+  const [toastMsg, setToastMsg] = useState("");
 
   const addToCartHandler = (amount) => {
     recipeCart.addItem({
@@ -33,15 +34,10 @@ const ProductItem = (props) => {
       amount,
     });
     setShowToast(true);
+    setToastMsg(`Added ${props?.items.recipeName} to the cart`);
     localStorage.setItem("showProductToast", true);
     setTimeout(() => onHideToast(), 3000);
   };
-
-  const ToastMsg = (
-    <p>
-      Added <b>{props?.items.recipeName}</b> to cart
-    </p>
-  );
 
   const onHideToast = () => {
     setShowToast(false);
@@ -86,14 +82,15 @@ const ProductItem = (props) => {
           <div className="row">
             <ProductItemForm
               onAddToCart={addToCartHandler}
-              amount={props?.items.price}
+              price={props?.items.price}
+              amount={props?.items.amount}
             />
           </div>
         </div>
       </div>
       {showToast &&
         ReactDOM.createPortal(
-          <Toast message={ToastMsg} onClose={onHideToast} />,
+          <Toast message={toastMsg} onClose={onHideToast} />,
           document.getElementById("toast")
         )}
     </div>

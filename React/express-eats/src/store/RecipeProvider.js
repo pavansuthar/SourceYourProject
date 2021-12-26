@@ -11,14 +11,12 @@ const defaultRecipeCart = {
 const recipeReducer = (state, action) => {
   switch (action.type) {
     case "ADD":
-      const updatedTotalAmount =
-        state.totalAmount + +action.item.price * action.item.amount;
-
       const existingCartItemIndex = state?.items?.findIndex(
         (item) => item.id === action.item.id
       );
       const existingCartItem = state.items[existingCartItemIndex];
-
+      const updatedTotalAmount =
+        state.totalAmount + +action.item.price * action.item.amount;
       let updatedItems;
       if (existingCartItem) {
         const updatedItem = {
@@ -34,14 +32,35 @@ const recipeReducer = (state, action) => {
         items: updatedItems,
         totalAmount: updatedTotalAmount,
       };
-    case "CLEAR":
+    case "REMOVE":
+      const existingCartItemsIndex = state?.items?.findIndex(
+        (item) => item.id === action.id
+      );
+      const existingItem = state.items[existingCartItemsIndex];
+      const updatedTotalAmt = state?.totalAmount - existingItem?.price;
+      console.log(existingCartItemsIndex);
+      console.log(existingItem);
+      console.log(updatedTotalAmt);
+      let updatedCartItems;
+      if (existingItem?.amount === 1) {
+        updatedCartItems = state.items.filter((item) => item.id !== action.id);
+      } else {
+        const updatedItem = {
+          ...existingItem,
+          amount: existingItem?.amount - 1,
+        };
+        updatedCartItems = [...state.items];
+        updatedCartItems[existingCartItemsIndex] = updatedItem;
+      }
       return {
-        items: [],
-        totalAmount: 0,
+        items: updatedCartItems,
+        totalAmount: updatedTotalAmt,
       };
+    case "CLEAR":
+      return { items: [], totalAmount: 0 };
     default:
+      return defaultRecipeCart;
   }
-  return defaultRecipeCart;
 };
 
 const RecipeProvider = (props) => {
@@ -55,7 +74,8 @@ const RecipeProvider = (props) => {
   };
 
   const onRemoveRecipeHandler = (id) => {
-    dispatchRecipeCartAction({ type: "REMOVE", id: id });
+    console.log(id);
+    dispatchRecipeCartAction({ type: "REMOVE", id });
   };
 
   const onClearRecipeHandler = () => {

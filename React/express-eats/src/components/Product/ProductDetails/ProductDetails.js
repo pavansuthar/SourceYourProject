@@ -2,13 +2,6 @@
 import React, { useEffect, useState } from "react";
 // components
 import ProductItem from "../ProductItem/ProductItem";
-// animations
-import styled, { keyframes } from "styled-components";
-import { fadeIn } from "react-animations";
-
-const BouncyDiv = styled.div`
-  animation: 2s ${keyframes`${fadeIn}`};
-`;
 
 const ProductDetails = (props) => {
   const [recipes, setRecipes] = useState([]);
@@ -27,11 +20,12 @@ const ProductDetails = (props) => {
           isActive: products[key].isActive,
           likes: products[key].likes,
           popular: products[key].popular,
-          price: products[key].price,
+          price: +products[key].price,
           recipeName: products[key].recipeName,
           recipeNo: products[key].recipeNo,
           recipeKey: key,
           vegetarian: products[key].vegetarian,
+          amount: +products[key].amount || 0,
         });
       }
       setRecipes(allProducts);
@@ -46,9 +40,7 @@ const ProductDetails = (props) => {
           ?.filter((products) => products.isActive === true)
           .map((item) => (
             <div className="col-md-3 items" key={item.id}>
-              <BouncyDiv>
-                <ProductItem items={item} />
-              </BouncyDiv>
+              <ProductItem items={item} />
             </div>
           ))}
       </div>

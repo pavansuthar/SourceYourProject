@@ -23,7 +23,7 @@ const Alerts = (props) => {
       iconContent = <BsFillInfoCircleFill />;
   }
   return (
-    <div className="col-md-12 cards text-danger">
+    <div className={`col-md-12 cards text-danger ${props.classes}`}>
       <div
         className={`alert ${props.alertType} alert-dismissible w-100`}
         role="alert"

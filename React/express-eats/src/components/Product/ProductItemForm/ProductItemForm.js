@@ -1,14 +1,21 @@
 // core
-import { useState } from "react";
+import { useState, useEffect } from "react";
 // css, icons
 import "./ProductItemForm.scss";
 import { BsTags } from "react-icons/bs";
+import InfoCircle from "./../../../assets/images/info-circle.svg";
 // components
 import CSSTransition from "react-transition-group/CSSTransition";
+import Alerts from "./../../common/Alerts/Alerts";
 
 const ProductItemForm = (props) => {
   const [amountIsValid, setAmountIsValid] = useState(true);
   const [QtyAmount, setQtyAmount] = useState(0);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    setQtyAmount(props.amount);
+  }, [props.amount]);
 
   const inputHandler = (e) => {
     const getQtyAmt = e.target.value;
@@ -16,11 +23,12 @@ const ProductItemForm = (props) => {
     setAmountIsValid(true);
   };
 
-  const submitHandler = (event) => {
+  const addHandler = (event) => {
     event.preventDefault();
 
     if (QtyAmount === 0 || QtyAmount < 1 || QtyAmount > 5) {
       setAmountIsValid(false);
+      setError("Please enter a valid Qty (1-5).");
       return;
     }
     props.onAddToCart(QtyAmount);
@@ -30,16 +38,16 @@ const ProductItemForm = (props) => {
   return (
     <div className="col-md-12 addForm">
       <div className="row p-2">
-        <div className="col-md-6">
+        <div className="col-md-5">
           <p className="text-dark">
             <BsTags />
             {QtyAmount === 0
-              ? " Rs." + Math.round(props.amount)
-              : " Rs." + Math.round(props.amount) * QtyAmount}
+              ? " Rs. " + String(Math.round(props.price))
+              : " Rs. " + Math.round(props.price) * QtyAmount}
           </p>
         </div>
-        <div className="col-md-6">
-          <form onSubmit={submitHandler}>
+        <div className="col-md-7">
+          <form onSubmit={addHandler}>
             <label
               htmlFor="amount"
               className="col-form-label col-form-label-sm"
@@ -60,6 +68,7 @@ const ProductItemForm = (props) => {
             <button
               className="btn btn-success btn-sm rounded-pill"
               type="submit"
+              disabled={QtyAmount === 0}
             >
               Add
             </button>
@@ -72,11 +81,7 @@ const ProductItemForm = (props) => {
         classNames="errorMsg"
         unmountOnExit
       >
-        <div className="row">
-          <div className="col-md-12 m-1">
-            <p className="text-danger">Please enter a valid Qty (1-5).</p>
-          </div>
-        </div>
+        <Alerts alertType="alert-danger" icon={InfoCircle} msg={error} />
       </CSSTransition>
       {/* {!amountIsValid && ( */}
 

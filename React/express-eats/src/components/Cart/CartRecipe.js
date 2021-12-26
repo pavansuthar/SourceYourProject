@@ -7,7 +7,8 @@ import RecipeContext from "../../store/recipeContext";
 // css, icons
 import "./CartRecipe.scss";
 import InfoCircle from "./../../assets/images/info-circle.svg";
-import { FaRupeeSign } from "react-icons/fa";
+import { FaRupeeSign, FaMinusCircle } from "react-icons/fa";
+import { BsFillPlusCircleFill } from "react-icons/bs";
 // components
 import Spinner from "../common/Spinner/Spinner";
 import CartModal from "./CartModal";
@@ -64,6 +65,13 @@ const CartRecipe = () => {
     recipeCart.clearItem();
   };
 
+  const addCartHandler = () => {};
+
+  const removeCartHandler = (id) => {
+    console.log(id);
+    recipeCart.removeItem(id);
+  };
+
   if (isLoadings) {
     return (
       <ViewPage title="View cart">
@@ -101,7 +109,6 @@ const CartRecipe = () => {
     setProductsPopup(filterProduct);
     setIsProductModal(true);
   };
-  
 
   const onCloseProducts = () => {
     setIsProductModal(false);
@@ -141,8 +148,9 @@ const CartRecipe = () => {
                     <tr>
                       <th scope="col">ID</th>
                       <th scope="col">Name</th>
-                      <th scope="col">Price (Quantity)</th>
+                      <th scope="col">Price</th>
                       <th scope="col">Amount</th>
+                      <th scope="col">Quantity</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -156,12 +164,21 @@ const CartRecipe = () => {
                           {value?.recipeNo}
                         </th>
                         <td>{value?.recipeName}</td>
-                        <td>
-                          {Math.round(value?.price)} (x {value?.amount})
-                        </td>
+                        <td>{Math.round(value?.price)}</td>
                         <td className="price">
                           <FaRupeeSign />{" "}
                           {Math.round(value?.price * value?.amount)}
+                        </td>
+                        <td className="iconsBtn">
+                          <BsFillPlusCircleFill
+                            fill="#0d6efd"
+                            onClick={addCartHandler}
+                          />
+                          <p>{value?.amount}</p>
+                          <FaMinusCircle
+                            fill="#f71212"
+                            onClick={() => removeCartHandler(value?.id)}
+                          />
                         </td>
                       </tr>
                     ))}
@@ -175,7 +192,7 @@ const CartRecipe = () => {
           <div className="p-2 m-2">
             <p className="h3">Items info</p>
             <p className="h5 text-dark">
-              Total - <FaRupeeSign /> {Math.round(totalAmount)}
+              Total - <FaRupeeSign /> {Math.round(+totalAmount)}
             </p>
             <div className="d-grid gap-2">
               <div className="btn-group-vertical">

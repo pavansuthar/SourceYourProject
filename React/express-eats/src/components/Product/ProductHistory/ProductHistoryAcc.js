@@ -9,8 +9,8 @@ function ProductHistoryAcc(props) {
   const products = props?.products;
   return (
     <div className="accordion PHAccordin" id="accordionExample">
-      {products?.map((products) => {
-        return <ProductHistoryItems getItems={products} />;
+      {products?.map((products, index) => {
+        return <ProductHistoryItems getItems={products} key={index} />;
       })}
     </div>
   );

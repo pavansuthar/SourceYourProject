@@ -3,6 +3,8 @@ import React from "react";
 // animations
 import styled, { keyframes } from "styled-components";
 import { fadeIn } from "react-animations";
+// css
+import "./Toast.scss";
 
 const FadeDownToast = styled.div`
   animation: 1s ${keyframes`${fadeIn}`};
