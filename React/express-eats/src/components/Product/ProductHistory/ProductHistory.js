@@ -22,7 +22,9 @@ const ProductHistory = () => {
     const getAllProducts = (allProducts) => {
       let filterByEmail = [];
       for (const key in allProducts) {
-        filterByEmail.push(allProducts[key]);
+        if (allProducts[key].user.emailID === userEmailID) {
+          filterByEmail.push(allProducts[key]);
+        }
       }
       setProducts(filterByEmail);
     };

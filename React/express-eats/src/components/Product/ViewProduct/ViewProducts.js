@@ -4,8 +4,9 @@ import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router";
 // css, icons
 import "./ViewProducts.scss";
-import { FaSquare, FaRupeeSign, FaStar, FaThumbsUp } from "react-icons/fa";
+import { FaSquare, FaRupeeSign, FaThumbsUp } from "react-icons/fa";
 import InfoCircle from "./../../../assets/images/info-circle.svg";
+import { BsHeartFill, BsStarFill } from "react-icons/bs";
 // components
 import Spinner from "../../common/Spinner/Spinner";
 import Alerts from "../../common/Alerts/Alerts";
@@ -186,9 +187,7 @@ const ViewProducts = () => {
                   key={value?.recipeKey}
                   onClick={() => onEditRecipes(value?.recipeKey)}
                 >
-                  <th scope="row">
-                    {value?.recipeNo} {value?.popular ? "(popular)" : ""}
-                  </th>
+                  <th scope="row">{value?.recipeNo}</th>
                   <td>
                     {value?.recipeName}{" "}
                     <FaSquare fill={value?.vegetarian ? "green" : "red"} />
@@ -200,10 +199,13 @@ const ViewProducts = () => {
                     {value?.description}
                     <div className="ratings">
                       <div>
-                        <FaStar color="orange" /> <p>{value?.favourite}</p>
+                        <FaThumbsUp color="#0074d9" /> <p>{value?.likes}</p>
                       </div>
                       <div>
-                        <FaThumbsUp color="#0074d9" /> <p>{value?.likes}</p>
+                        <BsHeartFill color="red" /> <p>{value?.favourite}</p>
+                      </div>
+                      <div>
+                        {value?.popular ? <BsStarFill fill="#ffc107" /> : null}
                       </div>
                     </div>
                   </td>
