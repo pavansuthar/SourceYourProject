@@ -3,7 +3,10 @@ import React, { useState } from "react";
 import ReactDOM from "react-dom";
 // components
 import Modal from "./../../common/Modal/Modal";
-import { FaRupeeSign } from "react-icons/fa";
+import { FaRupeeSign, FaCloudDownloadAlt } from "react-icons/fa";
+import Spinner from "./../../common/Spinner/Spinner";
+// pdf
+import { jsPDF } from "jspdf";
 
 const ProductHistoryItems = (props) => {
   const orderRecipe = props?.getItems?.orderedRecipe;
@@ -11,6 +14,7 @@ const ProductHistoryItems = (props) => {
   const [showAcc, setShowAcc] = useState(false);
   const [productsPopup, setProductsPopup] = useState([]);
   const [isProductModal, setIsProductModal] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const getAllPrice = orderRecipe?.reduce((prev, curr) => {
     return prev + curr.amount * +curr.price;
@@ -18,6 +22,76 @@ const ProductHistoryItems = (props) => {
 
   const onShowAccordin = () => {
     setShowAcc((prev) => !prev);
+  };
+
+  const onDownloadReport = (e) => {
+    e.stopPropagation();
+    setLoading(true);
+
+    const generateData = function () {
+      const result = [];
+      for (var i = 0; i < orderRecipe.length; i++) {
+        const data = {
+          RecipeNo: orderRecipe[i].recipeNo,
+          RecipeName: orderRecipe[i].recipeName,
+          Price: Math.round(orderRecipe[i].price).toString(),
+          Qty: orderRecipe[i].amount.toString(),
+        };
+        data.ID = (i + 1).toString();
+        result.push(Object.assign({}, data));
+      }
+      return result;
+    };
+    generateData();
+
+    function createHeaders(keys) {
+      var result = [];
+      for (var i = 0; i < keys.length; i++) {
+        result.push({
+          id: keys[i],
+          name: keys[i],
+          prompt: keys[i],
+          width: 50,
+          align: "center",
+          padding: 0,
+        });
+      }
+      return result;
+    }
+
+    var headers = createHeaders([
+      "ID",
+      "RecipeNo",
+      "RecipeName",
+      "Price",
+      "Qty",
+    ]);
+
+    const doc = new jsPDF({ putOnlyUsedFonts: true, orientation: "portrait" });
+    doc.setFontSize(22);
+    doc.setTextColor("#673ab7");
+    doc.text("Express eats", 10, 20);
+    doc.setTextColor("#262626");
+    doc.setFontSize(15);
+    doc.text(`Purchase Receipt as on ${props?.getItems?.purchasedOn}`, 10, 30);
+    doc.setTextColor("#673ab7");
+    doc.text(`Delivered to`, 10, 40);
+    doc.setTextColor("#262626");
+    doc.text(
+      `${userInfo?.name}, ${userInfo?.street}, ${userInfo?.city}, ${userInfo?.postal}`,
+      10,
+      50
+    );
+
+    doc.table(10, 60, generateData(), headers, {
+      autoSize: false,
+      headerBackgroundColor: "#673ab7",
+      headerTextColor: "#ffffff",
+      printHeaders: true,
+    });
+
+    doc.save("Recipt.pdf");
+    setLoading(false);
   };
 
   const onShowProducts = (recipeNo, e) => {
@@ -109,11 +183,24 @@ const ProductHistoryItems = (props) => {
                     })}
                   </tbody>
                 </table>
-
-                <div className="d-flex justify-content-center align-items-center">
-                  <h5 className="text-primary mb-0">Total - </h5>
-                  <FaRupeeSign />
-                  {Math.round(getAllPrice)}
+                <div className="d-flex justify-content-around align-items-center">
+                  <h5 className="text-primary mb-0">
+                    Total - <FaRupeeSign />
+                    {Math.round(getAllPrice)}
+                  </h5>
+                  <button
+                    type="button"
+                    className="btn btn-primary btn-sm"
+                    onClick={(e) => onDownloadReport(e)}
+                  >
+                    <FaCloudDownloadAlt /> Receipt
+                  </button>
+                  {loading && (
+                    <Spinner
+                      color="text-primary"
+                      align="h-100 mh-100 align-items-center"
+                    />
+                  )}
                 </div>
               </div>
             </div>

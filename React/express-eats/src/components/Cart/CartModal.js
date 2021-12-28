@@ -21,15 +21,14 @@ const CartModal = (props) => {
     city: true,
     postal: true,
   });
-  const [loading, setLoading] = useState(false);
-  const [formIsValid, setFormIsValid] = useState(false);
-  const authContext = useContext(AuthContext);
-  const { userEmailId } = authContext;
-
   const nameInputRef = useRef();
   const streetInputRef = useRef();
   const postalInputRef = useRef();
   const cityInputRef = useRef();
+
+  const [loading, setLoading] = useState(false);
+  const authContext = useContext(AuthContext);
+  const { userEmailId } = authContext;
 
   const confirmHandler = (e) => {
     setLoading(true);
@@ -41,26 +40,27 @@ const CartModal = (props) => {
 
     const enteredNameIsValid = !isEmpty(enteredName);
     const enteredStreetIsValid = !isEmpty(enteredStreet);
-    const enteredCitytIsValid = !isEmpty(enteredCity);
     const enteredPortalIsValid = isFiveChars(enteredPostal);
+    const enteredCitytIsValid = !isEmpty(enteredCity);
 
     setFormInputValid({
       name: enteredNameIsValid,
       street: enteredStreetIsValid,
-      city: enteredCitytIsValid,
       postal: enteredPortalIsValid,
+      city: enteredCitytIsValid,
     });
 
-    setFormIsValid(
+    const formIsValid =
       enteredNameIsValid &&
-        enteredStreetIsValid &&
-        enteredCitytIsValid &&
-        enteredPortalIsValid
-    );
+      enteredStreetIsValid &&
+      enteredCitytIsValid &&
+      enteredPortalIsValid;
 
     if (!formIsValid) {
+      setLoading(false);
       return;
     }
+
     props.onConfirm({
       name: enteredName,
       street: enteredStreet,
@@ -147,7 +147,7 @@ const CartModal = (props) => {
                     )}
                   </div>
                   <div className="mt-3 mb-3">
-                    {loading && formIsValid && (
+                    {loading && (
                       <Spinner
                         color="text-black"
                         align="h-100 mh-100 align-items-center"
