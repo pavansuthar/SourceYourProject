@@ -150,7 +150,7 @@ const ViewProducts = () => {
           />
         </div>
       </div>
-      <section className="col-md-9 card p-3">
+      <section className="col-md-9 card p-3 mb-4">
         <table className="table table-hover">
           <thead>
             <tr>

@@ -16,15 +16,6 @@ const Backdrop = (props) => {
 const Modal = (props) => {
   const products = props?.productData;
   return (
-    // <div
-    //   className="modal"
-    //   id="staticBackdrop"
-    //   data-bs-backdrop="static"
-    //   data-bs-keyboard="false"
-    //   tabIndex="-1"
-    //   aria-labelledby="staticBackdropLabel"
-    //   aria-hidden="true"
-    // >
     <Backdrop onClose={props.onClose}>
       <div className="modal" tabIndex="-1">
         <div className="modal-dialog modal-dialog-centered">
@@ -70,7 +61,6 @@ const Modal = (props) => {
         </div>
       </div>
     </Backdrop>
-    // </div>
   );
 };
 

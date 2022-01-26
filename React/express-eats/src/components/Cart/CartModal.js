@@ -61,15 +61,17 @@ const CartModal = (props) => {
       return;
     }
 
-    props.onConfirm({
-      name: enteredName,
-      street: enteredStreet,
-      city: enteredPostal,
-      postal: enteredCity,
-      emailID: userEmailId,
-    });
-    setLoading(false);
-    props.onClose();
+    setTimeout(() => {
+      props.onConfirm({
+        name: enteredName,
+        street: enteredStreet,
+        city: enteredPostal,
+        postal: enteredCity,
+        emailID: userEmailId,
+      });
+      setLoading(false);
+      props.onClose();
+    }, 3000);
   };
 
   return (
